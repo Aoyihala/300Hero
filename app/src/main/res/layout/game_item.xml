@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="1dp"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="#fff"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/mvp"
+            android:textSize="12sp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/tv_jump_viotory_flag"
+            android:layout_width="35dp"
+            android:layout_height="wrap_content" />
+        <net.wujingchao.android.view.SimpleTagImageView
+            android:id="@+id/img_hero"
+            android:scaleType="centerCrop"
+            android:layout_width="60dp"
+            app:simple_tag_textSize="12sp"
+            app:simple_corner_distance="20dp"
+            app:simple_tag_orientation="right_bottom"
+            app:simple_tag_width="15dp"
+            app:simple_tag_textColor="@android:color/white"
+            app:simple_tag_enable="false"
+            app:simple_tag_round_radius="20dp"
+            android:layout_height="60dp" />
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="#000"
+                android:text="竞技场"
+                android:id="@+id/tv_jump_game_type"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/tv_jump_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5-25"
+                android:textColor="#000"
+                android:textSize="12sp" />
+            <TextView
+                android:text="12/1/10"
+                android:textSize="12sp"
+                android:id="@+id/tv_jump_guaide"
+                android:textColor="#000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="20sp"
+                android:text="MVP"
+                android:textStyle="bold"
+                android:id="@+id/tv_jump_nowstate"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:textColor="@color/mvp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/tv_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#f7085f</color>
+
+    <color name="mvp">#ff0000</color>
+    <color name="black">#000</color>
+    <color name="blue">#00b7ff</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="colorMenuBtn">#616161</color>
+    <color name="TabTextColor">#616161</color>
+    <color name="TabTextSelectColor">#000</color>
+    <color name="TopicItemNodeTextColor">#ff4343</color>
+    <color name="TopicItemNodeColor">#ff4343</color>
+    <color name="Translate">#80000000</color>
+    <color name="LoadImage">#DB3937</color>
+    <color name="ItemSpaceColor">#F0F0F0</color>
+    <color name="cai">#02f516</color>
+    <color name="Red">#ec1515</color>
+
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/action_charater_mange"
+    android:title="@string/charaterman"
+    android:icon="@drawable/ic_people_blue_grey_500_24dp"
+    />
+    <item android:icon="@drawable/ic_message_blue_grey_500_24dp"
+        android:title="@string/messagemange"
+        android:id="@+id/action_message_mange"
+        />
+    <item android:id="@+id/action_setting"
+        android:title="@string/setting"
+        android:icon="@drawable/ic_settings_blue_grey_500_24dp"
+        />
+</menu>

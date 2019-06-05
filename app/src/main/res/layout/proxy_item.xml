@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <TextView
+        android:text="192.168.1.1"
+        android:textColor="@color/gray"
+        android:id="@+id/tv_ip"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:text="http"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:id="@+id/tv_type"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:text="四川成都"
+        android:gravity="center"
+        android:id="@+id/tv_adress"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:text="存活1天"
+        android:gravity="center"
+        android:id="@+id/tv_day"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:text="更新时间:19-5-02 19:25"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:id="@+id/tv_upadte_time"
+        android:textSize="12sp"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

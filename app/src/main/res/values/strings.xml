@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">300Hero</string>
+    <string name="welcome">你好,召唤师</string>
+    <string name="input">输入在游戏里的名字</string>
+    <string name="charaterman">角色管理</string>
+    <string name="messagemange">消息管理</string>
+    <string name="setting">设置</string>
+    <string name="nextpage">下一页</string>
+    <string name="backpage">上一页</string>
+    <string name="proxy">开启代理</string>
+    <string name="proxy_des">默认访问不起作用时可以尝试开启该代理</string>
+    <string name="loading">加载中</string>
+    <string name="loading_faild">点击重试</string>
+    <string name="addrole">绑定角色</string>
+
+    <array name="title">
+        <item>最近战绩</item>
+        <item>综合统计</item>
+        <item>开黑分析</item>
+    </array>
+</resources>
