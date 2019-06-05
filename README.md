@@ -4,7 +4,7 @@
 > - 角色绑定
 > - 战绩列表分页查询
 > - 战绩角色切换
-> - mvp和角色在当前场次的角色定位计算
+> - mvp和角色在当前场次的角色定位计算密码
 > - 针对于加载缓慢添加的ip代理地址
 #### 数据来源
 300战绩查询报告官网
@@ -17,7 +17,28 @@
 ****
 #### 界面预览(不代表最终页面效果)
 [![战绩列表预览1](https://github.com/Aoyihala/img/blob/master/300data/myguaide.png?raw=true)]  
-
 [![角色管理](https://github.com/Aoyihala/img/blob/master/300data/charatermanage.png?raw=true)]  
-
 [![战绩列表预览2](https://github.com/Aoyihala/img/blob/master/300data/myguaide2.png?raw=true)]
+
+## License
+
+          300Hero  Copyright (C) 2019  Aoyihala xiataoyunr@gmail.com or 1214504624@qq.com
+          This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+          This is free software, and you are welcome to redistribute it
+          under certain conditions; type `show c' for details.
+
+      The hypothetical commands `show w' and `show c' should show the appropriate
+      parts of the General Public License.  Of course, your program's commands
+      might be different; for a GUI interface, you would use an "about box".
+
+        You should also get your employer (if you work as a programmer) or school,
+      if any, to sign a "copyright disclaimer" for the program, if necessary.
+      For more information on this, and how to apply and follow the GNU GPL, see
+      <http://www.gnu.org/licenses/>.
+
+        The GNU General Public License does not permit incorporating your program
+      into proprietary programs.  If your program is a subroutine library, you
+      may consider it more useful to permit linking proprietary applications with
+      the library.  If this is what you want to do, use the GNU Lesser General
+      Public License instead of this License.  But first, please read
+      <http://www.gnu.org/philosophy/why-not-lgpl.html>.
