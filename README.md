@@ -19,7 +19,8 @@
 [![战绩列表预览1](https://github.com/Aoyihala/img/blob/master/300data/myguaide.png?raw=true)]  
 [![角色管理](https://github.com/Aoyihala/img/blob/master/300data/charatermanage.png?raw=true)]  
 [![战绩列表预览2](https://github.com/Aoyihala/img/blob/master/300data/myguaide2.png?raw=true)]
-
+#### 关于ip地址代理池
+[西刺](https://www.xicidaili.com)ip代理池，利用[jsoup](https://jsoup.org/download)解析
 ## License
 
           300Hero  Copyright (C) 2019  Aoyihala xiataoyunr@gmail.com or 1214504624@qq.com
