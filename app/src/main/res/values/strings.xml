@@ -12,7 +12,12 @@
     <string name="loading">加载中</string>
     <string name="loading_faild">点击重试</string>
     <string name="addrole">绑定角色</string>
-
+    <string name="gold">黄金局</string>
+    <string name="daemo">钻石局</string>
+    <string name="tong">青铜局</string>
+    <string name="baiying">白银局</string>
+    <string name="guaideinfo">对局详情</string>
+    <string name="pwoer">团分对比</string>
     <array name="title">
         <item>最近战绩</item>
         <item>综合统计</item>
