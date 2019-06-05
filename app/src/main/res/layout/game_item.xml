@@ -30,7 +30,7 @@
             app:simple_tag_width="15dp"
             app:simple_tag_textColor="@android:color/white"
             app:simple_tag_enable="false"
-            app:simple_tag_round_radius="20dp"
+            app:simple_tag_round_radius="10dp"
             android:layout_height="60dp" />
         <LinearLayout
             android:layout_marginLeft="5dp"

@@ -497,7 +497,33 @@ public class GameUtils
         }
         return result;
     }
+    /**
+     * 按map value降序排序
+     *
+     * @param map
+     * @param top
+     *
+     * @return
+     */
+    public <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescDownKey(
+            Map<K, V> map, int top) {
+        List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(
+                map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
 
+        Map<K, V> result = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list) {
+            if (top-- == 0) {
+                break;
+            }
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
 
     /**
      * 获取最高助攻的角色
@@ -505,34 +531,40 @@ public class GameUtils
      */
     public String getWinAsstentRole(List<GameInfo.MatchBean.WinSideBean> winSideBeanList)
     {
-        List<Integer> asstont = new LinkedList<>();
+        List<Integer> asstont = new ArrayList<>();
         Map<Integer,Long> ass = new LinkedHashMap<>();
-
-        for (GameInfo.MatchBean.WinSideBean winSideBean:winSideBeanList)
+        if (winSideBeanList!=null&&winSideBeanList.size()>0)
         {
-            ass.put(winSideBean.getAssistCount(),winSideBean.getRoleID());
-        }
-
-        ass = sortByValueDescDown(ass,asstont.size());
-        asstont = new LinkedList<>(ass.keySet());
-        int all = asstont.get(0);
-        if (all>30)
-        {
-            String name = null;
             for (GameInfo.MatchBean.WinSideBean winSideBean:winSideBeanList)
             {
-                if (winSideBean.getRoleID()==ass.get(all))
-                {
-                    name = winSideBean.getRoleName();
-                }
+                ass.put(winSideBean.getAssistCount(),winSideBean.getRoleID());
+                asstont.add(winSideBean.getAssistCount());
             }
+            Collections.sort(asstont);
+            int all = asstont.get(asstont.size()-1);
+            if (all>=30)
+            {
+                String name = null;
+                for (GameInfo.MatchBean.WinSideBean winSideBean:winSideBeanList)
+                {
+                    if (winSideBean.getRoleID()==ass.get(all))
+                    {
+                        name = winSideBean.getRoleName();
+                    }
+                }
 
-            return name;
+                return name;
+            }
+            else
+            {
+                return " ";
+            }
         }
         else
         {
-            return null;
+            return " ";
         }
+
 
     }
 
