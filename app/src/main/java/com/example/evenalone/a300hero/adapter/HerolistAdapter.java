@@ -53,6 +53,12 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private LocalGameInfoDao gameInfoDao;
     private LocalUserBeanDao userBeanDao;
     private boolean loadingjumpvalue=false;
+    private OnGuaideClickListener guaideClickListener;
+
+    public void setGuaideClickListener(OnGuaideClickListener guaideClickListener) {
+        this.guaideClickListener = guaideClickListener;
+    }
+
     public void setListBeans(List<HeroGuide.ListBean> listBeans) {
         this.listBeans = listBeans;
 
@@ -79,12 +85,22 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         if (viewHolder instanceof HeroListViewHolder) {
             HeroListViewHolder listViewHolder = (HeroListViewHolder) viewHolder;
+
             //macthtype 1为战场
             //resulttype 1 为赢
-            HeroGuide.ListBean listBean = listBeans.get(i);
+            final HeroGuide.ListBean listBean = listBeans.get(i);
+            listViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null!=guaideClickListener)
+                    {
+                        guaideClickListener.click(listBean.getMatchID());
+                    }
+                }
+            });
             listViewHolder.imgHero.setTag(R.id.img_hero,listBean.getHero().getID());
             if ((listViewHolder.imgHero.getTag(R.id.img_hero).toString().equals(listBean.getHero().getID()+"")))
             {
@@ -597,5 +613,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnGuaideClickListener
+    {
+        void click(long macth);
     }
 }

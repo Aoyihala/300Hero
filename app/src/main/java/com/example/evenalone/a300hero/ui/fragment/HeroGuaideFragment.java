@@ -1,6 +1,8 @@
 package com.example.evenalone.a300hero.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import com.example.evenalone.a300hero.base.BaseFragment;
 import com.example.evenalone.a300hero.bean.HeroGuide;
 import com.example.evenalone.a300hero.event.ListInfoEvent;
 import com.example.evenalone.a300hero.event.NetWorkCancelEvent;
+import com.example.evenalone.a300hero.ui.GuaideInfoActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
@@ -118,6 +121,19 @@ public class HeroGuaideFragment extends BaseFragment {
                         }
                     }).setActionTextColor(UiUtlis.getColor(R.color.Red)).show();
                 }
+            }
+        });
+        /**
+         * 点击列表item
+         */
+        herolistAdapter.setGuaideClickListener(new HerolistAdapter.OnGuaideClickListener() {
+            @Override
+            public void click(long macth) {
+                Bundle bundle = new Bundle();
+                bundle.putLong("id",macth);
+                Intent intent = new Intent(compatActivity,GuaideInfoActivity.class);
+                intent.putExtras(bundle);
+                compatActivity.startActivity(intent);
             }
         });
     }

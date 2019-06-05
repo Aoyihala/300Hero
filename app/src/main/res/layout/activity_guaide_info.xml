@@ -55,6 +55,7 @@
             app:tabTextColor="@color/gray"
             app:tabIndicator="@color/black"
             android:background="#fff"
+           
             app:tabIndicatorHeight="1dp"
             app:tabSelectedTextColor="@color/black"
             android:layout_height="wrap_content">

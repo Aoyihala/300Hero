@@ -30,8 +30,6 @@ public abstract class BaseFragment extends LibFragmnet {
     public void onStart() {
         super.onStart();
 
-
-
     }
 
     @Override

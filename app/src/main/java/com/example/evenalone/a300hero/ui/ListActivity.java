@@ -176,6 +176,9 @@ public class ListActivity extends BaseActivity {
                 menuPopwindow.showPopupWindow(v);
             }
         });
+        /**
+         * 设置
+         */
         li_pop_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,6 +186,9 @@ public class ListActivity extends BaseActivity {
                 startActivty(SettingActivity.class, false);
             }
         });
+        /**
+         * 添加角色
+         */
         li_pop_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,12 +196,18 @@ public class ListActivity extends BaseActivity {
                 startActivty(HomeActivity.class,false);
             }
         });
+        /**
+         * 返回
+         */
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        /**
+         * 菜单点击事件
+         */
         roleListAdapter.setClickPoslistener(new PopLoaclUserListAdapter.ClickItemListenner() {
 
             @Override
@@ -209,6 +221,8 @@ public class ListActivity extends BaseActivity {
                 refresh();
             }
         });
+
+
     }
 
     private void refresh() {
