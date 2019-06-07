@@ -166,7 +166,9 @@ public class HeroGuaideFragment extends BaseFragment {
             tvBackPage.setVisibility(View.GONE);
             this.page=0;
             startRefresh();
+            listBeans = new ArrayList<>();
             recyclerGuaideList.removeAllViews();
+
         }
         tvState.setText(R.string.loading);
         Request request = new Request.Builder()
