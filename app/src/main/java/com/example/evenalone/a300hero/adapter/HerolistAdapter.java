@@ -421,39 +421,52 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagText("MVP");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
                 }
-                if (rank_cache>=1&&rank_cache<=3)
+                else
                 {
-
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
-                }
-
-                if (rank_cache>=4&&rank_cache<=5)
-                {
-                    viewHolder.imgHero.setTagEnable(false);
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
-                }
-
-                if (rank_cache>=6&&rank_cache<=7)
-                {
-                    viewHolder.imgHero.setTagEnable(true);
-                    viewHolder.imgHero.setTagText("划水");
-                    viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
-                }
-
-                String name = gameUtils.getWinAsstentRole(winSideBeanList);
-                if (name.equals(SpUtils.getNowUser()))
-                {
-                    if (rank_cache!=1&&rank_cache!=7)
+                    if (rank_cache>=1&&rank_cache<=3)
                     {
-                        //最后一名没有
-                        //设置
-                        viewHolder.imgHero.setTagEnable(true);
-                        viewHolder.imgHero.setTagText("神队友");
-                        viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+
+                        viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
                     }
 
+                    if (rank_cache>=4&&rank_cache<=5)
+                    {
+                        viewHolder.imgHero.setTagEnable(false);
+                        viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
+                    }
+
+                    if (rank_cache>=6&&rank_cache<=7)
+                    {
+                        viewHolder.imgHero.setTagEnable(true);
+                        viewHolder.imgHero.setTagText("划水");
+                        viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
+                        viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+                    }
+                    else
+                    {
+                        viewHolder.imgHero.setTagEnable(false);
+                    }
+                    String name = gameUtils.getWinAsstentRole(winSideBeanList);
+                    if (name.equals(SpUtils.getNowUser()))
+                    {
+                        if (rank_cache!=1&&rank_cache!=7)
+                        {
+                            //最后一名没有
+                            //设置
+                            viewHolder.imgHero.setTagEnable(true);
+                            viewHolder.imgHero.setTagText("神队友");
+                            viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                        }
+                        else
+                        {
+                            viewHolder.imgHero.setTagEnable(false);
+                        }
+
+                    }
                 }
+
+
+
                 return;
             }
             int rank = gameUtils.getWinRank(winSideBeanList,SpUtils.getNowUser());
@@ -465,38 +478,50 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagText("MVP");
                 viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
             }
-            if (rank>=1&&rank<=3)
+            else
             {
-
-
-                viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
-            }
-
-            if (rank>=4&&rank<=5)
-            {
-                viewHolder.imgHero.setTagEnable(false);
-                viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
-            }
-
-            if (rank>=6&&rank<=7)
-            {
-                viewHolder.imgHero.setTagEnable(true);
-                viewHolder.imgHero.setTagText("划水");
-                viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
-                viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
-            }
-            //计算是否是神队友
-            String name = gameUtils.getWinAsstentRole(winSideBeanList);
-            if (name.equals(SpUtils.getNowUser()))
-            {
-
-                if (rank!=1&&rank!=7)
+                if (rank>=1&&rank<=3)
                 {
-                    //最后一名没有
-                    //设置
+
+
+                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
+                }
+
+                if (rank>=4&&rank<=5)
+                {
+                    viewHolder.imgHero.setTagEnable(false);
+                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
+                }
+
+
+                if (rank>=6&&rank<=7)
+                {
                     viewHolder.imgHero.setTagEnable(true);
-                    viewHolder.imgHero.setTagText("神队友");
-                    viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                    viewHolder.imgHero.setTagText("划水");
+                    viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
+                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+                }
+                else
+                {
+                    viewHolder.imgHero.setTagEnable(false);
+                }
+                //计算是否是神队友
+                String name = gameUtils.getWinAsstentRole(winSideBeanList);
+                if (name.equals(SpUtils.getNowUser()))
+                {
+
+                    if (rank!=1&&rank!=7)
+                    {
+                        //最后一名没有
+                        //设置
+                        viewHolder.imgHero.setTagEnable(true);
+                        viewHolder.imgHero.setTagText("神队友");
+                        viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                    }
+                    else
+                    {
+                        viewHolder.imgHero.setTagEnable(false);
+                    }
                 }
             }
             //保存rank
@@ -526,6 +551,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagText("躺输");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
                 }
+                else
+                {
+                    viewHolder.imgHero.setTagEnable(false);
+                }
 
                 if (rank_cache>=1&&rank_cache<=3)
                 {
@@ -538,6 +567,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagEnable(false);
                     viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
                 }
+                else
+                {
+                    viewHolder.imgHero.setTagEnable(false);
+                }
 
                 if (rank_cache>=6&&rank_cache<=7)
                 {
@@ -545,6 +578,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagText("坑");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
                     viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+                }
+                else
+                {
+                    viewHolder.imgHero.setTagEnable(false);
                 }
 
 
@@ -559,6 +596,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagText("躺输");
                 viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
             }
+            else
+            {
+                viewHolder.imgHero.setTagEnable(false);
+            }
             if (rank_lose>=1&&rank_lose<=3)
             {
 
@@ -571,6 +612,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagEnable(false);
                 viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
             }
+            else
+            {
+                viewHolder.imgHero.setTagEnable(false);
+            }
 
             if (rank_lose>=6&&rank_lose<=7)
             {
@@ -578,6 +623,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagText("坑");
                 viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.black));
                 viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+            }
+            else
+            {
+                viewHolder.imgHero.setTagEnable(false);
             }
 
             //保存rank
