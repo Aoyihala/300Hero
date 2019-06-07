@@ -4,10 +4,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.evenalone.a300hero.app.MyApplication;
+import com.example.evenalone.a300hero.bean.GameInfo;
 import com.example.evenalone.a300hero.bean.HeroGuide;
 import com.example.evenalone.a300hero.bean.NetWorkProx;
 import com.example.evenalone.a300hero.bean.YourRole;
 import com.example.evenalone.a300hero.event.BindEvent;
+import com.example.evenalone.a300hero.event.GameInfoEvent;
 import com.example.evenalone.a300hero.event.ListInfoEvent;
 import com.example.evenalone.a300hero.event.NetWorkCancelEvent;
 import com.example.evenalone.a300hero.event.NetWorkEevent;
@@ -249,6 +251,21 @@ public class OkhttpUtils
                 event.setSuccess(success);
                 EventBus.getDefault().postSticky(event);
             }
+            if (c.getSimpleName().equals(GameInfo.class.getSimpleName()))
+            {
+                //战绩列表
+                try {
+                    GameInfoEvent event = new GameInfoEvent(null);
+                    event.setSuccess(success);
+                    event.setErroMsg(e.getLocalizedMessage());
+                    EventBus.getDefault().postSticky(event);
+                }
+                catch (Exception e1)
+                {
+                    Log.e("错误",s);
+                }
+
+            }
         }
         else
         {
@@ -269,6 +286,22 @@ public class OkhttpUtils
                     HeroGuide heroGuide =gson.fromJson(s,HeroGuide.class);
                     heroGuide.setLocalruselt(s);
                     ListInfoEvent event = new ListInfoEvent(heroGuide);
+                    event.setSuccess(success);
+                    EventBus.getDefault().postSticky(event);
+                }
+                catch (Exception e1)
+                {
+                    Log.e("错误",s);
+                }
+
+            }
+            if (c.getSimpleName().equals(GameInfo.class.getSimpleName()))
+            {
+                //战绩列表
+                try {
+                    GameInfo heroGuide =gson.fromJson(s,GameInfo.class);
+                    heroGuide.setLocalruselt(s);
+                    GameInfoEvent event = new GameInfoEvent(heroGuide);
                     event.setSuccess(success);
                     EventBus.getDefault().postSticky(event);
                 }
