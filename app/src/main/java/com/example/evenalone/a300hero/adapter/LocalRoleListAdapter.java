@@ -25,6 +25,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LocalRoleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<LocalUserBean> localUserBeans = new ArrayList<>();
+    private OnlocalHisClickListener onlocalHisClickListener;
+
+    public void setOnlocalHisClickListener(OnlocalHisClickListener onlocalHisClickListener) {
+        this.onlocalHisClickListener = onlocalHisClickListener;
+    }
+
 
     public void setLocalUserBeans(List<LocalUserBean> localUserBeans) {
         this.localUserBeans = localUserBeans;
@@ -52,9 +58,12 @@ public class LocalRoleListAdapter extends RecyclerView.Adapter<RecyclerView.View
             roleViewholder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SpUtils.selectUser(userBean.getNickname());
-                    Intent in = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
-                    viewHolder.itemView.getContext().startActivity(in);
+                    if (null!=onlocalHisClickListener)
+                    {
+                        onlocalHisClickListener.onClick(userBean.getNickname());
+                    }
+
+
                 }
             });
         }
@@ -77,5 +86,10 @@ public class LocalRoleListAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnlocalHisClickListener
+    {
+        void onClick(String name);
     }
 }
