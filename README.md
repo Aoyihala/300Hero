@@ -1,21 +1,27 @@
 # 一款md风格的300英雄战绩查询软件
-#### 开发进度(10%)
+#### 开发进度(15%)
 > - 数据本地持久化
 > - 角色绑定
 > - 战绩列表分页查询
 > - 战绩角色切换
 > - mvp和角色在当前场次的角色定位计算密码
 > - 针对于加载缓慢添加的ip代理地址
+> - 战局详情
+> - 段位局势
 #### 数据来源
 300战绩查询报告官网
-#### 计算公式
+#### 角色战局定位计算公式
 1.**MVP**计算是根据评分和参团率和总经济来计算的,战败方名称为**躺输**计算规则一致。  
 
 2.**坑**和**划水**是直接按评分来计算的，最后一名即划水大师或坑神。  
 
 3.**神队友**是只要单局助攻大于30个即可，战胜方的标记。
+#### 段位计算方式
+0-1000 青铜 1000-2000 白银 2000-3000黄金 3000以上 钻石  
+再往上没意义（万分单排大佬占少数，套分车太多了）这个段位看着玩好了，后面再来个大师王者
 ****
 #### 界面预览(不代表最终页面效果)
+![战绩列表预览1](https://github.com/Aoyihala/img/blob/master/300data/guaide.png?raw=true)  
 ![战绩列表预览1](https://github.com/Aoyihala/img/blob/master/300data/myguaide.png?raw=true)  
 ![角色管理](https://github.com/Aoyihala/img/blob/master/300data/charatermanage.png?raw=true)  
 ![战绩列表预览2](https://github.com/Aoyihala/img/blob/master/300data/myguaide2.png?raw=true)  
