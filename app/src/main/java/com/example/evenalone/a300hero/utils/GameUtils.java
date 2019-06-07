@@ -568,4 +568,109 @@ public class GameUtils
 
     }
 
+    /**
+     * 获取最高击杀的角色
+     * @return
+     */
+    public String getWinKillRole(List<GameInfo.MatchBean.WinSideBean> winSideBeanList)
+    {
+        List<Integer> asstont = new ArrayList<>();
+        Map<Integer,Long> ass = new LinkedHashMap<>();
+        if (winSideBeanList!=null&&winSideBeanList.size()>0)
+        {
+            for (GameInfo.MatchBean.WinSideBean winSideBean:winSideBeanList)
+            {
+                ass.put(winSideBean.getKillCount(),winSideBean.getRoleID());
+                asstont.add(winSideBean.getKillCount());
+            }
+            Collections.sort(asstont);
+            int all = asstont.get(asstont.size()-1);
+            String name = null;
+            for (GameInfo.MatchBean.WinSideBean winSideBean:winSideBeanList)
+            {
+                if (winSideBean.getRoleID()==ass.get(all))
+                {
+                        name = winSideBean.getRoleName();
+                }
+
+            }
+                return name;
+
+        }
+        else
+        {
+            return " ";
+        }
+
+
+    }
+
+    /**
+     * 获取最高击杀的角色
+     * @return
+     */
+    public String getLoseKillRole(List<GameInfo.MatchBean.LoseSideBean> winSideBeanList)
+    {
+        List<Integer> asstont = new ArrayList<>();
+        Map<Integer,Long> ass = new LinkedHashMap<>();
+        if (winSideBeanList!=null&&winSideBeanList.size()>0)
+        {
+            for (GameInfo.MatchBean.LoseSideBean winSideBean:winSideBeanList)
+            {
+                ass.put(winSideBean.getKillCount(),winSideBean.getRoleID());
+                asstont.add(winSideBean.getKillCount());
+            }
+            Collections.sort(asstont);
+            int all = asstont.get(asstont.size()-1);
+            String name = null;
+            for (GameInfo.MatchBean.LoseSideBean winSideBean:winSideBeanList)
+            {
+                if (winSideBean.getRoleID()==ass.get(all))
+                {
+                    name = winSideBean.getRoleName();
+                }
+
+            }
+            return name;
+
+        }
+        else
+        {
+            return " ";
+        }
+    }
+
+
+
+    public String  getKillUserDataWin(List<GameInfo.MatchBean.WinSideBean> objectList, String nickname)
+    {
+          //按赢的这边来
+            for (int i=0;i<objectList.size();i++)
+            {
+                GameInfo.MatchBean.WinSideBean winSideBean = (GameInfo.MatchBean.WinSideBean) objectList.get(i);
+                if (winSideBean.getRoleName().equals(nickname))
+                {
+                    return winSideBean.getKillCount()+"杀 "+winSideBean.getDeathCount()+"死 "+winSideBean.getAssistCount()+"助";
+                }
+            }
+        return null;
+
+    }
+
+    public String  getKillUserDataLose(List<GameInfo.MatchBean.LoseSideBean> objectList, String nickname)
+    {
+        //按输的这边来
+        //按赢的这边来
+        for (int i=0;i<objectList.size();i++)
+        {
+            GameInfo.MatchBean.LoseSideBean winSideBean = (GameInfo.MatchBean.LoseSideBean) objectList.get(i);
+            if (winSideBean.getRoleName().equals(nickname))
+            {
+                return winSideBean.getKillCount()+"杀 "+winSideBean.getDeathCount()+"死 "+winSideBean.getAssistCount()+"助";
+            }
+        }
+        return  null;
+    }
+
+
 }
