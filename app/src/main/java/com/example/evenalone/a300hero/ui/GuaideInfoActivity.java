@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +44,13 @@ public class GuaideInfoActivity extends BaseActivity {
     private MyViewPagerAdapter viewPagerAdapter;
     @Override
     protected void initview() {
-
+        tvTopTitle.setText("对局详情");
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

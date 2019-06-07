@@ -438,6 +438,10 @@ public class ListActivity extends BaseActivity {
                             power = rankBean.getValue();
 
                         }
+                        if (TextUtils.isEmpty(type_icon))
+                        {
+                            type_icon = "0053.png";
+                        }
                     }
                 } else {
                     type_icon = "0053.png";
@@ -491,6 +495,10 @@ public class ListActivity extends BaseActivity {
                             //获取团分
                             power = rankBean.getValue();
                         }
+                    }
+                    if (TextUtils.isEmpty(type_icon))
+                    {
+                        type_icon = "0053.png";
                     }
                 } else {
                     type_icon = "0053.png";

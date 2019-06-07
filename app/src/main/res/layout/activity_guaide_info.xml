@@ -16,7 +16,6 @@
             android:background="#fff"
             app:layout_scrollFlags="enterAlways|scroll"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:elevation="1dp"
             android:id="@+id/tool_bar"
             android:layout_height="wrap_content">
             <RelativeLayout
@@ -55,7 +54,8 @@
             app:tabTextColor="@color/gray"
             app:tabIndicator="@color/black"
             android:background="#fff"
-           
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
             app:tabIndicatorHeight="1dp"
             app:tabSelectedTextColor="@color/black"
             android:layout_height="wrap_content">

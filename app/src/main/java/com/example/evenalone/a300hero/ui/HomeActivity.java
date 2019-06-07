@@ -111,6 +111,13 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+        roleListAdapter.setOnlocalHisClickListener(new LocalRoleListAdapter.OnlocalHisClickListener() {
+            @Override
+            public void onClick(String name) {
+                SpUtils.selectUser(name);
+                startActivty(ListActivity.class,true);
+            }
+        });
     }
 
 

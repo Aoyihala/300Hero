@@ -22,16 +22,15 @@
             android:layout_height="wrap_content" />
         <net.wujingchao.android.view.SimpleTagImageView
             android:id="@+id/img_hero"
-            android:scaleType="centerCrop"
             android:layout_width="60dp"
-            app:simple_tag_textSize="12sp"
-            app:simple_corner_distance="20dp"
+            app:simple_tag_width="20dp"
             app:simple_tag_orientation="right_bottom"
-            app:simple_tag_width="15dp"
-            app:simple_tag_textColor="@android:color/white"
+            app:simple_tag_textColor="#fff"
+            app:simple_tag_textSize="12sp"
             app:simple_tag_enable="false"
             app:simple_tag_round_radius="10dp"
-            android:layout_height="60dp" />
+            app:simple_tag_background_color="@color/Red"
+            android:layout_height="60dp"/>
         <LinearLayout
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
