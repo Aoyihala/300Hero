@@ -576,7 +576,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 {
                     viewHolder.imgHero.setTagEnable(true);
                     viewHolder.imgHero.setTagText("坑");
-                    viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
+                    viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.black));
                     viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
                 }
                 else

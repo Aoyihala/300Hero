@@ -2,79 +2,95 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
-    <net.wujingchao.android.view.SimpleTagImageView
-        android:layout_width="60dp"
-        app:simple_tag_width="20dp"
-        app:simple_tag_orientation="right_bottom"
-        app:simple_tag_textColor="#fff"
-        app:simple_tag_textSize="12sp"
-        android:id="@+id/img_gaide_avator"
-        app:simple_tag_enable="false"
-        app:simple_tag_round_radius="10dp"
-        app:simple_tag_background_color="@color/Red"
-        android:layout_height="60dp" />
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_width="130dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_height="wrap_content">
+        <net.wujingchao.android.view.SimpleTagImageView
+            android:layout_width="60dp"
+            app:simple_tag_width="20dp"
+            app:simple_tag_orientation="right_bottom"
+            app:simple_tag_textColor="#fff"
+            app:simple_tag_textSize="12sp"
+            android:id="@+id/img_gaide_avator"
+            app:simple_tag_enable="false"
+            app:simple_tag_round_radius="10dp"
+            app:simple_tag_background_color="@color/Red"
+            android:layout_height="60dp" />
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:id="@+id/tv_guaide_username"
+                    android:text="本萌新不高兴了"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/img_kill_all"
+                    android:background="@drawable/sword"
+                    android:layout_width="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
             <TextView
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:id="@+id/tv_guaide_username"
-                android:text="本萌新不高兴了"
+                android:textSize="12sp"
+                android:id="@+id/tv_guaide_userguaideinfo"
+                android:text="12杀 1死 5助"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <ImageView
-                android:id="@+id/img_kill_all"
-                android:background="@drawable/sword"
+            <TextView
+                android:text="我"
+                android:textSize="12sp"
+                android:id="@+id/tv_guaide_userguaide"
+                android:textColor="@color/Red"
                 android:layout_width="wrap_content"
-                android:visibility="invisible"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <TextView
-            android:textSize="12sp"
-            android:id="@+id/tv_guaide_userguaideinfo"
-            android:text="12杀 1死 5助"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="我"
-            android:textSize="12sp"
-            android:id="@+id/tv_guaide_userguaide"
-            android:textColor="@color/Red"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_guadie_userskill1"
+                android:scaleType="centerCrop"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                />
+            <ImageView
+                android:id="@+id/img_guadie_userskill2"
+                android:scaleType="centerCrop"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_equaipment"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/img_guadie_userskill1"
-            android:scaleType="centerCrop"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            />
-        <ImageView
-            android:id="@+id/img_guadie_userskill2"
-            android:scaleType="centerCrop"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-    </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_equaipment"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
+    <View
+        android:background="@color/ItemSpaceColor"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="1dp"/>
 </LinearLayout>

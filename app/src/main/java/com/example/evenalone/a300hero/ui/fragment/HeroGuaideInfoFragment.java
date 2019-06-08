@@ -45,6 +45,8 @@ public class HeroGuaideInfoFragment extends BaseFragment {
     ImageView imgPower;
     @BindView(R.id.tv_power_des)
     TextView tvPowerDes;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
     private Bundle bundle;
     private long id;
     private LocalGameInfoDao gameInfoDao;
@@ -126,14 +128,12 @@ public class HeroGuaideInfoFragment extends BaseFragment {
             lose_power = lose_power + loseSideBean.getELO();
         }
         //算平均团分和设置队伍标识
-        if (win_team == 0)
-        {
+        if (win_team == 0) {
 
             //蓝队
             viewTeamColorWin.setBackgroundColor(UiUtlis.getColor(R.color.blue));
             viewTeamColorLose.setBackgroundColor(UiUtlis.getColor(R.color.Red));
-            if (winSideBeanList.size()>0&&loseSideBeanList.size()>0)
-            {
+            if (winSideBeanList.size() > 0 && loseSideBeanList.size() > 0) {
                 tvGuaideAvdpower.setText("蓝方:" + (win_power / winSideBeanList.size()) + " | " + "红方:" + (lose_power / winSideBeanList.size()));
             }
 
@@ -142,8 +142,7 @@ public class HeroGuaideInfoFragment extends BaseFragment {
             //红队
             viewTeamColorLose.setBackgroundColor(UiUtlis.getColor(R.color.blue));
             viewTeamColorWin.setBackgroundColor(UiUtlis.getColor(R.color.Red));
-            if (winSideBeanList.size()>0&&loseSideBeanList.size()>0)
-            {
+            if (winSideBeanList.size() > 0 && loseSideBeanList.size() > 0) {
                 tvGuaideAvdpower.setText("蓝方:" + (lose_power / loseSideBeanList.size()) + " | " + "红方:" + (win_power / winSideBeanList.size()));
             }
 
@@ -153,26 +152,24 @@ public class HeroGuaideInfoFragment extends BaseFragment {
             imgPower.setBackgroundResource(R.drawable.tong);
             tvPowerDes.setText(R.string.tong);
         }
-        if (pwoer_win_adv>=1000&&pwoer_win_adv<2000)
-        {
+        if (pwoer_win_adv >= 1000 && pwoer_win_adv < 2000) {
             imgPower.setBackgroundResource(R.drawable.baiying);
             tvPowerDes.setText(R.string.baiying);
         }
-        if (pwoer_win_adv>=2000&&pwoer_win_adv<3000)
-        {
+        if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
             imgPower.setBackgroundResource(R.drawable.gold);
             tvPowerDes.setText(R.string.gold);
         }
-        if (pwoer_win_adv>=3000)
-        {
+        if (pwoer_win_adv >= 3000) {
             imgPower.setBackgroundResource(R.drawable.daemo);
             tvPowerDes.setText(R.string.daemo);
         }
-        if (winSideBeanList.size()==0||loseSideBeanList.size()==0)
-        {
+        if (winSideBeanList.size() == 0 || loseSideBeanList.size() == 0) {
             imgPower.setVisibility(View.GONE);
             tvPowerDes.setText("人机局?脚本局?");
         }
+        int minit = gameInfo_real.getMatch().getUsedTime()/60;
+        tvTime.setText(" 耗时:"+minit+"分钟");
 
 
     }
