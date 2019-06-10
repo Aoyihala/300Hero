@@ -124,11 +124,12 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initdata() {
         //建立数据库储存
+        roleListAdapter = new LocalRoleListAdapter();
         userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         userBeanList = userBeanDao.loadAll();
         if (userBeanList!=null&&userBeanList.size()>0)
         {
-            roleListAdapter = new LocalRoleListAdapter();
+
             roleListAdapter.setLocalUserBeans(userBeanList);
             recycerMyroleList.setLayoutManager(new LinearLayoutManager(this));
             recycerMyroleList.setAdapter(roleListAdapter);

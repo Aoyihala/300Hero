@@ -341,7 +341,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         }
                         */
                     }
-                    String result_o = kill+"杀 "+asstent+"助 "+deadcount+"死 ";
+                    String result_o = kill+"杀 "+deadcount+"死 "+asstent+"助 ";
                     LocalGameInfo gameinf_loal = getoneGame(matchID);
                     if (gameinf_loal!=null)
                     {
