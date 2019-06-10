@@ -63,10 +63,46 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <View
-                    android:id="@+id/view_team_color_win"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"/>
+                    android:layout_height="35dp">
+                    <View
+                        android:id="@+id/view_team_color_win"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:textColor="#fff"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/win"
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="#fff"
+                            android:id="@+id/tv_win_toatkill"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:textColor="#fff"
+                            android:id="@+id/tv_win_killuinit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:textColor="#fff"
+                            android:id="@+id/tv_win_toatlmoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </RelativeLayout>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycer_winsaide"
                     android:overScrollMode="never"
@@ -130,10 +166,46 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <View
-                android:id="@+id/view_team_color_lose"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp">
+                    <View
+                        android:id="@+id/view_team_color_lose"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:text="@string/faild"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="#fff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="#fff"
+                            android:id="@+id/tv_lose_toatkill"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:textColor="#fff"
+                            android:id="@+id/tv_lose_killuinit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:textColor="#fff"
+                            android:id="@+id/tv_lose_toatlmoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </RelativeLayout>
             <android.support.v7.widget.RecyclerView
                 android:overScrollMode="never"
                 android:id="@+id/recycer_loseside"

@@ -47,6 +47,18 @@ public class HeroGuaideInfoFragment extends BaseFragment {
     TextView tvPowerDes;
     @BindView(R.id.tv_time)
     TextView tvTime;
+    @BindView(R.id.tv_win_killuinit)
+    TextView tvWinKilluinit;
+    @BindView(R.id.tv_win_toatlmoney)
+    TextView tvWinToatlmoney;
+    @BindView(R.id.tv_lose_killuinit)
+    TextView tvLoseKilluinit;
+    @BindView(R.id.tv_lose_toatlmoney)
+    TextView tvLoseToatlmoney;
+    @BindView(R.id.tv_win_toatkill)
+    TextView tvWinToatkill;
+    @BindView(R.id.tv_lose_toatkill)
+    TextView tvLoseToatkill;
     private Bundle bundle;
     private long id;
     private LocalGameInfoDao gameInfoDao;
@@ -168,8 +180,39 @@ public class HeroGuaideInfoFragment extends BaseFragment {
             imgPower.setVisibility(View.GONE);
             tvPowerDes.setText("人机局?脚本局?");
         }
-        int minit = gameInfo_real.getMatch().getUsedTime()/60;
-        tvTime.setText(" 耗时:"+minit+"分钟");
+        int minit = gameInfo_real.getMatch().getUsedTime() / 60;
+        tvTime.setText(" 耗时:" + minit + "分钟");
+        //计算总经济 总击杀 总小兵数
+        int win_allkill=0;
+        long  win_allmoney=0;
+        int  win_allunit=0;
+        int lose_allkill=0;
+        long lose_allmoney=0;
+        int  lose_allunit=0;
+        if (winSideBeanList.size()>0)
+        {
+            for (GameInfo.MatchBean.WinSideBean winSideBean:winSideBeanList)
+            {
+                win_allkill = win_allkill+winSideBean.getKillCount();
+                win_allmoney = win_allmoney+winSideBean.getTotalMoney();
+                win_allunit = win_allunit+winSideBean.getKillUnitCount();
+            }
+        }
+        if (loseSideBeanList.size()>0)
+        {
+            for (GameInfo.MatchBean.LoseSideBean winSideBean:loseSideBeanList)
+            {
+               lose_allkill =lose_allkill+winSideBean.getKillCount();
+                lose_allmoney =lose_allkill+winSideBean.getTotalMoney();
+                lose_allunit = lose_allkill+winSideBean.getKillUnitCount();
+            }
+        }
+        tvWinToatkill.setText(" 总击杀:"+win_allkill);
+        tvWinToatkill.setText(" 总经济:"+win_allmoney);
+        tvWinKilluinit.setText(" 击杀小兵:"+win_allunit);
+        tvLoseToatkill.setText(" 总击杀:"+lose_allkill);
+        tvLoseToatkill.setText(" 总经济:"+lose_allmoney);
+        tvLoseKilluinit.setText(" 击杀小兵:"+lose_allunit);
 
 
     }
