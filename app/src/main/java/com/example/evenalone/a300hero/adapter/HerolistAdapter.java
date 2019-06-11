@@ -80,7 +80,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         //算了 太卡了
         //恢复使用一页10条
         //已解决
-        heroListViewHolder.setIsRecyclable(false);
+        //heroListViewHolder.setIsRecyclable(false);
         return heroListViewHolder;
     }
 

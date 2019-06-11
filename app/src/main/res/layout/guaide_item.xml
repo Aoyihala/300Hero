@@ -52,6 +52,7 @@
                 android:textSize="10sp"
                 android:id="@+id/tv_guaide_userguaideinfo"
                 android:text="12杀 1死 5助"
+                android:textColor="@color/gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView

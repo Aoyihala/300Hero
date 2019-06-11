@@ -45,6 +45,7 @@
                 <TextView
                     android:id="@+id/tv_guaide_avdpower"
                     android:text="我方:1928|对方:1900"
+                    android:textColor="@color/gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
