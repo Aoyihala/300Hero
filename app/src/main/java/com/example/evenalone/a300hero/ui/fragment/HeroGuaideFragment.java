@@ -19,12 +19,15 @@ import com.example.evenalone.a300hero.adapter.HerolistAdapter;
 import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.base.BaseFragment;
 import com.example.evenalone.a300hero.bean.HeroGuide;
+import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
+import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.event.ListInfoEvent;
 import com.example.evenalone.a300hero.event.NetWorkCancelEvent;
 import com.example.evenalone.a300hero.ui.GuaideInfoActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -56,6 +59,7 @@ public class HeroGuaideFragment extends BaseFragment {
     private boolean loadingcomplete = false;
     private List<HeroGuide.ListBean> listBeans = new ArrayList<>();
     private List<HeroGuide.ListBean> alllist = new ArrayList<>();
+    private LocalGaideListInfoDao localGaideListInfoDao;
     @Override
     protected boolean setEventOpen() {
         return true;
@@ -179,7 +183,12 @@ public class HeroGuaideFragment extends BaseFragment {
         MyApplication.getOkhttpUtils().sendRequest(request, HeroGuide.class);
     }
 
-
+    private LocalGaideListInfo searchGuideinfo(long matchid,String nickname)
+    {
+        LocalGaideListInfo info = localGaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.Nickname.eq(nickname),LocalGaideListInfoDao
+        .Properties.MatchId.eq(matchid)).unique();
+        return info;
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_heroguide;
@@ -214,7 +223,31 @@ public class HeroGuaideFragment extends BaseFragment {
             stoprefresh();
             loadingcomplete = true;
             tvState.setText("加载完成");
-
+            //保存作战数据用于本地测量,该数据只用于展示图表
+            for (HeroGuide.ListBean listBean:eva.getGuide().getList())
+            {
+                LocalGaideListInfo info = searchGuideinfo(listBean.getMatchID(),SpUtils.getNowUser());
+                if (info!=null)
+                {
+                    //更新
+                    info.setId(info.getId());
+                    info.setMatchId(listBean.getMatchID());
+                    info.setNickname(SpUtils.getNowUser());
+                    info.setTime(listBean.getMatchDate());
+                    info.setResult(new Gson().toJson(listBean));
+                    localGaideListInfoDao.update(info);
+                }
+                else
+                {
+                    //保存
+                    info = new LocalGaideListInfo();
+                    info.setMatchId(listBean.getMatchID());
+                    info.setNickname(SpUtils.getNowUser());
+                    info.setTime(listBean.getMatchDate());
+                    info.setResult(new Gson().toJson(listBean));
+                    localGaideListInfoDao.save(info);
+                }
+            }
             if (page>=10)
             {
                 tvBackPage.setVisibility(View.VISIBLE);

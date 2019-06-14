@@ -394,6 +394,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     public void operationMvp(String result,HeroGuide.ListBean listBean,HeroListViewHolder viewHolder)
     {
+        if (listBean.getMatchType()!=1)
+        {
+            return;
+        }
         GameUtils gameUtils = new GameUtils();
         if (listBean.getResult()==1)
         {
