@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -62,6 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Request;
 
@@ -109,6 +111,10 @@ public class ListActivity extends BaseActivity {
     CircleImageView imgUserhead;
     @BindView(R.id.tv_search_nickname)
     TextView tvSearchNickname;
+    @BindView(R.id.img_home_duanwei)
+    ImageView imgHomeDuanwei;
+    @BindView(R.id.tv_home_duanwei)
+    TextView tvHomeDuanwei;
     private LocalUserBean localUserBean;
     private LocalUserBeanDao userBeanDao;
     private View head_view;
@@ -152,11 +158,9 @@ public class ListActivity extends BaseActivity {
 
                     liUserinfo.setVisibility(View.VISIBLE);
                     imgBtn.setVisibility(View.GONE);
-                }
-                else
-                    {
-                        liUserinfo.setVisibility(View.GONE);
-                        imgBtn.setVisibility(View.VISIBLE);
+                } else {
+                    liUserinfo.setVisibility(View.GONE);
+                    imgBtn.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -193,7 +197,7 @@ public class ListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 menuPopwindow.dismiss();
-                startActivty(HomeActivity.class,false);
+                startActivty(HomeActivity.class, false);
             }
         });
         /**
@@ -438,8 +442,7 @@ public class ListActivity extends BaseActivity {
                             power = rankBean.getValue();
 
                         }
-                        if (TextUtils.isEmpty(type_icon))
-                        {
+                        if (TextUtils.isEmpty(type_icon)) {
                             type_icon = "0053.png";
                         }
                     }
@@ -452,7 +455,7 @@ public class ListActivity extends BaseActivity {
                 int viotory = (int) (((double) wincount / (double) all) * 100);
                 localUserBean.setIocnfile(type_icon);
 
-                if ( TextUtils.isEmpty(power) || power == null) {
+                if (TextUtils.isEmpty(power) || power == null) {
                     localUserBean.setJumpvalue(oldpower);
                 } else {
                     localUserBean.setJumpvalue(power);
@@ -496,8 +499,7 @@ public class ListActivity extends BaseActivity {
                             power = rankBean.getValue();
                         }
                     }
-                    if (TextUtils.isEmpty(type_icon))
-                    {
+                    if (TextUtils.isEmpty(type_icon)) {
                         type_icon = "0053.png";
                     }
                 } else {
@@ -527,15 +529,36 @@ public class ListActivity extends BaseActivity {
      * @param localUserBean
      */
     private void updateView(LocalUserBean localUserBean) {
+
         tvSearchNickname.setText(localUserBean.getNickname());
         tvSearchNickname.setTextColor(Color.WHITE);
-        Glide.with(this).load(Contacts.ROLE_IMG+localUserBean.getIocnfile()).into(imgUserhead);
+        Glide.with(this).load(Contacts.ROLE_IMG + localUserBean.getIocnfile()).into(imgUserhead);
         tvJumpNameHome.setText(localUserBean.getNickname());
         tvJumpViotoryHome.setText("胜率:" + localUserBean.getViotory());
         if (localUserBean.getJumpvalue() == null || TextUtils.isEmpty(localUserBean.getJumpvalue()) || localUserBean.getJumpvalue().equals("null")) {
             tvJumpGuaideHome.setText("团分:加载中");
+            imgHomeDuanwei.setVisibility(View.GONE);
+            tvHomeDuanwei.setText("未获取段位");
+
         } else {
             tvJumpGuaideHome.setText("团分:" + localUserBean.getJumpvalue());
+            int pwoer_win_adv = Integer.parseInt(localUserBean.getJumpvalue());
+            if (pwoer_win_adv > 0 && pwoer_win_adv < 1000) {
+                 imgHomeDuanwei.setBackgroundResource(R.drawable.tong);
+                tvHomeDuanwei.setText("青铜");
+            }
+            if (pwoer_win_adv >= 1000 && pwoer_win_adv < 2000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.baiying);
+                tvHomeDuanwei.setText("白银");
+            }
+            if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.gold);
+                tvHomeDuanwei.setText("黄金");
+            }
+            if (pwoer_win_adv >= 3000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.daemo);
+                tvHomeDuanwei.setText("钻石");
+            }
         }
 
         //设置基本信息
@@ -614,6 +637,7 @@ public class ListActivity extends BaseActivity {
         blue = (int) Math.floor(blue * (1 - 0.1));
         return Color.rgb(red, green, blue);
     }
+
 
 }
 

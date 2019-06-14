@@ -36,7 +36,7 @@ import butterknife.BindView;
 import okhttp3.Request;
 
 /**
- * 战绩
+ * 战绩列表
  */
 public class HeroGuaideFragment extends BaseFragment {
     @BindView(R.id.img_refresh)
@@ -55,7 +55,7 @@ public class HeroGuaideFragment extends BaseFragment {
     private boolean back=false;
     private boolean loadingcomplete = false;
     private List<HeroGuide.ListBean> listBeans = new ArrayList<>();
-
+    private List<HeroGuide.ListBean> alllist = new ArrayList<>();
     @Override
     protected boolean setEventOpen() {
         return true;
@@ -158,6 +158,8 @@ public class HeroGuaideFragment extends BaseFragment {
 
         requestData(page, false);
     }
+
+
 
     public void requestData(int page, boolean b)
     {
