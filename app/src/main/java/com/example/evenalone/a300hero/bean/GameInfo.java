@@ -22,6 +22,15 @@ public class GameInfo
     public boolean equals(@Nullable Object obj) {
         return super.equals(obj);
     }
+    private int Myresult;
+
+    public void setMyresult(int myresult) {
+        Myresult = myresult;
+    }
+
+    public int getMyresult() {
+        return Myresult;
+    }
 
     private String localruselt;
 

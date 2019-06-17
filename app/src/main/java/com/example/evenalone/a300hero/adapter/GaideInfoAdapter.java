@@ -97,8 +97,8 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     {
 
                         gaideInfoViewHolder.imgGaideAvator.setTagEnable(false);
-
                     }
+
 
                     if (rank>=4&&rank<=5)
                     {

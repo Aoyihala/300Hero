@@ -57,7 +57,7 @@
                 android:textSize="12sp" />
             <TextView
                 android:text="12/1/10"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:id="@+id/tv_jump_guaide"
                 android:textColor="#000"
                 android:layout_width="wrap_content"

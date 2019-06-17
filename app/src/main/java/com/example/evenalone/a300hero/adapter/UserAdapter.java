@@ -10,6 +10,10 @@ import android.widget.LinearLayout;
 import com.example.evenalone.a300hero.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.data.RadarData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +28,13 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int HERO_ITEM = 0;
     private final int RADAR_ITEM = 1;
     private final int LINE_ITEM = 2;
+    private RadarData radarData_kill;
 
+    public UserAdapter()
+    {
+        radarData_kill = new RadarData();
+        radarData_kill.setLabels("击杀","参团","发育","生存","助攻");
+    }
 
     @NonNull
     @Override
@@ -46,7 +56,22 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        if (viewHolder instanceof HeroItemViewholder)
+        {
 
+        }
+        if (viewHolder instanceof RadarViewholder)
+        {
+            RadarViewholder radarViewholder = (RadarViewholder) viewHolder;
+            //设置虚线
+            radarViewholder.radarItem.setSkipWebLineCount(radarData_kill.getLabels().size());
+            radarViewholder.radarItem.setDrawWeb(true);
+
+        }
+        if (viewHolder instanceof LineViewHolder)
+        {
+
+        }
     }
 
     @Override
@@ -77,6 +102,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public RadarViewholder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+
+
         }
     }
 
