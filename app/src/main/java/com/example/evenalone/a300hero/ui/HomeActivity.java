@@ -185,7 +185,8 @@ public class HomeActivity extends BaseActivity {
             boolean ishad = false;
             YourRole role = event.getYourRole();
             if (!role.getResult().equals("OK")) {
-                Snackbar.make(imgSearch, "今日访问很频繁，请避开高峰期比如周末或者尝试到设置界面打开代理模式", Snackbar.LENGTH_SHORT).show();
+                String nocharater = "sql: no rows in result set";
+                Snackbar.make(imgSearch, role.getResult().equals(nocharater)?"没有找到该角色,请检查输入":"今日访问很频繁，请避开高峰期比如周末或者尝试到设置界面打开代理模式", Snackbar.LENGTH_SHORT).show();
                 progressBinding.setVisibility(View.GONE);
                 return;
             }

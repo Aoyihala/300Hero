@@ -63,6 +63,8 @@ dependencies {
     implementation 'com.github.zengzhaoxing:SharpView:v2.4.4'
     //tag
     implementation 'net.wujingchao.android.view:simple-tag-imageview:1.0.1'
+    //图表
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 
 }

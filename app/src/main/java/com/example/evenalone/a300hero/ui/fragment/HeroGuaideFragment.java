@@ -70,10 +70,12 @@ public class HeroGuaideFragment extends BaseFragment {
         startRefresh();
         recyclerGuaideList.setLayoutManager(new LinearLayoutManager(compatActivity));
         recyclerGuaideList.setAdapter(herolistAdapter);
+        //点击下一页
         tvNextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (loadingcomplete) {
+                    //对最新加载的数据判断
                     if (listBeans.size()<10)
                     {
                         //对已加载的数据进行判断
@@ -87,7 +89,6 @@ public class HeroGuaideFragment extends BaseFragment {
                     requestData(page, false);
                     startRefresh();
                     loadingcomplete = false;
-
                 }
                 else
                 {
@@ -101,6 +102,7 @@ public class HeroGuaideFragment extends BaseFragment {
 
             }
         });
+        //点击上一页
         tvBackPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +161,7 @@ public class HeroGuaideFragment extends BaseFragment {
     protected void initdata() {
 
         herolistAdapter = new HerolistAdapter();
-
+       localGaideListInfoDao =  MyApplication.getDaoSession().getLocalGaideListInfoDao();
         requestData(page, false);
     }
 
@@ -204,6 +206,7 @@ public class HeroGuaideFragment extends BaseFragment {
             }
             if (!eva.getGuide().getResult().equals("OK"))
             {
+
                 Snackbar.make(tvNextPage,"今日访问很频繁，请避开高峰期比如周末或者尝试到设置界面打开代理模式",Snackbar.LENGTH_SHORT).show();
                 return;
             }

@@ -76,8 +76,8 @@ public class HeroGuaideInfoFragment extends BaseFragment {
 
     @Override
     protected void initview() {
-        recycerLoseside.setNestedScrollingEnabled(false);
-        recycerWinsaide.setNestedScrollingEnabled(false);
+        //recycerLoseside.setNestedScrollingEnabled(false);
+        //recycerWinsaide.setNestedScrollingEnabled(false);
     }
 
     @Override
