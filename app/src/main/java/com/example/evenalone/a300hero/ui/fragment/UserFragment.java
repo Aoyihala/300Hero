@@ -2,6 +2,7 @@ package com.example.evenalone.a300hero.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,13 +42,13 @@ public class UserFragment extends BaseFragment {
     RecyclerView recycerUserinfo;
     @BindView(R.id.swipe_base)
     SwipeRefreshLayout swipeBase;
-    private UserAdapter userAdapter;
     private LocalGaideListInfoDao gaideListInfoDao;
     private List<HeroGuide.ListBean> listBeanList = new ArrayList<>();
     private List<LocalGaideListInfo> localGaideListInfos = new ArrayList<>();
     private List<String> reapet_list = new ArrayList<>();
     private HashMap<String,String> icon_map = new HashMap<>();
     private LocalGameInfoDao gameInfoDao;
+    private UserAdapter userAdapter;
     @Override
     protected boolean setEventOpen() {
         return false;
@@ -55,7 +56,9 @@ public class UserFragment extends BaseFragment {
 
     @Override
     protected void initview() {
-
+        recycerUserinfo.setAdapter(userAdapter);
+        recycerUserinfo.setLayoutManager(new LinearLayoutManager(getContext()));
+        userAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -154,9 +157,15 @@ public class UserFragment extends BaseFragment {
                 HeroGuide.ListBean listBean = gson.fromJson(info.getResult(),HeroGuide.ListBean.class);
                 //查询战局
                 GameInfo in = getGameinfo(listBean.getMatchID(),gson);
+                if (in==null)
+                {
+                    return;
+                }
                 in.setMyresult(listBean.getResult());
                 gameInfoList.add(in);
             }
+            //获取自己的团分变化
+            List<Integer> jumpvalue = new ArrayList<>();
             //筛选战局
             //输赢都要统计
             for (GameInfo info:gameInfoList)
@@ -167,6 +176,7 @@ public class UserFragment extends BaseFragment {
                     {
                         if (winSideBean.getRoleName().equals(SpUtils.getNowUser()))
                         {
+                            jumpvalue.add(winSideBean.getELO());
                             all_killcount = all_killcount+winSideBean.getKillCount();
                             all_money = all_money +winSideBean.getTotalMoney();
                             all_tower = all_tower+winSideBean.getTowerDestroy();
@@ -181,6 +191,7 @@ public class UserFragment extends BaseFragment {
                     {
                         if (loseSideBean.getRoleName().equals(SpUtils.getNowUser()))
                         {
+                            jumpvalue.get(loseSideBean.getELO());
                             all_killcount = all_killcount+loseSideBean.getKillCount();
                             all_money = all_money +loseSideBean.getTotalMoney();
                             all_tower = all_tower+loseSideBean.getTowerDestroy();
@@ -190,11 +201,12 @@ public class UserFragment extends BaseFragment {
                     }
                 }
             }
-            //计算百分比
+            //计算百分比(每个都按100计算)
+            //描述值:团战 推塔 击杀 发育 贡献
 
 
-            //获取自己的团分变化
-            List<Integer> jumpvalue = new ArrayList<>();
+
+
 
         }
 
@@ -226,8 +238,15 @@ public class UserFragment extends BaseFragment {
     private GameInfo getGameinfo(long matchid,Gson gson)
     {
          LocalGameInfo gameInfo = gameInfoDao.queryBuilder().where(LocalGameInfoDao.Properties.MactherId.eq(matchid)).unique();
+        if (gameInfo!=null)
+        {
+            return gson.fromJson(gameInfo.getResult(),GameInfo.class);
+        }
+        else
+        {
+            return null;
+        }
 
-         return gson.fromJson(gameInfo.getResult(),GameInfo.class);
     }
 
     private List<LocalGaideListInfo> searchbyName(String nickname)

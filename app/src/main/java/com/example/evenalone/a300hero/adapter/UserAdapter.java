@@ -10,7 +10,12 @@ import android.widget.LinearLayout;
 import com.example.evenalone.a300hero.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +33,17 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int HERO_ITEM = 0;
     private final int RADAR_ITEM = 1;
     private final int LINE_ITEM = 2;
-    private RadarData radarData_kill;
+    private List<String> xAxisValue = new ArrayList<>();//X轴数据源
 
     public UserAdapter()
     {
-        radarData_kill = new RadarData();
-        radarData_kill.setLabels("击杀","参团","发育","生存","助攻");
+        //描述值:团战 推塔 击杀 发育 贡献
+        xAxisValue.add("团战");
+        xAxisValue.add("推塔");
+        xAxisValue.add("击杀");
+        xAxisValue.add("发育");
+        xAxisValue.add("贡献");
+
     }
 
     @NonNull
@@ -63,15 +73,50 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewHolder instanceof RadarViewholder)
         {
             RadarViewholder radarViewholder = (RadarViewholder) viewHolder;
-            //设置虚线
-            radarViewholder.radarItem.setSkipWebLineCount(radarData_kill.getLabels().size());
-            radarViewholder.radarItem.setDrawWeb(true);
-
+            radarViewholder.radarItem.getDescription().setEnabled(false);
+            XAxis xAxis =  radarViewholder.radarItem.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setDrawGridLines(false);
+            xAxis.setDrawLabels(true);
+            xAxis.setGranularity(1f);
+            xAxis.setTextSize(10);
+            xAxis.setLabelCount(xAxisValue.size());
+            xAxis.setCenterAxisLabels(true);//设置标签居中
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisValue));
+            List<RadarEntry> radarEntries = new ArrayList<>();
+            radarEntries.add(new RadarEntry(80));
+            radarEntries.add(new RadarEntry(85));
+            radarEntries.add(new RadarEntry(90));
+            radarEntries.add(new RadarEntry(70));
+            radarEntries.add(new RadarEntry(95));
+            RadarDataSet radarDataSet = new RadarDataSet(radarEntries, "数据一");
+            // 实心填充区域颜色
+            radarDataSet.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+            // 是否实心填充区域
+            radarDataSet.setDrawFilled(true);
+            RadarData radarData = new RadarData(radarDataSet);
+            radarViewholder.radarItem.setData(radarData);
         }
         if (viewHolder instanceof LineViewHolder)
         {
 
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position==0)
+        {
+            return HERO_ITEM;
+        }else if (position==1)
+        {
+            return RADAR_ITEM;
+        }else if (position==2)
+        {
+            return LINE_ITEM;
+        }
+        return 0;
+
     }
 
     @Override

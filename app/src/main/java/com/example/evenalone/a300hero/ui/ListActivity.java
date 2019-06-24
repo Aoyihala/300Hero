@@ -139,6 +139,13 @@ public class ListActivity extends BaseActivity {
     private PopLoaclUserListAdapter roleListAdapter;
     private List<LocalUserBean> localUserBeanList = new ArrayList<>();
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
+    }
+
     @Override
     protected void initview() {
         setSupportActionBar(toolBar);
