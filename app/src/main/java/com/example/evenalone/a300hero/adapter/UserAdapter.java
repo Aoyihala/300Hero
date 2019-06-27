@@ -83,13 +83,15 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             xAxis.setLabelCount(xAxisValue.size());
             xAxis.setCenterAxisLabels(true);//设置标签居中
             xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisValue));
+            //数据踢
             List<RadarEntry> radarEntries = new ArrayList<>();
             radarEntries.add(new RadarEntry(80));
             radarEntries.add(new RadarEntry(85));
             radarEntries.add(new RadarEntry(90));
             radarEntries.add(new RadarEntry(70));
             radarEntries.add(new RadarEntry(95));
-            RadarDataSet radarDataSet = new RadarDataSet(radarEntries, "数据一");
+            //下面标签和填色
+            RadarDataSet radarDataSet = new RadarDataSet(radarEntries, "团战");
             // 实心填充区域颜色
             radarDataSet.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
             // 是否实心填充区域
