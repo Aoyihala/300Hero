@@ -65,6 +65,8 @@ dependencies {
     implementation 'net.wujingchao.android.view:simple-tag-imageview:1.0.1'
     //图表
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    compile 'q.rorbin:RadarView:1.0.0'
+    compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
 
 
 }

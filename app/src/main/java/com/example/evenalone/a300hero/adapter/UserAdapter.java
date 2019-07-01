@@ -1,5 +1,6 @@
 package com.example.evenalone.a300hero.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,22 +8,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
+import com.example.evenalone.a300hero.app.MyApplication;
+import com.example.evenalone.a300hero.utils.Contacts;
+import com.example.evenalone.a300hero.utils.UiUtlis;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.hookedonplay.decoviewlib.DecoView;
+import com.hookedonplay.decoviewlib.charts.SeriesItem;
+import com.hookedonplay.decoviewlib.events.DecoEvent;
+
+import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import rorbin.q.radarview.RadarView;
 
 /**
  * 图表统计
@@ -34,13 +48,15 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int RADAR_ITEM = 1;
     private final int LINE_ITEM = 2;
     private List<String> xAxisValue = new ArrayList<>();//X轴数据源
+    private Map<String, String> usedHero = new HashMap<>();
+    private Map<String, Integer> yourCard = new HashMap<>();
 
     public UserAdapter()
     {
         //描述值:团战 推塔 击杀 发育 贡献
         xAxisValue.add("团战");
-        xAxisValue.add("推塔");
         xAxisValue.add("击杀");
+        xAxisValue.add("推塔");
         xAxisValue.add("发育");
         xAxisValue.add("贡献");
 
@@ -68,36 +84,68 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof HeroItemViewholder)
         {
+            HeroItemViewholder heroItemViewholder = (HeroItemViewholder) viewHolder;
+            if (usedHero!=null&&usedHero.size()>=3)
+            {
+                List<String> heroname = new ArrayList<>();
+                List<String> heroicon = new ArrayList<>();
+                for (Map.Entry<String,String> entry:usedHero.entrySet())
+                {
+                    heroicon.add(entry.getValue());
+                    heroname.add(entry.getKey());
+                }
+                Glide.with(MyApplication.getContext()).load(Contacts.IMG+heroicon.get(0)).into(heroItemViewholder.imgHero1);
+                Glide.with(MyApplication.getContext()).load(Contacts.IMG+heroicon.get(1)).into(heroItemViewholder.imgHero2);
+                Glide.with(MyApplication.getContext()).load(Contacts.IMG+heroicon.get(2)).into(heroItemViewholder.imgHero3);
 
+            }
         }
         if (viewHolder instanceof RadarViewholder)
         {
             RadarViewholder radarViewholder = (RadarViewholder) viewHolder;
-            radarViewholder.radarItem.getDescription().setEnabled(false);
-            XAxis xAxis =  radarViewholder.radarItem.getXAxis();
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setDrawGridLines(false);
-            xAxis.setDrawLabels(true);
-            xAxis.setGranularity(1f);
-            xAxis.setTextSize(10);
-            xAxis.setLabelCount(xAxisValue.size());
-            xAxis.setCenterAxisLabels(true);//设置标签居中
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisValue));
-            //数据踢
-            List<RadarEntry> radarEntries = new ArrayList<>();
-            radarEntries.add(new RadarEntry(80));
-            radarEntries.add(new RadarEntry(85));
-            radarEntries.add(new RadarEntry(90));
-            radarEntries.add(new RadarEntry(70));
-            radarEntries.add(new RadarEntry(95));
-            //下面标签和填色
-            RadarDataSet radarDataSet = new RadarDataSet(radarEntries, "团战");
-            // 实心填充区域颜色
-            radarDataSet.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-            // 是否实心填充区域
-            radarDataSet.setDrawFilled(true);
-            RadarData radarData = new RadarData(radarDataSet);
-            radarViewholder.radarItem.setData(radarData);
+
+            int tuanindex;
+            int killindex;
+            int tower;
+            int gongxian;
+            int money;
+            radarViewholder.radarItem.setVertexText(xAxisValue);
+
+            List<Float> floatList = new ArrayList<>();
+            if (yourCard!=null&&yourCard.size()>0)
+            {
+                for (Map.Entry<String,Integer> entry:yourCard.entrySet())
+                {
+                    if (entry.getKey().equals("团战"))
+                    {
+                        floatList.add(Float.valueOf(entry.getValue()));
+                    }
+                    if (entry.getKey().equals("击杀"))
+                    {
+                        floatList.add(Float.valueOf(entry.getValue()));
+                    }
+                    if (entry.getKey().equals("推塔"))
+                    {
+                        floatList.add(Float.valueOf(entry.getValue()));
+                    }
+                    if (entry.getKey().equals("发育"))
+                    {
+                        floatList.add(Float.valueOf(entry.getValue()));
+
+                    }
+                    if (entry.getKey().equals("贡献"))
+                    {
+                        floatList.add(Float.valueOf(entry.getValue()));
+                    }
+                }
+                rorbin.q.radarview.RadarData radarData = new rorbin.q.radarview.RadarData(floatList,"平常");
+                radarData.setColor(UiUtlis.getColor(R.color.Yellow));
+                radarViewholder.radarItem.addData(radarData);
+                radarViewholder.radarItem.animeValue(2000);
+            }
+
+
+
         }
         if (viewHolder instanceof LineViewHolder)
         {
@@ -126,6 +174,17 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return 3;
     }
 
+    public void setUsedHero(Map<String, String> usedHero) {
+        this.usedHero = usedHero;
+        notifyDataSetChanged();
+    }
+
+    public void setYourCard(Map<String, Integer> yourCard) {
+        this.yourCard = yourCard;
+        notifyDataSetChanged();
+
+    }
+
     class HeroItemViewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.img_hero_1)
         CircleImageView imgHero1;
@@ -144,7 +203,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     class RadarViewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.radar_item)
-        RadarChart radarItem;
+        RadarView radarItem;
 
         public RadarViewholder(@NonNull View itemView) {
             super(itemView);
