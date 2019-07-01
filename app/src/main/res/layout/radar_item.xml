@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.mikephil.charting.charts.RadarChart
+<rorbin.q.radarview.RadarView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/radar_item"
+    app:radar_layer="1"
+    app:rotation_enable="true"
     android:layout_width="match_parent"
     android:layout_height="240dp">
 
-</com.github.mikephil.charting.charts.RadarChart>
+</rorbin.q.radarview.RadarView>

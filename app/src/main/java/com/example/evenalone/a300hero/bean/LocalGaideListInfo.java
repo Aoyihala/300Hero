@@ -7,6 +7,7 @@ import org.greenrobot.greendao.annotation.Generated;
 /**
  *用于本地做数据对比
  * 保存一个info
+ * 战绩列表
  * Created by admin on 2019/6/14.
  */
 @Entity
