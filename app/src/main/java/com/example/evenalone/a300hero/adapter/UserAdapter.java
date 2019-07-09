@@ -138,9 +138,10 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         floatList.add(Float.valueOf(entry.getValue()));
                     }
                 }
-                rorbin.q.radarview.RadarData radarData = new rorbin.q.radarview.RadarData(floatList,"平常");
+                rorbin.q.radarview.RadarData radarData = new rorbin.q.radarview.RadarData(floatList);
                 radarData.setColor(UiUtlis.getColor(R.color.Yellow));
                 radarViewholder.radarItem.addData(radarData);
+                radarViewholder.radarItem.setMaxValue(100);
                 radarViewholder.radarItem.animeValue(2000);
             }
 
