@@ -29,6 +29,7 @@ import com.hookedonplay.decoviewlib.events.DecoEvent;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,9 +141,9 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
                 rorbin.q.radarview.RadarData radarData = new rorbin.q.radarview.RadarData(floatList);
                 radarData.setColor(UiUtlis.getColor(R.color.Yellow));
+                radarData.setValueTextEnable(true);
                 radarViewholder.radarItem.addData(radarData);
-                radarViewholder.radarItem.setMaxValue(100);
-                radarViewholder.radarItem.animeValue(2000);
+
             }
 
 

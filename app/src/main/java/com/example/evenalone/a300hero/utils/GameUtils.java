@@ -154,9 +154,9 @@ public class GameUtils
             //最大推塔数
             long max_towercount = 15*localGaideListInfos.size();
             //最大杀敌数(50),不算战场人机，超过60不计算
-            long max_killcount = 50*localGaideListInfos.size();
+            long max_killcount = 80*localGaideListInfos.size();
             //最大助攻数，助攻比人头好拿
-            long max_assinatcount = 80*localGaideListInfos.size();
+            long max_assinatcount = 100*localGaideListInfos.size();
             //最大经济状况
             long max_money = 30000*localGaideListInfos.size();
             long all_killcount = 0;
@@ -233,7 +233,7 @@ public class GameUtils
             //计算贡献
             //计算方式(助攻+推塔+击杀+发育/400)百分比相加
             int my_data_gong = assient+kill+tower+money;
-            int gongxian = (int)(((double)my_data_gong/(double)400)*100);
+            int gongxian = (int)(((double)my_data_gong/(double)300)*100);
             Map<String,Integer> datas = new HashMap<>();
             datas.put("击杀",kill);
             datas.put("团战",tuan);

@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/radar_item"
     app:radar_layer="1"
-    app:rotation_enable="true"
+    app:rotation_enable="false"
     android:layout_width="match_parent"
-    android:layout_height="240dp">
+    android:layout_height="280dp">
 
 </rorbin.q.radarview.RadarView>
