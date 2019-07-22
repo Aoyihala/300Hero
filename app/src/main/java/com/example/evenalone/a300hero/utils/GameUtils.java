@@ -233,7 +233,7 @@ public class GameUtils
             //计算贡献
             //计算方式(助攻+推塔+击杀+发育/400)百分比相加
             int my_data_gong = assient+kill+tower+money;
-            int gongxian = (int)(((double)my_data_gong/(double)300)*100);
+            int gongxian = (int)(((double)my_data_gong/(double)200)*100);
             Map<String,Integer> datas = new HashMap<>();
             datas.put("击杀",kill);
             datas.put("团战",tuan);
@@ -257,7 +257,7 @@ public class GameUtils
             return null;
         }
     }
-    private List<LocalGaideListInfo> searchbyName(String nickname)
+    public List<LocalGaideListInfo> searchbyName(String nickname)
     {
         LocalGaideListInfoDao gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         List<LocalGaideListInfo> datas = gaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.Nickname.eq(nickname)).list();

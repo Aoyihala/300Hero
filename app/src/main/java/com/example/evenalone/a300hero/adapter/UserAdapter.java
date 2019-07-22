@@ -143,12 +143,10 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 radarData.setColor(UiUtlis.getColor(R.color.Yellow));
                 radarData.setValueTextEnable(true);
                 radarViewholder.radarItem.addData(radarData);
-
             }
 
-
-
         }
+        //团分变化统计图
         if (viewHolder instanceof LineViewHolder)
         {
 

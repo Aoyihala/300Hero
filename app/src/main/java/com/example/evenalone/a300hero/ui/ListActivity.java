@@ -171,7 +171,7 @@ public class ListActivity extends BaseActivity {
                 }
             }
         });
-
+        //角色列表
         roleListAdapter = new PopLoaclUserListAdapter();
         roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
         menuPopwindow = new MenuPopwindow(this);
@@ -232,10 +232,33 @@ public class ListActivity extends BaseActivity {
                 refresh();
             }
         });
+        /**
+         * 监听页面改变状态
+         */
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if (i==1)
+                {
+                    //第二页
+                    userFragment.loadUserData();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
 
     }
-
+    //刷新当前界面
     private void refresh() {
         if (!vistormode) {
             //前往本地获取自己选择的用户
@@ -292,6 +315,8 @@ public class ListActivity extends BaseActivity {
                 .build();
         MyApplication.getOkhttpUtils().sendRequest(request, YourRole.class);
     }
+
+
 
     @SuppressLint("ResourceType")
     private void initfragment() {

@@ -54,6 +54,7 @@ public class UserFragment extends BaseFragment {
     private LocalGameInfoDao gameInfoDao;
     private UserAdapter userAdapter;
     private Thread my_thread;
+    private GameUtils gameUtils;
     private Handler handler=new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -69,7 +70,7 @@ public class UserFragment extends BaseFragment {
             }
             else
             {
-                //成绩
+                //用户成绩
                 my_guaide = (Map<String, Integer>) msg.obj;
                 if (my_guaide!=null)
                 {
@@ -90,29 +91,34 @@ public class UserFragment extends BaseFragment {
     protected void initview() {
         recycerUserinfo.setAdapter(userAdapter);
         recycerUserinfo.setLayoutManager(new LinearLayoutManager(getContext()));
-        userAdapter.notifyDataSetChanged();
-    }
+        }
 
     @Override
     protected void initdata() {
+        gameUtils = new GameUtils();
         userAdapter = new UserAdapter();
         gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
-        //计算数据,延时操作
-        my_thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                GameUtils gameUtils = new GameUtils();
-                gameUtils.getMyGuaide(SpUtils.getNowUser(),handler);
-                gameUtils.getUsedHero(SpUtils.getNowUser(),handler);
-            }
-        });
-        //加载
-        my_thread.start();
+
+        //loadUserData();
+
     }
 
+    public void loadUserData() {
 
+            //计算数据,延时操作
+            my_thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
 
+                    gameUtils.getMyGuaide(SpUtils.getNowUser(),handler);
+                    gameUtils.getUsedHero(SpUtils.getNowUser(),handler);
+
+                }
+            });
+            //加载
+            my_thread.start();
+        }
 
 
 
