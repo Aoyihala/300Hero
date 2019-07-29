@@ -25,4 +25,10 @@
         <item>综合统计</item>
         <item>开黑分析</item>
     </array>
+    <string name="talk1">杀人鬼</string>
+    <string name="talk2">单机王</string>
+    <string name="talk3">划水大神</string>
+    <string name="talk4">无情の推塔机器</string>
+    <string name="talk5">苟命王</string>
+    <string name="talk6">神の队友</string>
 </resources>

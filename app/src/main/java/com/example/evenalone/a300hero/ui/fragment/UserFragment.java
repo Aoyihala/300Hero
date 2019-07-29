@@ -66,7 +66,6 @@ public class UserFragment extends BaseFragment {
                 {
                     userAdapter.setUsedHero(icon_map);
                 }
-
             }
             else
             {

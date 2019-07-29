@@ -88,13 +88,13 @@ public class RadarView extends View {
         titles.add("击杀");
         count = titles.size();
 
-        //默认分数
+        //默认
         data = new ArrayList<>(count);
-        data.add(100.0);
-        data.add(80.0);
-        data.add(90.0);
-        data.add(70.0);
-        data.add(60.0);
+        data.add(0.0);
+        data.add(0.0);
+        data.add(0.0);
+        data.add(0.0);
+        data.add(0.0);
     }
 
     @Override
@@ -333,5 +333,9 @@ public class RadarView extends View {
     //设置满分分数，默认是100分满分
     public void setMaxValue(float maxValue) {
         this.maxValue = maxValue;
+    }
+
+    public double getMaxValue() {
+        return maxValue;
     }
 }

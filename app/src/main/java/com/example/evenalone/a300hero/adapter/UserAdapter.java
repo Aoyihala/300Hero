@@ -107,8 +107,14 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             List<Double> floatList = new LinkedList<>();
             if (yourCard!=null&&yourCard.size()>0)
             {
+                boolean ismax = false;
                 for (Map.Entry<String,Integer> entry:yourCard.entrySet())
                 {
+                    if (entry.getValue()>=50)
+                    {
+                        //满值用100计算
+                        ismax = true;
+                    }
                     if (entry.getKey().equals("团战"))
                     {
                         floatList.add(Double.valueOf(entry.getValue()));
@@ -131,7 +137,16 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         floatList.add(Double.valueOf(entry.getValue()));
                     }
                 }
-                radarViewholder.radarItem.setMaxValue(50);
+                if (ismax)
+                {
+                    //有一项超过了100,其余也不会差 kda的参数都是一发动全身
+                    radarViewholder.radarItem.setMaxValue(100);
+                }
+                else
+                {
+                    radarViewholder.radarItem.setMaxValue(50);
+                }
+
                 radarViewholder.radarItem.setData(floatList);
                 Paint valuePaint = new Paint();
                 valuePaint.setColor(SpUtils.getMainColor());
