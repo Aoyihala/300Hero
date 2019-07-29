@@ -102,8 +102,6 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int tower;
             int gongxian;
             int money;
-
-
             List<Double> floatList = new LinkedList<>();
             if (yourCard!=null&&yourCard.size()>0)
             {
@@ -146,16 +144,13 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 {
                     radarViewholder.radarItem.setMaxValue(50);
                 }
-
                 radarViewholder.radarItem.setData(floatList);
                 Paint valuePaint = new Paint();
                 valuePaint.setColor(SpUtils.getMainColor());
                 valuePaint.setAntiAlias(true);
                 valuePaint.setStyle(Paint.Style.FILL);
                 radarViewholder.radarItem.setValuePaint(valuePaint);
-
             }
-
         }
         //团分变化统计图
         if (viewHolder instanceof LineViewHolder)
