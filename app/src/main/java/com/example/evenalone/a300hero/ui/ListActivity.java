@@ -276,6 +276,7 @@ public class ListActivity extends BaseActivity {
         }
         //提示fragment刷新
         guaideFragment.requestData(0, true);
+        userFragment.loadUserData();
     }
 
     @Override
@@ -628,7 +629,6 @@ public class ListActivity extends BaseActivity {
                 //设置图片
                 imgJumpBg.setImageBitmap(outputBitmap);
                 //Palette用来更漂亮地展示配色
-
                 Palette.from(bitmap)
                         .generate(new Palette.PaletteAsyncListener() {
                             @SuppressLint("NewApi")
@@ -636,9 +636,11 @@ public class ListActivity extends BaseActivity {
                             public void onGenerated(@NonNull Palette palette) {
                                 List<Palette.Swatch> swatches = palette.getSwatches();
                                 Palette.Swatch swatch = swatches.get(0);
-                                collseLayout.setContentScrimColor(colorBurn(swatch.getRgb()));
-                                //因为我暂时没有找到比较好的透明状态栏来适配这一套效果布局。因此就直接替换掉StatusBar的颜色
-                                getWindow().setStatusBarColor(colorBurn(swatch.getRgb()));
+                                int color = colorBurn(swatch.getRgb());
+                                collseLayout.setContentScrimColor(color);
+                                SpUtils.saveMainColor(color);
+                                //暂时没有找到比较好的透明状态栏来适配这一套效果布局。直接替换掉StatusBar的颜色
+                                getWindow().setStatusBarColor(color);
                             }
                         });
 

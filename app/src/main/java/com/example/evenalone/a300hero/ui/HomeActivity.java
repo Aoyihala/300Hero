@@ -67,7 +67,7 @@ public class HomeActivity extends BaseActivity {
         editSearch.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.ACTION_DOWN) {
+                if (event.getKeyCode() == KeyEvent.ACTION_DOWN||event.getKeyCode()==KeyEvent.ACTION_UP) {
                     name = editSearch.getText().toString();
                     if (!TextUtils.isEmpty(name)) {
                         Request request = new Request.Builder()
@@ -160,7 +160,7 @@ public class HomeActivity extends BaseActivity {
         LocalUserBean localUserBean = userBeanDao.queryBuilder().where(LocalUserBeanDao.Properties.Nickname.eq(nickname)).unique();
         return localUserBean;
     }
-
+    //查找角色回调
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getProxy(ProxEvent eva) {
         List<NetWorkProx> proxList = eva.getNetWorkProxes();
@@ -172,7 +172,7 @@ public class HomeActivity extends BaseActivity {
             Snackbar.make(imgSearch, "今日访问很频繁，可能会照成访问失败", Snackbar.LENGTH_SHORT).show();
         }
     }
-
+    //获取绑定用户
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getBindUser(BindEvent event) {
         if (event.isSuccess()) {

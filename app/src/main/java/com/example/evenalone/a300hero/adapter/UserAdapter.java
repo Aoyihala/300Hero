@@ -1,6 +1,7 @@
 package com.example.evenalone.a300hero.adapter;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,32 +13,23 @@ import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.utils.Contacts;
+import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
+import com.example.evenalone.a300hero.wedgit.RadarView;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.hookedonplay.decoviewlib.DecoView;
-import com.hookedonplay.decoviewlib.charts.SeriesItem;
-import com.hookedonplay.decoviewlib.events.DecoEvent;
 
-import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import rorbin.q.radarview.RadarView;
+
 
 /**
  * 图表统计
@@ -110,39 +102,43 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int tower;
             int gongxian;
             int money;
-            radarViewholder.radarItem.setVertexText(xAxisValue);
 
-            List<Float> floatList = new ArrayList<>();
+
+            List<Double> floatList = new LinkedList<>();
             if (yourCard!=null&&yourCard.size()>0)
             {
                 for (Map.Entry<String,Integer> entry:yourCard.entrySet())
                 {
                     if (entry.getKey().equals("团战"))
                     {
-                        floatList.add(Float.valueOf(entry.getValue()));
+                        floatList.add(Double.valueOf(entry.getValue()));
                     }
                     if (entry.getKey().equals("击杀"))
                     {
-                        floatList.add(Float.valueOf(entry.getValue()));
+                        floatList.add(Double.valueOf(entry.getValue()));
                     }
                     if (entry.getKey().equals("推塔"))
                     {
-                        floatList.add(Float.valueOf(entry.getValue()));
+                        floatList.add(Double.valueOf(entry.getValue()));
                     }
                     if (entry.getKey().equals("发育"))
                     {
-                        floatList.add(Float.valueOf(entry.getValue()));
+                        floatList.add(Double.valueOf(entry.getValue()));
 
                     }
                     if (entry.getKey().equals("贡献"))
                     {
-                        floatList.add(Float.valueOf(entry.getValue()));
+                        floatList.add(Double.valueOf(entry.getValue()));
                     }
                 }
-                rorbin.q.radarview.RadarData radarData = new rorbin.q.radarview.RadarData(floatList);
-                radarData.setColor(UiUtlis.getColor(R.color.Yellow));
-                radarData.setValueTextEnable(true);
-                radarViewholder.radarItem.addData(radarData);
+                radarViewholder.radarItem.setMaxValue(50);
+                radarViewholder.radarItem.setData(floatList);
+                Paint valuePaint = new Paint();
+                valuePaint.setColor(SpUtils.getMainColor());
+                valuePaint.setAntiAlias(true);
+                valuePaint.setStyle(Paint.Style.FILL);
+                radarViewholder.radarItem.setValuePaint(valuePaint);
+
             }
 
         }

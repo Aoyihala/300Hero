@@ -3,6 +3,7 @@ package com.example.evenalone.a300hero.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.bean.LocalUserBean;
 
@@ -51,5 +52,19 @@ public class SpUtils
         boolean porxy = preferences.getBoolean("proxy",false);
 
         return porxy;
+    }
+
+    public static void saveMainColor(int color) {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("color",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("main_color",color);
+        editor.apply();
+    }
+
+    public static int getMainColor()
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("color",Context.MODE_PRIVATE);
+        int color = preferences.getInt("main_color",UiUtlis.getColor(R.color.Yellow));
+        return color;
     }
 }

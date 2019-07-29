@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rorbin.q.radarview.RadarView
+<com.example.evenalone.a300hero.wedgit.RadarView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/radar_item"
-    app:radar_layer="1"
-    app:rotation_enable="false"
     android:layout_width="match_parent"
     android:layout_height="280dp">
 
-</rorbin.q.radarview.RadarView>
+</com.example.evenalone.a300hero.wedgit.RadarView>

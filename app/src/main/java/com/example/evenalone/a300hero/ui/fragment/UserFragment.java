@@ -78,6 +78,7 @@ public class UserFragment extends BaseFragment {
                 }
 
             }
+            swipeBase.setRefreshing(false);
 
             return true;
         }
@@ -89,8 +90,15 @@ public class UserFragment extends BaseFragment {
 
     @Override
     protected void initview() {
+        swipeBase.setColorSchemeColors(SpUtils.getMainColor());
         recycerUserinfo.setAdapter(userAdapter);
         recycerUserinfo.setLayoutManager(new LinearLayoutManager(getContext()));
+        swipeBase.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadUserData();
+            }
+        });
         }
 
     @Override

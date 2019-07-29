@@ -150,13 +150,14 @@ public class GameUtils
             //---------------------------------------------------------------
             //以下为100%一局基准
             //最大补兵数
-            long max_killunincount = 450*localGaideListInfos.size();
+            long max_killunincount =350*localGaideListInfos.size();
             //最大推塔数
-            long max_towercount = 15*localGaideListInfos.size();
+            //一共15塔 一局一个人能推5个就是贡献多的
+            long max_towercount = 5*localGaideListInfos.size();
             //最大杀敌数(50),不算战场人机，超过60不计算
-            long max_killcount = 80*localGaideListInfos.size();
+            long max_killcount = 100*localGaideListInfos.size();
             //最大助攻数，助攻比人头好拿
-            long max_assinatcount = 100*localGaideListInfos.size();
+            long max_assinatcount = 200*localGaideListInfos.size();
             //最大经济状况
             long max_money = 30000*localGaideListInfos.size();
             long all_killcount = 0;
@@ -220,6 +221,7 @@ public class GameUtils
             //描述值:团战 推塔 击杀 发育 贡献
             //计算团战(击杀+助攻)/总人头
             /*int viotory = (int) (((double) wincount / (double) all) * 100);*/
+            //参团率
             long my_data_kill = all_assciont+all_killcount;
             int tuan = (int) (((double)my_data_kill/(double)max_killcount)*100);
             //计算击杀

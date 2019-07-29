@@ -56,7 +56,6 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.android.support:palette-v7:28.0.0'
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
-
     //BasePopup主体库
     implementation 'com.github.razerdp:BasePopup:2.2.0'
     implementation 'com.github.razerdp:BasePopup-compat-lifecycle:2.2.0'
@@ -65,8 +64,6 @@ dependencies {
     implementation 'net.wujingchao.android.view:simple-tag-imageview:1.0.1'
     //图表
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    compile 'q.rorbin:RadarView:1.0.0'
     compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
-
-
+    implementation files('libs/CySDK.jar')
 }
