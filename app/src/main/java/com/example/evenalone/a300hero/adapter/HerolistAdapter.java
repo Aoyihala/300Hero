@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.sql.StatementEvent;
 
@@ -85,13 +86,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int position) {
         if (viewHolder instanceof HeroListViewHolder) {
             HeroListViewHolder listViewHolder = (HeroListViewHolder) viewHolder;
 
             //macthtype 1为战场
             //resulttype 1 为赢
-            final HeroGuide.ListBean listBean = listBeans.get(i);
+            final HeroGuide.ListBean listBean = listBeans.get(position);
             listViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,6 +117,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
             if (listBean.getResult()==1)
             {
+
                 listViewHolder.tvJumpViotoryFlag.setText("WIN");
                 listViewHolder.tvJumpViotoryFlag.setTextColor(UiUtlis.getColor(R.color.colorPrimaryDark));
             }
@@ -130,22 +132,62 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (gameInfo!=null)
             {
                 listViewHolder.tvJumpGuaide.setText(gameInfo.getMygaide());
-                getJumpvaule(gameInfo.getResult(),i,listBean);
+                getJumpvaule(gameInfo.getResult(),position,listBean);
                 operationMvp(gameInfo.getResult(),listBean,listViewHolder);
+                if(position<listBeans.size()-1)
+                {
+                    //当前item的团分
+                    int nowpower = new GameUtils().getNowUserPower(new Gson().fromJson(gameInfo.getResult(),GameInfo.class),listBean);
+                    //上一局的团分
+                    LocalGameInfo gameInfo_latest =  getoneGame(listBeans.get(position+1).getMatchID());
+                    if (gameInfo_latest!=null)
+                    {
+                        int latestpower = new GameUtils().getNowUserPower(new Gson().fromJson(gameInfo_latest.getResult(),GameInfo.class),listBeans.get(position+1));
+                        if (nowpower>latestpower)
+                        {
+                            listViewHolder.tvWin.setTextColor(UiUtlis.getColor(R.color.colorPrimary));
+                            listViewHolder.tvWin.setText("+"+(nowpower-latestpower));
+                        }
+                        else
+                        {
+                            listViewHolder.tvWin.setTextColor(UiUtlis.getColor(R.color.Red));
+                            listViewHolder.tvWin.setText("-"+(latestpower-nowpower));
+                        }
+                    }
+                }
+                else
+                {
+                    //已经是最后一个了
+                    //10的随机数
+                    if (listBean.getResult()==1)
+                    {
+                        //赢
+
+                        listViewHolder.tvWin.setTextColor(UiUtlis.getColor(R.color.colorPrimary));
+                        Random random = new Random();
+                        listViewHolder.tvWin.setText("+"+(random.nextInt(10)));
+                    }
+                    else
+                    {
+                        //输
+                        listViewHolder.tvWin.setTextColor(UiUtlis.getColor(R.color.Red));
+                        listViewHolder.tvWin.setText("-"+(new Random().nextInt(10)));
+                    }
+                }
             }
             else
             {
                 listViewHolder.tvJumpGuaide.setText("loading....");
                 //请求单局信息
-                requestMacth(listViewHolder,listBean,listBean.getMatchID());
+                requestMacth(listViewHolder,position,listBean,listBean.getMatchID());
             }
 
         }
     }
 
-    private void getJumpvaule(String result, int i,HeroGuide.ListBean listBean) {
+    private void getJumpvaule(String result, int position,HeroGuide.ListBean listBean) {
         String power;
-        if (i!=0)
+        if (position!=0)
         {
             return;
         }
@@ -157,12 +199,14 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
                 if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
                     if (!loadingjumpvalue) {
+                        //获取自己的团分
                         power = winSideBean.getELO() + "";
                         LocalUserBean localUserBean = getMy(SpUtils.getNowUser());
                         if (localUserBean != null) {
                             localUserBean.setJumpvalue(power);
                             localUserBean.setId(localUserBean.getId());
                             userBeanDao.update(localUserBean);
+                            //反正是给主页搞的
                             EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
                         } else {
                             EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
@@ -235,7 +279,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return position;
     }
 
-    private void requestMacth(final HeroListViewHolder listViewHolder, final HeroGuide.ListBean listBean, final long matchID) {
+    private void requestMacth(final HeroListViewHolder listViewHolder, final int position, final HeroGuide.ListBean listBean, final long matchID) {
         x.http().get(new RequestParams(Contacts.MATCH_GAME + "?id=" + matchID), new Callback.CommonCallback<String>() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -364,6 +408,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     listViewHolder.tvJumpGuaide.setText(result_o);
                     cachemap.put(matchID,result_o);
                 }
+                notifyDataSetChanged();
 
             }
 
@@ -430,13 +475,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (rank_cache>=1&&rank_cache<=3)
                     {
 
-                        viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
+                      /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
                     }
 
                     if (rank_cache>=4&&rank_cache<=5)
                     {
                         viewHolder.imgHero.setTagEnable(false);
-                        viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
+                      /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
                     }
 
                     if (rank_cache>=6&&rank_cache<=7)
@@ -444,7 +489,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewHolder.imgHero.setTagEnable(true);
                         viewHolder.imgHero.setTagText("划水");
                         viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
-                        viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+                     /*   viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
                     }
                     else
                     {
@@ -488,13 +533,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 {
 
 
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
+                    /*viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
                 }
 
                 if (rank>=4&&rank<=5)
                 {
                     viewHolder.imgHero.setTagEnable(false);
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
+                    /*viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
                 }
 
 
@@ -503,7 +548,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagEnable(true);
                     viewHolder.imgHero.setTagText("划水");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+                    /*viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
                 }
                 else
                 {
@@ -563,13 +608,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (rank_cache>=1&&rank_cache<=3)
                 {
 
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
+                    /*viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
                 }
 
                 if (rank_cache>=4&&rank_cache<=5)
                 {
                     viewHolder.imgHero.setTagEnable(false);
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
+                   /* viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
                 }
                 else
                 {
@@ -581,7 +626,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagEnable(true);
                     viewHolder.imgHero.setTagText("坑");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.black));
-                    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+                /*    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
                 }
                 else
                 {
@@ -608,13 +653,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             {
 
 
-                viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);
+              /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
             }
 
             if (rank_lose>=4&&rank_lose<=5)
             {
                 viewHolder.imgHero.setTagEnable(false);
-                viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);
+             /*   viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
             }
             else
             {
@@ -626,7 +671,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagEnable(true);
                 viewHolder.imgHero.setTagText("坑");
                 viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.black));
-                viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);
+                /*viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
             }
             else
             {
@@ -659,8 +704,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView tvJumpGuaide;
         @BindView(R.id.tv_jump_nowstate)
         TextView tvJumpNowstate;
-        @BindView(R.id.tv_star)
-        ImageView tvStar;
+        @BindView(R.id.tv_win)
+        TextView tvWin;
+        @BindView(R.id.tv_add)
+        TextView tvAdd;
         public HeroListViewHolder(@NonNull View itemView)
         {
             super(itemView);

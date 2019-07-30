@@ -51,6 +51,7 @@ public class UserFragment extends BaseFragment {
     private List<String> reapet_list = new ArrayList<>();
     private Map<String,String> icon_map = new HashMap<>();
     private Map<String,Integer> my_guaide = new HashMap<>();
+    private List<Integer> powerlist = new ArrayList<>();
     private LocalGameInfoDao gameInfoDao;
     private UserAdapter userAdapter;
     private Thread my_thread;
@@ -65,6 +66,14 @@ public class UserFragment extends BaseFragment {
                 if (icon_map!=null)
                 {
                     userAdapter.setUsedHero(icon_map);
+                }
+            }
+            else if (msg.what==GameUtils.GET_PWOERLIST)
+            {
+                powerlist = (List<Integer>) msg.obj;
+                if (powerlist!=null)
+                {
+                    userAdapter.setPwoerList(powerlist);
                 }
             }
             else
@@ -120,6 +129,7 @@ public class UserFragment extends BaseFragment {
 
                     gameUtils.getMyGuaide(SpUtils.getNowUser(),handler);
                     gameUtils.getUsedHero(SpUtils.getNowUser(),handler);
+                    gameUtils.getMyPower(SpUtils.getNowUser(),handler);
 
                 }
             });

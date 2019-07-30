@@ -12,7 +12,11 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
 import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
+import com.example.evenalone.a300hero.bean.LocalUserBean;
+import com.example.evenalone.a300hero.event.JumpValueEvnet;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,15 +29,101 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class GameUtils
-{
+public class GameUtils {
     private int monerylv;
     private int cantuanlv;
     private long total_monery_;
     private int all_kill;
-    public static int GET_USEDHERO=0xdffafaf;
-    public static int GET_YOURGUAIDE=0xddaa;
+    public static int GET_USEDHERO = 0xdffafaf;
+    public static int GET_YOURGUAIDE = 0xddaa;
+    public static int GET_PWOERLIST = 0xfaaaaaa;
 
+    /**
+     * 获取自己的团分
+     * @param handler
+     */
+    public void getMyPower(String usernmae,Handler handler)
+    {
+
+        List<LocalGaideListInfo> localGaideListInfos = searchbyName(usernmae);
+        List<Integer> powerlist = new ArrayList<>();
+        if (localGaideListInfos.size()>30)
+        {
+            //
+            localGaideListInfos.subList(0,29);
+        }
+        for (LocalGaideListInfo info:localGaideListInfos) {
+            //查询游戏匹配数据
+            GameInfo gameInfo = getGameinfo(info.getMatchId(), new Gson());
+            if (gameInfo!=null)
+            {
+                HeroGuide.ListBean listBean = new Gson().fromJson(info.getResult(),HeroGuide.ListBean.class);
+                if (listBean.getResult()==1)
+                {
+                    //赢了
+                    //获取赢的玩家列表
+                    List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
+                    for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
+                        if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+
+                            //获取自己的团分
+                            powerlist.add(winSideBean.getELO()) ;
+
+                        }
+                    }
+                }
+                else
+                {
+                    //输了
+                    List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
+                    for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
+                        if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                            powerlist.add(loseSideBean.getELO());
+                        }
+                    }
+                }
+            }
+        }
+        Message message = new Message();
+        message.what = GET_PWOERLIST;
+        message.obj = powerlist;
+        handler.sendMessage(message);
+        handler.obtainMessage();
+    }
+    /**
+     * 获取用户每一局团分
+     * @param gameInfo
+     * @param listBean
+     * @return
+     */
+    public int getNowUserPower(GameInfo gameInfo, HeroGuide.ListBean listBean) {
+        int power = 0;
+        if (listBean.getResult() == 1) {
+            //赢了
+            //获取赢的玩家列表
+            List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
+            for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
+                if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+
+                    //获取自己的团分
+                    power = winSideBean.getELO();
+
+                }
+            }
+        }
+        else
+        {
+            //输了
+            List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
+            for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
+                if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                    power = loseSideBean.getELO();
+                }
+            }
+        }
+        return power;
+    }
+    //排序
     private static void ListSort(List<LocalGaideListInfo> list) {
         Collections.sort(list, new Comparator<LocalGaideListInfo>() {
             @Override
@@ -56,6 +146,13 @@ public class GameUtils
             }
         });
     }
+
+    /**
+     * 常用英雄计算
+     * @param nickname
+     * @param handler
+     * @return
+     */
     public Map<String,String> getUsedHero(String nickname, Handler handler)
     {
         List<LocalGaideListInfo> localGaideListInfos = searchbyName(nickname);
@@ -139,6 +236,12 @@ public class GameUtils
 
     }
 
+    /**
+     * 计算雷达图
+     * @param nickname
+     * @param handler
+     * @return
+     */
     public Map<String,Integer> getMyGuaide(String nickname, Handler handler)
     {
         List<LocalGaideListInfo> localGaideListInfos = searchbyName(nickname);
@@ -155,11 +258,11 @@ public class GameUtils
             //一共15塔 一局一个人能推5个就是贡献多的
             long max_towercount = 5*localGaideListInfos.size();
             //最大杀敌数(50),不算战场人机，超过60不计算
-            long max_killcount = 100*localGaideListInfos.size();
+            long max_killcount = 120*localGaideListInfos.size();
             //最大助攻数，助攻比人头好拿
             long max_assinatcount = 200*localGaideListInfos.size();
             //最大经济状况
-            long max_money = 30000*localGaideListInfos.size();
+            long max_money = 35000*localGaideListInfos.size();
             long all_killcount = 0;
             long all_money = 0;
             long all_assciont = 0;

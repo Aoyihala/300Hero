@@ -250,7 +250,7 @@ public class RadarView extends View {
         float x1 = centerX;
         float y1 = (float) (centerY - radius * percent);
         path.moveTo(x1, y1);
-        canvas.drawCircle(x1, y1, valueRadius, valuePaint);
+        //canvas.drawCircle(x1, y1, valueRadius, valuePaint);
         //绘制圆点2
         dataValue = data.get(1);
         if (dataValue != maxValue) {
@@ -261,7 +261,7 @@ public class RadarView extends View {
         float x2 = (float) (centerX + radius * percent * Math.sin(angle));
         float y2 = (float) (centerY - radius * percent * Math.cos(angle));
         path.lineTo(x2, y2);
-        canvas.drawCircle(x2, y2, valueRadius, valuePaint);
+        //canvas.drawCircle(x2, y2, valueRadius, valuePaint);
         //绘制圆点3
         dataValue = data.get(2);
         if (dataValue != maxValue) {
@@ -272,7 +272,7 @@ public class RadarView extends View {
         float x3 = (float) (centerX + radius * percent * Math.sin(angle / 2));
         float y3 = (float) (centerY + radius * percent * Math.cos(angle / 2));
         path.lineTo(x3, y3);
-        canvas.drawCircle(x3, y3, valueRadius, valuePaint);
+       // canvas.drawCircle(x3, y3, valueRadius, valuePaint);
         //绘制圆点4
         dataValue = data.get(3);
         if (dataValue != maxValue) {
@@ -283,7 +283,7 @@ public class RadarView extends View {
         float x4 = (float) (centerX - radius * percent * Math.sin(angle / 2));
         float y4 = (float) (centerY + radius * percent * Math.cos(angle / 2));
         path.lineTo(x4, y4);
-        canvas.drawCircle(x4, y4, valueRadius, valuePaint);
+        //canvas.drawCircle(x4, y4, valueRadius, valuePaint);
         //绘制圆点5
         dataValue = data.get(3);
         if (dataValue != maxValue) {
@@ -294,7 +294,7 @@ public class RadarView extends View {
         float x5 = (float) (centerX - radius * percent * Math.sin(angle));
         float y5 = (float) (centerY - radius * percent * Math.cos(angle));
         path.lineTo(x5, y5);
-        canvas.drawCircle(x5, y5, valueRadius, valuePaint);
+       // canvas.drawCircle(x5, y5, valueRadius, valuePaint);
 
         path.close();
         valuePaint.setStyle(Paint.Style.STROKE);
