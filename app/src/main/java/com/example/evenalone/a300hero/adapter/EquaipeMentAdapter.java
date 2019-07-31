@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.bean.GameInfo;
 import com.example.evenalone.a300hero.utils.Contacts;
+import com.example.evenalone.a300hero.utils.UiUtlis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class EquaipeMentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.equaipe_item, viewGroup, false);
+        View view = UiUtlis.getView(R.layout.equaipe_item);
         return new ImgViewholder(view);
     }
 

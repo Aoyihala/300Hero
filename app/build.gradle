@@ -23,7 +23,9 @@ android {
     }
     allprojects {
         repositories {
-
+            google()
+            mavenCentral()
+            jcenter()
             maven { url "https://jitpack.io" }
         }
     }
@@ -64,6 +66,6 @@ dependencies {
     implementation 'net.wujingchao.android.view:simple-tag-imageview:1.0.1'
     //图表
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
+    implementation 'com.github.bmarrdev:android-DecoView-charting:v1.2'
     implementation files('libs/CySDK.jar')
 }

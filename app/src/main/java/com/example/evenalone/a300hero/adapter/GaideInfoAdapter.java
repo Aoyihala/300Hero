@@ -1,6 +1,9 @@
 package com.example.evenalone.a300hero.adapter;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +15,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.bean.GameInfo;
+import com.example.evenalone.a300hero.ui.HomeActivity;
+import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
+import com.example.evenalone.a300hero.wedgit.SpaceItemDecoration;
 
 import net.wujingchao.android.view.SimpleTagImageView;
 
@@ -30,6 +36,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<GameInfo.MatchBean.WinSideBean> winSideBeanList = new ArrayList<>();
     private List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = new ArrayList<>();
+
     private boolean iswin = false;
 
     public void setIswin(boolean iswin) {
@@ -54,7 +61,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof GaideInfoViewHolder)
         {
             GameUtils gameUtils = new GameUtils();
@@ -62,7 +69,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (iswin)
             {
                 //赢
-                GameInfo.MatchBean.WinSideBean winSideBean = winSideBeanList.get(i);
+                final GameInfo.MatchBean.WinSideBean winSideBean = winSideBeanList.get(i);
                 if (winSideBean.getRoleName().equals(SpUtils.getNowUser()))
                 {
                     gaideInfoViewHolder.tvGuaideUserguaide.setVisibility(View.VISIBLE);
@@ -144,19 +151,33 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+winSideBean.getSkill().get(1).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill2);
                 //装备
                 gaideInfoViewHolder.recyclerEquaipment.setLayoutManager(new LinearLayoutManager(viewHolder.itemView.getContext()
-                ,LinearLayoutManager.HORIZONTAL,false));
+                        ,LinearLayoutManager.HORIZONTAL,false));
                 gaideInfoViewHolder.recyclerEquaipment.setNestedScrollingEnabled(false);
                 EquaipeMentAdapter equaipeMentAdapter = new EquaipeMentAdapter();
                 gaideInfoViewHolder.recyclerEquaipment.setAdapter(equaipeMentAdapter);
                 equaipeMentAdapter.setIswin(true);
                 equaipeMentAdapter.setWin_equipBeanList(winSideBean.getEquip());
                 equaipeMentAdapter.notifyDataSetChanged();
-
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("mode",true);
+                        bundle.putString("nickname",winSideBean.getRoleName());
+                        if (SpUtils.getMainUser()==null)
+                        {
+                            SpUtils.setMianUser(SpUtils.getNowUser());
+                        }
+                        SpUtils.selectUser(winSideBean.getRoleName());
+                        viewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
             }
             else
             {
                 //输
-                GameInfo.MatchBean.LoseSideBean loseSideBean = loseSideBeanList.get(i);
+                final GameInfo.MatchBean.LoseSideBean loseSideBean = loseSideBeanList.get(i);
                 if (loseSideBean.getRoleName().equals(SpUtils.getNowUser()))
                 {
                     gaideInfoViewHolder.tvGuaideUserguaide.setVisibility(View.VISIBLE);
@@ -227,6 +248,22 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 equaipeMentAdapter.setIswin(false);
                 equaipeMentAdapter.setLose_equipBeanList(loseSideBean.getEquip());
                 equaipeMentAdapter.notifyDataSetChanged();
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("mode",true);
+                        bundle.putString("nickname",loseSideBean.getRoleName());
+                        if (SpUtils.getMainUser()==null)
+                        {
+                            SpUtils.setMianUser(SpUtils.getNowUser());
+                        }
+                        SpUtils.selectUser(loseSideBean.getRoleName());
+                        viewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
 
             }
         }

@@ -20,6 +20,26 @@ public class SpUtils
         editor.putString("nickname",name);
         editor.apply();
     }
+    /**
+     * 切换当前用户
+     * @param name
+     */
+    public static void setMianUser(String name)
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("user",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("nickname_main",name);
+        editor.apply();
+    }
+    //针对于观察者模式
+    public static String getMainUser()
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("user",Context.MODE_PRIVATE);
+        String nickname = preferences.getString("nickname_main",null);
+        LocalUserBean userBean = new LocalUserBean();
+        userBean.setNickname(nickname);
+        return userBean.getNickname();
+    }
 
     /**
      * 获取当前选中的用户

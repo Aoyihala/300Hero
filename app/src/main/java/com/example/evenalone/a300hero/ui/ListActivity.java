@@ -138,12 +138,32 @@ public class ListActivity extends BaseActivity {
     private List<String> titles = new ArrayList<>();
     private PopLoaclUserListAdapter roleListAdapter;
     private List<LocalUserBean> localUserBeanList = new ArrayList<>();
-
+    private boolean isfirst=true;
 
     @Override
     protected void onResume() {
         super.onResume();
         roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
+        if (isfirst)
+        {
+            isfirst = false;
+            return;
+        }
+        if (!vistormode)
+        {
+            //不是观察模式
+            String nickname = SpUtils.getMainUser();
+            if (!TextUtils.isEmpty(nickname))
+            {
+                //回来惹
+                SpUtils.selectUser(nickname);
+                this.nickname = SpUtils.getNowUser();
+                //释放
+                SpUtils.setMianUser(null);
+                refresh();
+            }
+
+        }
     }
 
     @Override
@@ -419,11 +439,13 @@ public class ListActivity extends BaseActivity {
 
     }
 
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_list;
     }
-
+    //更新用户
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getYourRole(BindEvent eva) {
         if (eva.isSuccess()) {
@@ -495,11 +517,12 @@ public class ListActivity extends BaseActivity {
                 }
                 localUserBean.setViotory(viotory + "%");
                 localUserBean.setNickname(role.getRole().getRoleName());
-                if (ishad) {
-                    userBeanDao.save(localUserBean);
-                } else {
+                //观察模式不应该保存实体
+              /*  if (ishad) {
                     userBeanDao.update(localUserBean);
-                }
+                } else {
+                    userBeanDao.save(localUserBean);
+                }*/
 
                 updateView(localUserBean);
                 //以上更新用户信息
@@ -653,8 +676,26 @@ public class ListActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void jumpValue(JumpValueEvnet eva) {
         String nickname_j = eva.getNickname();
+        nickname = SpUtils.getNowUser();
         if (nickname_j.equals(nickname)) {
             setJumpvalue(eva.getValue());
+            int pwoer_win_adv = Integer.parseInt(eva.getValue());
+            if (pwoer_win_adv > 0 && pwoer_win_adv < 1000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.tong);
+                tvHomeDuanwei.setText("青铜");
+            }
+            if (pwoer_win_adv >= 1000 && pwoer_win_adv < 2000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.baiying);
+                tvHomeDuanwei.setText("白银");
+            }
+            if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.gold);
+                tvHomeDuanwei.setText("黄金");
+            }
+            if (pwoer_win_adv >= 3000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.daemo);
+                tvHomeDuanwei.setText("钻石");
+            }
         }
 
     }

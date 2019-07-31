@@ -50,7 +50,7 @@ public class GameUtils {
         if (localGaideListInfos.size()>30)
         {
             //
-            localGaideListInfos.subList(0,29);
+        localGaideListInfos = localGaideListInfos.subList(0,19);
         }
         for (LocalGaideListInfo info:localGaideListInfos) {
             //查询游戏匹配数据

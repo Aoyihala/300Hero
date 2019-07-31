@@ -46,6 +46,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * 此部分优化的地方相当的多
+ */
 public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<HeroGuide.ListBean> listBeans = new ArrayList<>();
@@ -78,9 +81,6 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.game_item, viewGroup, false);
         HeroListViewHolder heroListViewHolder = new HeroListViewHolder(view);
         //静止复用视图,因为涉及到过多的加载和展示,item请求网络
-        //算了 太卡了
-        //恢复使用一页10条
-        //已解决
         //heroListViewHolder.setIsRecyclable(false);
         return heroListViewHolder;
     }
@@ -134,7 +134,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 listViewHolder.tvJumpGuaide.setText(gameInfo.getMygaide());
                 getJumpvaule(gameInfo.getResult(),position,listBean);
                 operationMvp(gameInfo.getResult(),listBean,listViewHolder);
-                if(position<listBeans.size()-1)
+            /*    if(position<listBeans.size()-1)
                 {
                     //当前item的团分
                     int nowpower = new GameUtils().getNowUserPower(new Gson().fromJson(gameInfo.getResult(),GameInfo.class),listBean);
@@ -162,7 +162,6 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (listBean.getResult()==1)
                     {
                         //赢
-
                         listViewHolder.tvWin.setTextColor(UiUtlis.getColor(R.color.colorPrimary));
                         Random random = new Random();
                         listViewHolder.tvWin.setText("+"+(random.nextInt(10)));
@@ -173,7 +172,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         listViewHolder.tvWin.setTextColor(UiUtlis.getColor(R.color.Red));
                         listViewHolder.tvWin.setText("-"+(new Random().nextInt(10)));
                     }
-                }
+                }*/
             }
             else
             {
@@ -184,7 +183,8 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
     }
-
+    //时间久远的可能个人排名信息里没有团分了
+    //只有从战局里面查找
     private void getJumpvaule(String result, int position,HeroGuide.ListBean listBean) {
         String power;
         if (position!=0)
@@ -207,9 +207,9 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             localUserBean.setId(localUserBean.getId());
                             userBeanDao.update(localUserBean);
                             //反正是给主页搞的
-                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
+                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
                         } else {
-                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
+                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
                         }
                         loadingjumpvalue = true;
 
@@ -237,9 +237,9 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             localUserBean.setJumpvalue(power);
                             localUserBean.setId(localUserBean.getId());
                             userBeanDao.update(localUserBean);
-                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
+                            EventBus.getDefault().post(new JumpValueEvnet(SpUtils.getNowUser(),power));
                         } else {
-                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
+                            EventBus.getDefault().post(new JumpValueEvnet(SpUtils.getNowUser(),power));
                         }
                         loadingjumpvalue = true;
                     }
@@ -324,7 +324,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     }
                                     else
                                     {
-                                        EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
+                                        EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
                                     }
                                     loadingjumpvalue = true;
 
@@ -365,7 +365,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     }
                                     else
                                     {
-                                        EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser()));
+                                        EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
                                     }
                                    loadingjumpvalue=true;
 
@@ -408,7 +408,8 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     listViewHolder.tvJumpGuaide.setText(result_o);
                     cachemap.put(matchID,result_o);
                 }
-                notifyDataSetChanged();
+                //指定位置更新
+                notifyItemChanged(position);
 
             }
 

@@ -104,6 +104,12 @@ public class UserFragment extends BaseFragment {
         swipeBase.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                //停止上一个线程
+                if (my_thread!=null)
+                {
+                    my_thread.interrupt();
+                    my_thread=null;
+                }
                 loadUserData();
             }
         });
@@ -126,15 +132,18 @@ public class UserFragment extends BaseFragment {
             my_thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-
+                    if (gameUtils==null)
+                    {
+                        gameUtils = new GameUtils();
+                    }
                     gameUtils.getMyGuaide(SpUtils.getNowUser(),handler);
                     gameUtils.getUsedHero(SpUtils.getNowUser(),handler);
                     gameUtils.getMyPower(SpUtils.getNowUser(),handler);
 
-                }
-            });
-            //加载
-            my_thread.start();
+    }
+});
+        //加载
+        my_thread.start();
         }
 
 

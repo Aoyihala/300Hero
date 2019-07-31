@@ -13,8 +13,9 @@ public class JumpValueEvnet
         return value;
     }
 
-    public JumpValueEvnet(String nickname) {
+    public JumpValueEvnet(String nickname,String value) {
         this.nickname = nickname;
+        this.value = value;
     }
 
     public void setNickname(String nickname) {

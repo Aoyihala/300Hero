@@ -11,14 +11,14 @@
         android:id="@+id/tv_ip"
         android:textSize="12sp"
         android:gravity="center"
-        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <View
         android:layout_width="1dip"
         android:layout_height="match_parent"
         android:background="@color/gray"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_gravity="center_horizontal"
         />
     <TextView
@@ -28,13 +28,13 @@
         android:id="@+id/tv_type"
         android:textSize="12sp"
         android:layout_width="wrap_content"
-        android:layout_weight="1"
         android:layout_height="wrap_content" />
     <View
         android:layout_width="1dip"
         android:layout_height="match_parent"
         android:background="@color/gray"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_gravity="center_horizontal"
         />
     <TextView
@@ -43,14 +43,14 @@
         android:id="@+id/tv_adress"
         android:textColor="@color/gray"
         android:textSize="12sp"
-        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <View
         android:layout_width="1dip"
         android:layout_height="match_parent"
         android:background="@color/gray"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_gravity="center_horizontal"
         />
     <TextView
@@ -59,14 +59,14 @@
         android:id="@+id/tv_day"
         android:textColor="@color/gray"
         android:textSize="12sp"
-        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <View
         android:layout_width="1dip"
         android:layout_height="match_parent"
         android:background="@color/gray"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_gravity="center_horizontal"
         />
     <TextView
@@ -75,7 +75,6 @@
         android:gravity="center"
         android:id="@+id/tv_upadte_time"
         android:textSize="12sp"
-        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

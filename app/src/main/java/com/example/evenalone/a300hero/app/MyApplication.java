@@ -14,6 +14,7 @@ import com.example.evenalone.a300hero.ui.HomeActivity;
 import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
+import com.example.evenalone.a300hero.utils.SpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.database.Database;
@@ -38,7 +39,14 @@ public class MyApplication extends Application implements Application.ActivityLi
         initdb();
         context = getApplicationContext();
         okhttpUtils = OkhttpUtils.getInstance();
+        releasedata();
 
+    }
+
+    private void releasedata() {
+        //释放资源
+        //释放
+        SpUtils.setMianUser(null);
     }
 
     private void initdb() {
@@ -117,11 +125,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         {
             unregister(activity);
         }
-        //战绩列表界面
-        if (activity instanceof ListActivity)
-        {
-            unregister(activity);
-        }
+
         //设置界面
         if (activity instanceof SettingActivity)
         {
@@ -141,6 +145,10 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-
+        //战绩列表界面
+        if (activity instanceof ListActivity)
+        {
+            unregister(activity);
+        }
     }
 }

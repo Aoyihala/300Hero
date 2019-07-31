@@ -200,17 +200,17 @@ public class HeroGuaideInfoFragment extends BaseFragment {
         }
         if (loseSideBeanList.size()>0)
         {
-            for (GameInfo.MatchBean.LoseSideBean winSideBean:loseSideBeanList)
+            for (GameInfo.MatchBean.LoseSideBean loseSideBean:loseSideBeanList)
             {
-               lose_allkill =lose_allkill+winSideBean.getKillCount();
-                lose_allmoney =lose_allkill+winSideBean.getTotalMoney();
-                lose_allunit = lose_allkill+winSideBean.getKillUnitCount();
+               lose_allkill =lose_allkill+loseSideBean.getKillCount();
+                lose_allmoney =lose_allkill+loseSideBean.getTotalMoney();
+                lose_allunit = lose_allkill+loseSideBean.getKillUnitCount();
             }
         }
-        tvWinToatkill.setText(" 总击杀:"+win_allkill);
+        tvWinToatkill.setText(" 总击杀:"+gameInfo_real.getMatch().getWinSideKill());
         tvWinToatkill.setText(" 总经济:"+win_allmoney);
         tvWinKilluinit.setText(" 击杀小兵:"+win_allunit);
-        tvLoseToatkill.setText(" 总击杀:"+lose_allkill);
+        tvLoseToatkill.setText(" 总击杀:"+gameInfo_real.getMatch().getLoseSideKill());
         tvLoseToatkill.setText(" 总经济:"+lose_allmoney);
         tvLoseKilluinit.setText(" 击杀小兵:"+lose_allunit);
 
