@@ -118,14 +118,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             List<Double> floatList = new LinkedList<>();
             if (yourCard!=null&&yourCard.size()>0)
             {
-                boolean ismax = false;
                 for (Map.Entry<String,Integer> entry:yourCard.entrySet())
                 {
-                    if (entry.getValue()>=50)
-                    {
-                        //满值用100计算
-                        ismax = true;
-                    }
                     if (entry.getKey().equals("团战"))
                     {
                         floatList.add(Double.valueOf(entry.getValue()));
@@ -148,15 +142,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         floatList.add(Double.valueOf(entry.getValue()));
                     }
                 }
-                if (ismax)
-                {
-                    //有一项超过了100,其余也不会差 kda的参数都是一发动全身
-                    radarViewholder.radarItem.setMaxValue(100);
-                }
-                else
-                {
-                    radarViewholder.radarItem.setMaxValue(50);
-                }
+
+                radarViewholder.radarItem.setMaxValue(100);
                 radarViewholder.radarItem.setData(floatList);
                 Paint valuePaint = new Paint();
                 valuePaint.setColor(SpUtils.getMainColor());
@@ -368,7 +355,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
             xAxis.setGranularity(1f);//禁止放大后x轴标签重绘
-
+            lineViewHolder.lineChartItem.setTouchEnabled(false);//禁止手势
+            lineViewHolder.lineChartItem.setDragEnabled(false);//静止平移
 
         }
     }

@@ -38,7 +38,7 @@
                         android:layout_height="60dp" />
                     <TextView
                         android:layout_marginTop="5dp"
-                        android:text="本萌新不高兴了"
+                        android:text="@string/loading"
                         android:textSize="15sp"
                         android:textColor="#fff"
                         android:id="@+id/tv_jump_name_home"

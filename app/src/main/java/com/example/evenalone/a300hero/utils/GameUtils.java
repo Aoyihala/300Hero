@@ -253,16 +253,16 @@ public class GameUtils {
             //---------------------------------------------------------------
             //以下为100%一局基准
             //最大补兵数
-            long max_killunincount =350*localGaideListInfos.size();
+            long max_killunincount =200*localGaideListInfos.size();
             //最大推塔数
             //一共15塔 一局一个人能推5个就是贡献多的
             long max_towercount = 5*localGaideListInfos.size();
             //最大杀敌数(50),不算战场人机，超过60不计算
-            long max_killcount = 120*localGaideListInfos.size();
+            long max_killcount = 30*localGaideListInfos.size();
             //最大助攻数，助攻比人头好拿
-            long max_assinatcount = 200*localGaideListInfos.size();
+            long max_assinatcount = 50*localGaideListInfos.size();
             //最大经济状况
-            long max_money = 35000*localGaideListInfos.size();
+            long max_money = 30000*localGaideListInfos.size();
             long all_killcount = 0;
             long all_money = 0;
             long all_assciont = 0;
