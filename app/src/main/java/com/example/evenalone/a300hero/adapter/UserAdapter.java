@@ -18,6 +18,8 @@ import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
 import com.example.evenalone.a300hero.wedgit.RadarView;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -47,8 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int HERO_ITEM = 0;
     private final int RADAR_ITEM = 1;
-    private final int TALK_ITEM = 2;
-    private final int LINE_ITEM = 3;
+    private final int LINE_ITEM = 2;
     private List<String> xAxisValue = new ArrayList<>();//X轴数据源
     private Map<String, String> usedHero = new HashMap<>();
     private Map<String, Integer> yourCard = new HashMap<>();
@@ -76,10 +77,6 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         else if (getItemViewType(i) == RADAR_ITEM) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.radar_item, viewGroup, false);
             return new RadarViewholder(view);
-        }else if (getItemViewType(i)==TALK_ITEM)
-        {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.talk_item,viewGroup,false);
-            return new TalkViewHolder(view);
         }
 
         else if (getItemViewType(i) == LINE_ITEM) {
@@ -97,6 +94,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             HeroItemViewholder heroItemViewholder = (HeroItemViewholder) viewHolder;
             if (usedHero!=null&&usedHero.size()>=3)
             {
+                heroItemViewholder.liHeroItem.setVisibility(View.VISIBLE);
                 List<String> heroname = new ArrayList<>();
                 List<String> heroicon = new ArrayList<>();
                 for (Map.Entry<String,String> entry:usedHero.entrySet())
@@ -108,6 +106,10 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Glide.with(MyApplication.getContext()).load(Contacts.IMG+heroicon.get(1)).into(heroItemViewholder.imgHero2);
                 Glide.with(MyApplication.getContext()).load(Contacts.IMG+heroicon.get(2)).into(heroItemViewholder.imgHero3);
 
+            }
+            else
+            {
+                heroItemViewholder.liHeroItem.setVisibility(View.GONE);
             }
         }
         if (viewHolder instanceof RadarViewholder)
@@ -150,176 +152,172 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 valuePaint.setAntiAlias(true);
                 valuePaint.setStyle(Paint.Style.FILL);
                 radarViewholder.radarItem.setValuePaint(valuePaint);
+
+                int tuanindex=0;
+                int killindex=0;
+                int tower=0;
+                int gongxian=0;
+                int money=0;
+                if (yourCard!=null)
+                {
+                    for (Map.Entry<String,Integer> entry:yourCard.entrySet())
+                    {
+
+                        if (entry.getKey().equals("团战"))
+                        {
+                            tuanindex = entry.getValue();
+                        }
+                        if (entry.getKey().equals("击杀"))
+                        {
+                            killindex = entry.getValue();
+                        }
+                        if (entry.getKey().equals("推塔"))
+                        {
+                            tower = entry.getValue();
+                        }
+                        if (entry.getKey().equals("发育"))
+                        {
+                            money = entry.getValue();
+                        }
+                        if (entry.getKey().equals("贡献"))
+                        {
+                            gongxian = entry.getValue();
+                        }
+                    }
+                    radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk8)+"”");
+                    //杀人鬼
+                    //条件是 比例90%及以上
+                    //这一个只按人头算
+                    if (killindex<50&&killindex>40)
+                    {
+                        //按比例50
+                        radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk1)+"”");
+                    }
+                    if (killindex>50&&killindex>=85)
+                    {
+                        //按比例100
+                        radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk1)+"”");
+                    }
+                    //神の队友
+                    //计算贡献
+                    //将会出现击杀厉害的角色,他的击杀数高,这里要关掉这个阀值,同时还不能于推塔冲突
+                    if (gongxian<50&&gongxian>40)
+                    {
+                        //排除击杀上位
+                        if (killindex<50&&killindex<40)
+                        {
+                            //排除推塔上位
+                            if (tower<50&&tower<40)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
+                            }
+                        }
+                        //排除击杀上位
+                        if (killindex>50&&killindex<85)
+                        {
+                            //排除推塔上位
+                            if (tower>50&&tower<85)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
+                            }
+                        }
+                    }
+                    if (gongxian>50&&gongxian>85)
+                    {
+                        //排除击杀上位
+                        if (killindex<50&&killindex<40)
+                        {
+                            //排除推塔上位
+                            if (tower<50&&tower<40)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
+                            }
+                        }
+                        //排除击杀上位
+                        if (killindex>50&&killindex<85)
+                        {
+                            //排除推塔上位
+                            if (tower>50&&tower<85)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
+                            }
+                        }
+                    }
+                    //单机王
+                    if (money<50&&money>40)
+                    {
+                        if (killindex<30&&tower<10&&gongxian<10)
+                        {
+                            radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk2)+"”");
+                        }
+
+                    }
+                    if (money>50&&money>85)
+                    {
+                        if (killindex<50&&tower<10&&gongxian<10)
+                        {
+                            radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk2)+"”");
+                        }
+
+                    }
+                    //划水队友
+                    if (money<20&&killindex<20&&gongxian<20&&tower<20&&gongxian<20)
+                    {
+                        radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk3)+"”");
+                    }
+                    //无情の推塔机器
+                    if (tower<50&&tower>40)
+                    {
+
+                        //排除击杀上位
+                        if (killindex<50&&killindex<40)
+                        {
+                            //排除团战上位
+                            if (tuanindex<50&&tuanindex<40)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
+                            }
+                        }
+                        //排除击杀上位
+                        if (killindex>50&&killindex<85)
+                        {
+                            //排除推塔上位
+                            if (tuanindex>50&&tuanindex<85)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
+                            }
+                        }
+
+                    }
+                    if (tower>50&&tower>85)
+                    {
+
+                        //排除击杀上位
+                        if (killindex<50&&killindex<40)
+                        {
+                            //排除团战上位
+                            if (tuanindex<50&&tuanindex<40)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
+                            }
+                        }
+                        //排除击杀上位
+                        if (killindex>50&&killindex<85)
+                        {
+                            //排除推塔上位
+                            if (tuanindex>50&&tuanindex<85)
+                            {
+                                radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
+                            }
+                        }
+
+                    }
+                }
+                else
+                {
+                    radarViewholder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk7)+"”");
+                }
             }
-        }
-        if (viewHolder instanceof TalkViewHolder)
-        {
-            TalkViewHolder talkViewHolder = (TalkViewHolder) viewHolder;
-            int tuanindex=0;
-            int killindex=0;
-            int tower=0;
-            int gongxian=0;
-            int money=0;
-            if (yourCard!=null)
-            {
-                for (Map.Entry<String,Integer> entry:yourCard.entrySet())
-                {
-
-                    if (entry.getKey().equals("团战"))
-                    {
-                        tuanindex = entry.getValue();
-                    }
-                    if (entry.getKey().equals("击杀"))
-                    {
-                        killindex = entry.getValue();
-                    }
-                    if (entry.getKey().equals("推塔"))
-                    {
-                        tower = entry.getValue();
-                    }
-                    if (entry.getKey().equals("发育"))
-                    {
-                        money = entry.getValue();
-                    }
-                    if (entry.getKey().equals("贡献"))
-                    {
-                        gongxian = entry.getValue();
-                    }
-                }
-                talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk8)+"”");
-                //杀人鬼
-                //条件是 比例90%及以上
-                //这一个只按人头算
-                if (killindex<50&&killindex>40)
-                {
-                    //按比例50
-                    talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk1)+"”");
-                }
-                if (killindex>50&&killindex>=85)
-                {
-                    //按比例100
-                    talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk1)+"”");
-                }
-                //神の队友
-                //计算贡献
-                //将会出现击杀厉害的角色,他的击杀数高,这里要关掉这个阀值,同时还不能于推塔冲突
-                if (gongxian<50&&gongxian>40)
-                {
-                    //排除击杀上位
-                    if (killindex<50&&killindex<40)
-                    {
-                        //排除推塔上位
-                        if (tower<50&&tower<40)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
-                        }
-                    }
-                    //排除击杀上位
-                    if (killindex>50&&killindex<85)
-                    {
-                        //排除推塔上位
-                        if (tower>50&&tower<85)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
-                        }
-                    }
-                }
-                if (gongxian>50&&gongxian>85)
-                {
-                    //排除击杀上位
-                    if (killindex<50&&killindex<40)
-                    {
-                        //排除推塔上位
-                        if (tower<50&&tower<40)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
-                        }
-                    }
-                    //排除击杀上位
-                    if (killindex>50&&killindex<85)
-                    {
-                        //排除推塔上位
-                        if (tower>50&&tower<85)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk6)+"”");
-                        }
-                    }
-                }
-                //单机王
-                if (money<50&&money>40)
-                {
-                    if (killindex<30&&tower<10&&gongxian<10)
-                    {
-                        talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk2)+"”");
-                    }
-
-                }
-                if (money>50&&money>85)
-                {
-                    if (killindex<50&&tower<10&&gongxian<10)
-                    {
-                        talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk2)+"”");
-                    }
-
-                }
-                //划水队友
-                if (money<20&&killindex<20&&gongxian<20&&tower<20&&gongxian<20)
-                {
-                    talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk3)+"”");
-                }
-                //无情の推塔机器
-                if (tower<50&&tower>40)
-                {
-
-                    //排除击杀上位
-                    if (killindex<50&&killindex<40)
-                    {
-                        //排除团战上位
-                        if (tuanindex<50&&tuanindex<40)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
-                        }
-                    }
-                    //排除击杀上位
-                    if (killindex>50&&killindex<85)
-                    {
-                        //排除推塔上位
-                        if (tuanindex>50&&tuanindex<85)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
-                        }
-                    }
-
-                }
-                if (tower>50&&tower>85)
-                {
-
-                    //排除击杀上位
-                    if (killindex<50&&killindex<40)
-                    {
-                        //排除团战上位
-                        if (tuanindex<50&&tuanindex<40)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
-                        }
-                    }
-                    //排除击杀上位
-                    if (killindex>50&&killindex<85)
-                    {
-                        //排除推塔上位
-                        if (tuanindex>50&&tuanindex<85)
-                        {
-                            talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk4)+"”");
-                        }
-                    }
-
-                }
-            }
-            else
-            {
-                talkViewHolder.tvTalk.setText("“"+MyApplication.getContext().getString(R.string.talk7)+"”");
-            }
-
         }
         //团分变化统计图
         if (viewHolder instanceof LineViewHolder) {
@@ -334,6 +332,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
             LineDataSet dataSet = new LineDataSet(entries,"团分走势图"); // add entries to dataset
+            dataSet.setColor(SpUtils.getMainColor());
+            dataSet.setCircleColor(SpUtils.getMainColor());
             lineData.addDataSet(dataSet);
             lineViewHolder.lineChartItem.setData(lineData);
             lineViewHolder.lineChartItem.invalidate();
@@ -357,6 +357,15 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             xAxis.setGranularity(1f);//禁止放大后x轴标签重绘
             lineViewHolder.lineChartItem.setTouchEnabled(false);//禁止手势
             lineViewHolder.lineChartItem.setDragEnabled(false);//静止平移
+            //透明化图例
+            Legend legend = lineViewHolder.lineChartItem.getLegend();
+            legend.setForm(Legend.LegendForm.NONE);
+            legend.setTextColor(Color.WHITE);
+            //隐藏x轴描述
+            Description description = new Description();
+            description.setEnabled(false);
+            lineViewHolder.lineChartItem.setDescription(description);
+
 
         }
     }
@@ -369,11 +378,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }else if (position==1)
         {
             return RADAR_ITEM;
-        }else if (position==2)
-        {
-            return TALK_ITEM;
         }
-        else if (position==3)
+        else if (position==2)
         {
             return LINE_ITEM;
         }
@@ -383,7 +389,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 3;
     }
 
     public void setUsedHero(Map<String, String> usedHero) {
@@ -421,7 +427,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class RadarViewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.radar_item)
         RadarView radarItem;
-
+        @BindView(R.id.tv_talk)
+        TextView tvTalk;
         public RadarViewholder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -436,14 +443,5 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ButterKnife.bind(this,itemView);
         }
     }
-
-    class TalkViewHolder extends RecyclerView.ViewHolder
-    {
-        @BindView(R.id.tv_talk)
-        TextView tvTalk;
-        public TalkViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this,itemView);
-        }
-    }
+    
 }

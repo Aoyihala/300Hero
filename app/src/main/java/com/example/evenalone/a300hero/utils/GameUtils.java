@@ -13,6 +13,7 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.example.evenalone.a300hero.bean.LocalUserBean;
+import com.example.evenalone.a300hero.bean.MakeViewBean;
 import com.example.evenalone.a300hero.event.JumpValueEvnet;
 import com.google.gson.Gson;
 
@@ -44,9 +45,9 @@ public class GameUtils {
      */
     public void getMyPower(String usernmae,Handler handler)
     {
-
+        //修改为自定义实体
         List<LocalGaideListInfo> localGaideListInfos = searchbyName(usernmae);
-        List<Integer> powerlist = new ArrayList<>();
+        List<MakeViewBean> powerlist = new ArrayList<>();
         if (localGaideListInfos.size()>30)
         {
             //
@@ -58,6 +59,7 @@ public class GameUtils {
             if (gameInfo!=null)
             {
                 HeroGuide.ListBean listBean = new Gson().fromJson(info.getResult(),HeroGuide.ListBean.class);
+                //
                 if (listBean.getResult()==1)
                 {
                     //赢了
@@ -65,20 +67,73 @@ public class GameUtils {
                     List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
                     for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
                         if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                            MakeViewBean makeViewBean = new MakeViewBean();
+                            makeViewBean.setPower(winSideBean.getELO());
+                            makeViewBean.setHero(winSideBean.getHero().getName());
+                            makeViewBean.setHero(winSideBean.getHero().getIconFile());
+                            if (winSideBean.getRewardExp()==0&&winSideBean.getRewardMoney()==0)
+                            {
+                                //验证码
+                                makeViewBean.setMy_type(1);
+                            }
 
-                            //获取自己的团分
-                            powerlist.add(winSideBean.getELO()) ;
 
                         }
                     }
                 }
-                else
+                if (listBean.getResult()==2)
                 {
                     //输了
                     List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
+                    List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
                     for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
                         if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
-                            powerlist.add(loseSideBean.getELO());
+                            MakeViewBean makeViewBean = new MakeViewBean();
+                            makeViewBean.setPower(loseSideBean.getELO());
+                            makeViewBean.setHero(loseSideBean.getHero().getName());
+                            makeViewBean.setHero(loseSideBean.getHero().getIconFile());
+                            if (loseSideBean.getRewardExp()==0&&loseSideBean.getRewardMoney()==0)
+                            {
+                                //验证码
+                                makeViewBean.setMy_type(1);
+                            }
+                        }
+                    }
+                    for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
+                        if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                            MakeViewBean makeViewBean = new MakeViewBean();
+                            makeViewBean.setPower(winSideBean.getELO());
+                            makeViewBean.setHero(winSideBean.getHero().getName());
+                            makeViewBean.setHero(winSideBean.getHero().getIconFile());
+                            //在赢了的情况下
+                            //获取的经验和金币为0
+                            if (winSideBean.getRewardExp()==0&&winSideBean.getRewardMoney()==0)
+                            {
+                                //验证码
+                                makeViewBean.setMy_type(1);
+                            }
+                            //赢
+                            makeViewBean.setType(1);
+
+
+                        }
+                    }
+                }
+                if (listBean.getResult()==3)
+                {
+                    List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
+                    List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
+                    for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
+                        if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                            MakeViewBean makeViewBean = new MakeViewBean();
+                            makeViewBean.setPower(loseSideBean.getELO());
+                            makeViewBean.setHero(loseSideBean.getHero().getName());
+                            makeViewBean.setHero(loseSideBean.getHero().getIconFile());
+                            if (loseSideBean.getRewardExp()==0&&loseSideBean.getRewardMoney()==0)
+                            {
+                                //验证码
+                                makeViewBean.setMy_type(1);
+                            }
                         }
                     }
                 }
