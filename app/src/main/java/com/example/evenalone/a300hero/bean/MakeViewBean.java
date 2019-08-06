@@ -6,6 +6,17 @@ package com.example.evenalone.a300hero.bean;
  */
 
 public class MakeViewBean {
+
+    private long match_id;
+
+    public void setMatch_id(long match_id) {
+        this.match_id = match_id;
+    }
+
+    public long getMatch_id() {
+        return match_id;
+    }
+
     private String time;
 
     private boolean win;

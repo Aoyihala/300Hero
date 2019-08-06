@@ -2,6 +2,7 @@ package com.example.evenalone.a300hero.adapter;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +14,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.app.MyApplication;
+import com.example.evenalone.a300hero.bean.MakeViewBean;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
+import com.example.evenalone.a300hero.wedgit.MainMarkView;
 import com.example.evenalone.a300hero.wedgit.RadarView;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,6 +29,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 
@@ -53,7 +59,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> xAxisValue = new ArrayList<>();//X轴数据源
     private Map<String, String> usedHero = new HashMap<>();
     private Map<String, Integer> yourCard = new HashMap<>();
-    private List<Integer> pwoerList=new ArrayList<>();
+    private List<MakeViewBean> pwoerList=new ArrayList<>();
 
     public UserAdapter()
     {
@@ -326,16 +332,21 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             lineViewHolder.lineChartItem.setNoDataText("数据不足");
             LineData lineData = new LineData();
             List<Entry> entries = new ArrayList<>();
+            List<String> x_str = new ArrayList<>();
             for (int i1 = 0; i1 < pwoerList.size(); i1++)
             {
-                entries.add(new Entry(i1, pwoerList.get(i1)));
+                entries.add(new Entry(i1, pwoerList.get(i1).getPower()));
+                //重绘的数据内容和markview没关系
+                String _str = (i1+1)+"局";
+                x_str.add(_str);
             }
 
-            LineDataSet dataSet = new LineDataSet(entries,"团分走势图"); // add entries to dataset
+            LineDataSet dataSet = new LineDataSet(entries,""); // add entries to dataset
             dataSet.setColor(SpUtils.getMainColor());
             dataSet.setCircleColor(SpUtils.getMainColor());
             lineData.addDataSet(dataSet);
             lineViewHolder.lineChartItem.setData(lineData);
+            lineViewHolder.lineChartItem.setBackgroundColor(UiUtlis.getColor(R.color.ItemSpaceColor));
             lineViewHolder.lineChartItem.invalidate();
             //设置样式
             YAxis rightAxis =  lineViewHolder.lineChartItem.getAxisRight();
@@ -348,15 +359,22 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             //设置x轴
             XAxis xAxis =  lineViewHolder.lineChartItem.getXAxis();
             xAxis.setTextColor(Color.parseColor("#333333"));
-            xAxis.setTextSize(11f);
+            xAxis.setTextSize(10f);
             xAxis.setAxisMinimum(0f);
             xAxis.setDrawAxisLine(true);//是否绘制轴线
-            xAxis.setDrawGridLines(false);//设置x轴上每个点对应的线
+            xAxis.setDrawGridLines(true);//设置x轴上每个点对应的线
             xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
             xAxis.setGranularity(1f);//禁止放大后x轴标签重绘
-            lineViewHolder.lineChartItem.setTouchEnabled(false);//禁止手势
-            lineViewHolder.lineChartItem.setDragEnabled(false);//静止平移
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(x_str));
+            lineViewHolder.lineChartItem.setTouchEnabled(true);//禁止手势
+            lineViewHolder.lineChartItem.setDragEnabled(false);//平移允许
+            lineViewHolder.lineChartItem.setDoubleTapToZoomEnabled(false);//双击放大静止
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                lineViewHolder.lineChartItem.setNestedScrollingEnabled(false);
+            }
+            lineViewHolder.lineChartItem.setScaleEnabled(false);
+
             //透明化图例
             Legend legend = lineViewHolder.lineChartItem.getLegend();
             legend.setForm(Legend.LegendForm.NONE);
@@ -365,6 +383,13 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Description description = new Description();
             description.setEnabled(false);
             lineViewHolder.lineChartItem.setDescription(description);
+            //覆盖物
+            MainMarkView detailsMarkerView = new  MainMarkView(lineViewHolder.itemView.getContext());
+            detailsMarkerView.setMakeViewBeanList(pwoerList);
+            detailsMarkerView.setChartView(lineViewHolder.lineChartItem);
+            lineViewHolder.lineChartItem.setDrawMarkers(true);
+            lineViewHolder.lineChartItem.setMarkerView(detailsMarkerView);
+
 
 
         }
@@ -403,7 +428,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    public void setPwoerList(List<Integer> pwoerList) {
+    public void setPwoerList(List<MakeViewBean> pwoerList) {
         this.pwoerList = pwoerList;
         notifyDataSetChanged();
     }

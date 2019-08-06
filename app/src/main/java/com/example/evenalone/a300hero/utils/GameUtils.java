@@ -51,7 +51,7 @@ public class GameUtils {
         if (localGaideListInfos.size()>30)
         {
             //
-        localGaideListInfos = localGaideListInfos.subList(0,19);
+        localGaideListInfos = localGaideListInfos.subList(0,20);
         }
         for (LocalGaideListInfo info:localGaideListInfos) {
             //查询游戏匹配数据
@@ -68,20 +68,24 @@ public class GameUtils {
                     for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
                         if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
                             MakeViewBean makeViewBean = new MakeViewBean();
+                            makeViewBean.setMatch_id(listBean.getMatchID());
                             makeViewBean.setPower(winSideBean.getELO());
                             makeViewBean.setHero(winSideBean.getHero().getName());
-                            makeViewBean.setHero(winSideBean.getHero().getIconFile());
+                            makeViewBean.setHero_img(winSideBean.getHero().getIconFile());
                             if (winSideBean.getRewardExp()==0&&winSideBean.getRewardMoney()==0)
                             {
                                 //验证码
                                 makeViewBean.setMy_type(1);
                             }
-
+                            makeViewBean.setWin(true);
+                            makeViewBean.setType(1);
+                            makeViewBean.setTime(listBean.getMatchDate());
+                            powerlist.add(makeViewBean);
 
                         }
                     }
                 }
-                if (listBean.getResult()==2)
+                if (listBean.getResult()==3)
                 {
                     //输了
                     List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
@@ -89,22 +93,29 @@ public class GameUtils {
                     for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
                         if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
                             MakeViewBean makeViewBean = new MakeViewBean();
+                            makeViewBean.setMatch_id(listBean.getMatchID());
                             makeViewBean.setPower(loseSideBean.getELO());
                             makeViewBean.setHero(loseSideBean.getHero().getName());
-                            makeViewBean.setHero(loseSideBean.getHero().getIconFile());
-                            if (loseSideBean.getRewardExp()==0&&loseSideBean.getRewardMoney()==0)
+                            makeViewBean.setHero_img(loseSideBean.getHero().getIconFile());
+                            if (loseSideBean.getRewardExp()==0)
                             {
                                 //验证码
                                 makeViewBean.setMy_type(1);
                             }
+                            //逃跑
+                            makeViewBean.setWin(false);
+                            makeViewBean.setType(3);
+                            makeViewBean.setTime(listBean.getMatchDate());
+                            powerlist.add(makeViewBean);
                         }
                     }
                     for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
                         if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
                             MakeViewBean makeViewBean = new MakeViewBean();
+                            makeViewBean.setMatch_id(listBean.getMatchID());
                             makeViewBean.setPower(winSideBean.getELO());
                             makeViewBean.setHero(winSideBean.getHero().getName());
-                            makeViewBean.setHero(winSideBean.getHero().getIconFile());
+                            makeViewBean.setHero_img(winSideBean.getHero().getIconFile());
                             //在赢了的情况下
                             //获取的经验和金币为0
                             if (winSideBean.getRewardExp()==0&&winSideBean.getRewardMoney()==0)
@@ -112,28 +123,35 @@ public class GameUtils {
                                 //验证码
                                 makeViewBean.setMy_type(1);
                             }
-                            //赢
-                            makeViewBean.setType(1);
+                            //逃跑
+                            makeViewBean.setWin(true);
+                            makeViewBean.setType(3);
+                            makeViewBean.setTime(listBean.getMatchDate());
+                            powerlist.add(makeViewBean);
 
 
                         }
                     }
                 }
-                if (listBean.getResult()==3)
+                if (listBean.getResult()==2)
                 {
                     List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
-                    List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
                     for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
                         if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
                             MakeViewBean makeViewBean = new MakeViewBean();
                             makeViewBean.setPower(loseSideBean.getELO());
+                            makeViewBean.setMatch_id(listBean.getMatchID());
                             makeViewBean.setHero(loseSideBean.getHero().getName());
-                            makeViewBean.setHero(loseSideBean.getHero().getIconFile());
+                            makeViewBean.setHero_img(loseSideBean.getHero().getIconFile());
                             if (loseSideBean.getRewardExp()==0&&loseSideBean.getRewardMoney()==0)
                             {
                                 //验证码
                                 makeViewBean.setMy_type(1);
                             }
+                            makeViewBean.setWin(false);
+                            makeViewBean.setType(2);
+                            makeViewBean.setTime(listBean.getMatchDate());
+                            powerlist.add(makeViewBean);
                         }
                     }
                 }

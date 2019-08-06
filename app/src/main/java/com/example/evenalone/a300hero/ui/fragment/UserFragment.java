@@ -20,6 +20,7 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
 import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
+import com.example.evenalone.a300hero.bean.MakeViewBean;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.google.gson.Gson;
@@ -51,7 +52,7 @@ public class UserFragment extends BaseFragment {
     private List<String> reapet_list = new ArrayList<>();
     private Map<String,String> icon_map = new HashMap<>();
     private Map<String,Integer> my_guaide = new HashMap<>();
-    private List<Integer> powerlist = new ArrayList<>();
+    private List<MakeViewBean> powerlist = new ArrayList<>();
     private LocalGameInfoDao gameInfoDao;
     private UserAdapter userAdapter;
     private Thread my_thread;
@@ -70,7 +71,7 @@ public class UserFragment extends BaseFragment {
             }
             else if (msg.what==GameUtils.GET_PWOERLIST)
             {
-                powerlist = (List<Integer>) msg.obj;
+                powerlist = (List<MakeViewBean>) msg.obj;
                 if (powerlist!=null)
                 {
                     userAdapter.setPwoerList(powerlist);
