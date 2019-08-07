@@ -23,7 +23,9 @@ import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.example.evenalone.a300hero.bean.MakeViewBean;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
+import com.example.evenalone.a300hero.wedgit.MySwitch;
 import com.google.gson.Gson;
+import com.rey.material.widget.Switch;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -114,6 +116,46 @@ public class UserFragment extends BaseFragment {
                 loadUserData();
             }
         });
+        userAdapter.setMoreClickListener(new UserAdapter.OnMoreClickListener() {
+            @Override
+            public void onSwitchClick(MySwitch s, int pos) {
+                if (s.isChecked())
+                {
+                    s.setChecked(false);
+                    SpUtils.setMoreMode(false);
+                   //调用
+                    getMorePwoer();
+                }
+                else
+                {
+                    s.setChecked(true);
+                    SpUtils.setMoreMode(true);
+                    getMorePwoer();
+                }
+            }
+        });
+        }
+        //根据用户的选择去获取团分
+        public void getMorePwoer()
+        {
+            if (my_thread!=null&&my_thread.isInterrupted())
+            {
+                //清空
+                my_thread = null;
+            }
+            my_thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (gameUtils==null)
+                    {
+                        gameUtils = new GameUtils();
+                    }
+                         /*   gameUtils.getMyGuaide(SpUtils.getNowUser(),handler);
+                            gameUtils.getUsedHero(SpUtils.getNowUser(),handler);*/
+                    gameUtils.getMyPower(SpUtils.getNowUser(),handler);
+                }
+            });
+            my_thread.start();
         }
 
     @Override

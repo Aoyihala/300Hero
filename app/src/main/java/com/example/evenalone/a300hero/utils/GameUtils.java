@@ -45,14 +45,28 @@ public class GameUtils {
      */
     public void getMyPower(String usernmae,Handler handler)
     {
+        //true为最多20局 false为所有缓存的局 最多100局
+        boolean ismore = SpUtils.isMoreMode();
         //修改为自定义实体
         List<LocalGaideListInfo> localGaideListInfos = searchbyName(usernmae);
         List<MakeViewBean> powerlist = new ArrayList<>();
-        if (localGaideListInfos.size()>30)
+        if (ismore)
         {
-            //
-        localGaideListInfos = localGaideListInfos.subList(0,20);
+            if (localGaideListInfos.size()>30)
+            {
+                //
+                localGaideListInfos = localGaideListInfos.subList(0,20);
+            }
         }
+        else
+        {
+            if (localGaideListInfos.size()>100)
+            {
+                localGaideListInfos = localGaideListInfos.subList(0,100);
+            }
+            //其他情况不做处理
+        }
+
         for (LocalGaideListInfo info:localGaideListInfos) {
             //查询游戏匹配数据
             GameInfo gameInfo = getGameinfo(info.getMatchId(), new Gson());

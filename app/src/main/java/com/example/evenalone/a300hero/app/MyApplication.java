@@ -41,6 +41,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         okhttpUtils = OkhttpUtils.getInstance();
         releasedata();
 
+
     }
 
     private void releasedata() {
@@ -86,6 +87,8 @@ public class MyApplication extends Application implements Application.ActivityLi
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         if (activity instanceof AppCompatActivity)
         {
+            //随机页面启动
+            SpUtils.setMoreMode(true);
             if (((AppCompatActivity) activity).getSupportActionBar()!=null)
             {
                 //统一操作toolbar

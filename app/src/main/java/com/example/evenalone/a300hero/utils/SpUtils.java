@@ -87,4 +87,18 @@ public class SpUtils
         int color = preferences.getInt("main_color",UiUtlis.getColor(R.color.Yellow));
         return color;
     }
+
+    public static void setMoreMode(boolean moreMode) {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("mode",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("more_mode",moreMode);
+        editor.apply();
+    }
+
+    public static boolean isMoreMode()
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("mode",Context.MODE_PRIVATE);
+        boolean color = preferences.getBoolean("more_mode",true);
+        return color;
+    }
 }
