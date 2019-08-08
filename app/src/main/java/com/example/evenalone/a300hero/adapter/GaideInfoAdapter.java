@@ -21,6 +21,7 @@ import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
+import com.example.evenalone.a300hero.wedgit.NoScrollLinearLayout;
 import com.example.evenalone.a300hero.wedgit.SpaceItemDecoration;
 
 import net.wujingchao.android.view.SimpleTagImageView;
@@ -150,7 +151,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+winSideBean.getSkill().get(0).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill1);
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+winSideBean.getSkill().get(1).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill2);
                 //装备
-                gaideInfoViewHolder.recyclerEquaipment.setLayoutManager(new LinearLayoutManager(viewHolder.itemView.getContext()
+                gaideInfoViewHolder.recyclerEquaipment.setLayoutManager(new NoScrollLinearLayout(viewHolder.itemView.getContext()
                         ,LinearLayoutManager.HORIZONTAL,false));
                 gaideInfoViewHolder.recyclerEquaipment.setNestedScrollingEnabled(false);
                 EquaipeMentAdapter equaipeMentAdapter = new EquaipeMentAdapter();
@@ -240,7 +241,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getSkill().get(0).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill1);
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getSkill().get(1).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill2);
                 //装备
-                gaideInfoViewHolder.recyclerEquaipment.setLayoutManager(new LinearLayoutManager(viewHolder.itemView.getContext()
+                gaideInfoViewHolder.recyclerEquaipment.setLayoutManager(new NoScrollLinearLayout(viewHolder.itemView.getContext()
                         ,LinearLayoutManager.HORIZONTAL,false));
                 gaideInfoViewHolder.recyclerEquaipment.setNestedScrollingEnabled(false);
                 EquaipeMentAdapter equaipeMentAdapter = new EquaipeMentAdapter();

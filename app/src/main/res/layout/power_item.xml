@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_power_avator"
+        android:layout_width="35dp"
+        android:layout_height="35dp" />
+    <com.liulishuo.magicprogresswidget.MagicProgressBar
+        android:id="@+id/progress_powervalue"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="5dp"
+        app:mpb_percent="20"
+        app:mpb_background_color="@color/blue"
+        android:layout_gravity="center_vertical"
+        android:layout_height="25dp" />
+</LinearLayout>

@@ -144,7 +144,7 @@ public class ListActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
-        if (isfirst)
+       /* if (isfirst)
         {
             isfirst = false;
             return;
@@ -163,7 +163,7 @@ public class ListActivity extends BaseActivity {
                 refresh();
             }
 
-        }
+        }*/
     }
 
     @Override
@@ -459,6 +459,7 @@ public class ListActivity extends BaseActivity {
                 return;
             }
             if (!vistormode) {
+
                 Snackbar.make(toolBar, "欢迎召唤师," + role.getRole().getRoleName(), Snackbar.LENGTH_SHORT).show();
                 LocalUserBean localUserBean = searchuser(role.getRole().getRoleName());
                 String oldpower = null;

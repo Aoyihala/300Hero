@@ -15,6 +15,7 @@ import com.example.evenalone.a300hero.base.BaseActivity;
 import com.example.evenalone.a300hero.ui.fragment.HeroGuaideInfoFragment;
 import com.example.evenalone.a300hero.ui.fragment.PowerValueFragment;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class GuaideInfoActivity extends BaseActivity {
                 finish();
             }
         });
+
     }
 
     @Override

@@ -67,5 +67,8 @@ dependencies {
     //图表
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.bmarrdev:android-DecoView-charting:v1.2'
-    implementation files('libs/CySDK.jar')
+    //进度
+    implementation 'com.liulishuo.magicprogresswidget:library:1.1.1'
+    implementation 'cn.dreamtobe.percentsmoothhandler:library:0.1.1'
+
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.database.Database;
@@ -31,6 +33,8 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static DaoSession daoSession;
     //全局代理词
     public static List<NetWorkProx> proxList = new ArrayList<>();
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,7 +46,13 @@ public class MyApplication extends Application implements Application.ActivityLi
         releasedata();
 
 
+
     }
+
+    private void inittalk() {
+
+    }
+
 
     private void releasedata() {
         //释放资源

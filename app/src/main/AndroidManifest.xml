@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".ui.ListActivity" />
         <activity android:name=".ui.SettingActivity" />
-        <activity android:name=".ui.GuaideInfoActivity"></activity>
+        <activity android:name=".ui.GuaideInfoActivity"/>
     </application>
 
 </manifest>

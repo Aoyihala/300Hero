@@ -20,6 +20,7 @@ import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
+import com.example.evenalone.a300hero.wedgit.NoScrollLinearLayout;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -76,8 +77,7 @@ public class HeroGuaideInfoFragment extends BaseFragment {
 
     @Override
     protected void initview() {
-        //recycerLoseside.setNestedScrollingEnabled(false);
-        //recycerWinsaide.setNestedScrollingEnabled(false);
+
     }
 
     @Override
@@ -89,8 +89,10 @@ public class HeroGuaideInfoFragment extends BaseFragment {
         loseadapter.setIswin(false);
         recycerWinsaide.setAdapter(winadapter);
         recycerLoseside.setAdapter(loseadapter);
-        recycerLoseside.setLayoutManager(new LinearLayoutManager(compatActivity));
-        recycerWinsaide.setLayoutManager(new LinearLayoutManager(compatActivity));
+        recycerLoseside.setLayoutManager(new NoScrollLinearLayout(compatActivity));
+        recycerWinsaide.setLayoutManager(new NoScrollLinearLayout(compatActivity));
+        recycerLoseside.setNestedScrollingEnabled(false);
+        recycerWinsaide.setNestedScrollingEnabled(false);
         gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
         bundle = getArguments();
         if (bundle != null) {

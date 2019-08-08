@@ -66,6 +66,8 @@ public class GameUtils {
             }
             //其他情况不做处理
         }
+        //排序、
+        ListSortRe(localGaideListInfos);
 
         for (LocalGaideListInfo info:localGaideListInfos) {
             //查询游戏匹配数据
@@ -210,6 +212,31 @@ public class GameUtils {
         }
         return power;
     }
+    //排序
+    //倒序
+    private static void ListSortRe(List<LocalGaideListInfo> list) {
+        Collections.sort(list, new Comparator<LocalGaideListInfo>() {
+            @Override
+            public int compare(LocalGaideListInfo o1, LocalGaideListInfo o2) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                try {
+                    Date dt1 = format.parse(o1.getTime());
+                    Date dt2 = format.parse(o2.getTime());
+                    if (dt1.getTime() > dt2.getTime()) {
+                        return 1;
+                    } else if (dt1.getTime() < dt2.getTime()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
+    }
+
     //排序
     private static void ListSort(List<LocalGaideListInfo> list) {
         Collections.sort(list, new Comparator<LocalGaideListInfo>() {

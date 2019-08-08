@@ -32,7 +32,7 @@
                 <TextView
                     android:textSize="12sp"
                     android:textColor="@color/gray"
-                    android:text="滑动滑块展示所有缓存的局数所对应的数据"
+                    android:text="关闭滑块展示最多缓存的50局所对应的数据"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
