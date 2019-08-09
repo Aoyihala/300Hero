@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.example.evenalone.a300hero.bean.DaoMaster;
 import com.example.evenalone.a300hero.bean.DaoSession;
@@ -23,7 +24,9 @@ import org.greenrobot.greendao.database.Database;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressLint("NewApi")
 public class MyApplication extends Application implements Application.ActivityLifecycleCallbacks
@@ -33,7 +36,7 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static DaoSession daoSession;
     //全局代理词
     public static List<NetWorkProx> proxList = new ArrayList<>();
-
+    private static Map<String,ListActivity> listActivities = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -66,6 +69,11 @@ public class MyApplication extends Application implements Application.ActivityLi
         Database db = helper.getWritableDb();
         DaoMaster master = new DaoMaster(db);
         daoSession = master.newSession();
+    }
+    //列表activity的栈
+    public static void addlistActivityStack(ListActivity activity,String name)
+    {
+        listActivities.put(name,activity);
     }
 
 
@@ -104,7 +112,12 @@ public class MyApplication extends Application implements Application.ActivityLi
             {
                 //统一操作toolbar
             }
-
+        }
+        //属于战绩列表页面
+        if (activity instanceof ListActivity)
+        {
+            ((ListActivity) activity).setTag(SpUtils.getNowUser());
+            addlistActivityStack((ListActivity) activity,SpUtils.getNowUser());
         }
     }
 
@@ -129,7 +142,24 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     @Override
     public void onActivityResumed(Activity activity) {
+        //判断是否是第一个界面
+        if (activity instanceof ListActivity)
+        {
+            String mianuser = SpUtils.getMainUser();
+            if (!TextUtils.isEmpty(mianuser)&&!TextUtils.isEmpty(((ListActivity) activity).getVisitor_name()))
+            {
+                String vist = ((ListActivity) activity).getVisitor_name();
+                if (vist.equals(mianuser))
+                {
+                    //相同的什么也不干
+                    return;
+                }
+                SpUtils.selectUser(mianuser);
+                ((ListActivity) activity).initdatabyApplication();
+                ((ListActivity) activity).initviewbyApplication();
 
+            }
+        }
     }
 
     @Override

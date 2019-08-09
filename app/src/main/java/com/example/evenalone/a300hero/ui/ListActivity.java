@@ -138,18 +138,19 @@ public class ListActivity extends BaseActivity {
     private List<String> titles = new ArrayList<>();
     private PopLoaclUserListAdapter roleListAdapter;
     private List<LocalUserBean> localUserBeanList = new ArrayList<>();
-    private boolean isfirst=true;
+    public boolean isfirst=true;
+    private String visitor_name;
 
     @Override
     protected void onResume() {
         super.onResume();
         roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
-       /* if (isfirst)
+       if (isfirst)
         {
             isfirst = false;
             return;
         }
-        if (!vistormode)
+       /* if (!vistormode)
         {
             //不是观察模式
             String nickname = SpUtils.getMainUser();
@@ -164,6 +165,24 @@ public class ListActivity extends BaseActivity {
             }
 
         }*/
+    }
+
+    public void setTag(String visitor_name)
+    {
+        this.visitor_name=visitor_name;
+    }
+
+    public String getVisitor_name() {
+        return visitor_name;
+    }
+
+    public void initviewbyApplication()
+    {
+        initview();
+    }
+    public void initdatabyApplication()
+    {
+        initdata();
     }
 
     @Override
