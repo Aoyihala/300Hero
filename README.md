@@ -39,7 +39,7 @@
 [西刺](https://www.xicidaili.com)ip代理池，利用[jsoup](https://jsoup.org/download)解析
 ## License
 
-          300Hero  Copyright (C) 2019  Aoyihala xiataoyunr@gmail.com or 1214504624@qq.com
+          300Hero  Copyright (C) 2019  Aoyihala xiataoyun@gmail.com or 1214504624@qq.com
           This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
           This is free software, and you are welcome to redistribute it
           under certain conditions; type `show c' for details.
