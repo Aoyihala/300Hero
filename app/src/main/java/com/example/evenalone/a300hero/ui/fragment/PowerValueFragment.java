@@ -135,4 +135,11 @@ public class PowerValueFragment extends BaseFragment {
             configadapter(eva.getGameInfo());
         }
     }
+
+    public void updateAnimate() {
+        if (mianAdpater!=null)
+        {
+            mianAdpater.updateAnimate();
+        }
+    }
 }

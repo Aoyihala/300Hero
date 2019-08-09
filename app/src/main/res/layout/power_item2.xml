@@ -1,23 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:padding="5dp"
+    app:cardElevation="1dp"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="#fff"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:padding="5dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <LinearLayout
 
-    <com.liulishuo.magicprogresswidget.MagicProgressBar
-        android:id="@+id/progress_powervalue2"
-        android:layout_width="match_parent"
-        android:layout_marginRight="5dp"
-        app:mpb_percent="20"
-        android:layout_weight="1"
-        app:mpb_background_color="@color/blue"
-        android:layout_gravity="center_vertical"
-        android:layout_height="25dp" />
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_power_avator2"
-        android:layout_width="35dp"
-        android:layout_height="35dp" />
-</LinearLayout>
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="本萌新不高兴了"
+                android:textStyle="bold"
+                android:id="@+id/tv_power_des2"
+                android:textColor="#000"
+                android:gravity="right"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="#000"
+                android:textSize="10sp"
+                android:id="@+id/tv_power_des_power2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <com.liulishuo.magicprogresswidget.MagicProgressBar
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_height="15dp"
+                app:mpb_percent="0.5"
+                android:rotationY="180"
+                app:mpb_background_color="@color/ItemSpaceColor"
+                app:mpb_fill_color="@color/blue"
+                android:id="@+id/progress_powervalue2"
+                app:mpb_flat="true"/>
+        </LinearLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_power_avator2"
+            android:layout_width="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="35dp" />
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

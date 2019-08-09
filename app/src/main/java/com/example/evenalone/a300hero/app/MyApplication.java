@@ -61,6 +61,7 @@ public class MyApplication extends Application implements Application.ActivityLi
     }
 
     private void initdb() {
+
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"user");
         Database db = helper.getWritableDb();
         DaoMaster master = new DaoMaster(db);

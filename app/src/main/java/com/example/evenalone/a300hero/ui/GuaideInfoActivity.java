@@ -63,6 +63,25 @@ public class GuaideInfoActivity extends BaseActivity {
             inintfragment();
 
         }
+        viewPagerGuaide.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if (i==1)
+                {
+                    valueFragment.updateAnimate();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     private void inintfragment() {

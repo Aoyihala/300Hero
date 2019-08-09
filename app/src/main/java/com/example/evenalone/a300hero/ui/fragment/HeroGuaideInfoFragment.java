@@ -148,7 +148,7 @@ public class HeroGuaideInfoFragment extends BaseFragment {
             viewTeamColorWin.setBackgroundColor(UiUtlis.getColor(R.color.blue));
             viewTeamColorLose.setBackgroundColor(UiUtlis.getColor(R.color.Red));
             if (winSideBeanList.size() > 0 && loseSideBeanList.size() > 0) {
-                tvGuaideAvdpower.setText("蓝方:" + (win_power / winSideBeanList.size()) + " | " + "红方:" + (lose_power / winSideBeanList.size()));
+                tvGuaideAvdpower.setText("胜方:" + (win_power / winSideBeanList.size()) + " | " + "败方:" + (lose_power / winSideBeanList.size()));
             }
 
 
@@ -157,7 +157,7 @@ public class HeroGuaideInfoFragment extends BaseFragment {
             viewTeamColorLose.setBackgroundColor(UiUtlis.getColor(R.color.blue));
             viewTeamColorWin.setBackgroundColor(UiUtlis.getColor(R.color.Red));
             if (winSideBeanList.size() > 0 && loseSideBeanList.size() > 0) {
-                tvGuaideAvdpower.setText("蓝方:" + (lose_power / loseSideBeanList.size()) + " | " + "红方:" + (win_power / winSideBeanList.size()));
+                tvGuaideAvdpower.setText("胜方:" + (lose_power / loseSideBeanList.size()) + " | " + "败方:" + (win_power / winSideBeanList.size()));
             }
 
         }

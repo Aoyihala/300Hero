@@ -2,6 +2,7 @@ package com.example.evenalone.a300hero.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,13 +95,26 @@ public class PowerValueMianAdpater extends RecyclerView.Adapter<RecyclerView.Vie
                     int maxpower = winpower>losepower?winpower:losepower;
                     winadpater = new PowerValueAdapter();
                     loseadapter = new PowerValueAdapter();
-                    winadpater.setMaxPower(maxpower);
-                    loseadapter.setMaxPower(maxpower);
+                    int winteam = winSideBeanList.get(0).getTeamResult();
+                    if (winteam==0)
+                    {
+                        winadpater.setMaxPower(maxpower,0);
+                        loseadapter.setMaxPower(maxpower,1);
+                    }
+                    else
+                    {
+                        winadpater.setMaxPower(maxpower,1);
+                        loseadapter.setMaxPower(maxpower,0);
+                    }
+
+
                     winadpater.setWinData(winSideBeanList);
                     loseadapter.setLoseData(loseSideBeanList);
+                    bodyViewHolder.recycerPowerWinsaide.setNestedScrollingEnabled(false);
                     bodyViewHolder.recycerPowerWinsaide.setLayoutManager(new NoScrollLinearLayout(viewHolder
                     .itemView.getContext()));
-                    bodyViewHolder.recycerPowerLosesaide.setLayoutManager(new NoScrollLinearLayout(viewHolder.itemView.getContext()));
+                    bodyViewHolder.recycerPowerLosesaide.setNestedScrollingEnabled(false);
+                    bodyViewHolder.recycerPowerLosesaide.setLayoutManager(new NoScrollLinearLayout(viewHolder.itemView.getContext(), LinearLayoutManager.VERTICAL,true));
                     bodyViewHolder.recycerPowerWinsaide.setAdapter(winadpater);
                     bodyViewHolder.recycerPowerLosesaide.setAdapter(loseadapter);
                     winadpater.notifyDataSetChanged();
@@ -168,6 +182,15 @@ public class PowerValueMianAdpater extends RecyclerView.Adapter<RecyclerView.Vie
     public void setData(GameInfo data) {
         this.data = data;
         notifyDataSetChanged();
+    }
+
+    public void updateAnimate() {
+        //更新
+        if (loseadapter!=null&&winadpater!=null)
+        {
+            loseadapter.notifyDataSetChanged();
+            winadpater.notifyDataSetChanged();
+        }
     }
 
     class PowerHeadViewHodler extends RecyclerView.ViewHolder {
