@@ -180,9 +180,15 @@ public class ListActivity extends BaseActivity {
     {
         initview();
     }
-    public void initdatabyApplication()
+    public void initdatabyApplication(String username)
     {
-        initdata();
+        //这里分两种情况
+        nickname = username;
+        if (fragmentList.size()>0&&viewPager.getAdapter()!=null)
+        {
+            refresh();
+        }
+
     }
 
     @Override

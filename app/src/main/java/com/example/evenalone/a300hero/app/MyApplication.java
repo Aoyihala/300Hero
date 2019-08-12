@@ -117,7 +117,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         if (activity instanceof ListActivity)
         {
             ((ListActivity) activity).setTag(SpUtils.getNowUser());
-            addlistActivityStack((ListActivity) activity,SpUtils.getNowUser());
+
         }
     }
 
@@ -146,7 +146,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         if (activity instanceof ListActivity)
         {
             String mianuser = SpUtils.getMainUser();
-            if (!TextUtils.isEmpty(mianuser)&&!TextUtils.isEmpty(((ListActivity) activity).getVisitor_name()))
+           /* if (!TextUtils.isEmpty(mianuser)&&!TextUtils.isEmpty(((ListActivity) activity).getVisitor_name()))
             {
                 String vist = ((ListActivity) activity).getVisitor_name();
                 if (vist.equals(mianuser))
@@ -158,6 +158,15 @@ public class MyApplication extends Application implements Application.ActivityLi
                 ((ListActivity) activity).initdatabyApplication();
                 ((ListActivity) activity).initviewbyApplication();
 
+            }*/
+            if (!TextUtils.isEmpty(mianuser)&&!TextUtils.isEmpty(((ListActivity) activity).getVisitor_name()))
+            {
+                String vist = ((ListActivity) activity).getVisitor_name();
+                if (vist.equals(mianuser)) {
+                    //获取相同的实列
+                  SpUtils.selectUser(mianuser);
+                  ((ListActivity) activity).initdatabyApplication(mianuser);
+                }
             }
         }
     }
