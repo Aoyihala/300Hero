@@ -105,5 +105,57 @@
         android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <android.support.v7.widget.CardView
+        app:cardBackgroundColor="#fff"
+        app:cardCornerRadius="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardElevation="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:id="@+id/card_x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="开启团分统计图x轴"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/check_x"
+                    android:checked="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:id="@+id/card_y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="开启团分统计图y轴"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/check_y"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
