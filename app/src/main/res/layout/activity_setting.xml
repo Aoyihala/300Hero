@@ -8,10 +8,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.SettingActivity">
     <include layout="@layout/tool_bar"/>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:text="网络相关"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
             <android.support.v7.widget.CardView
                 app:cardBackgroundColor="#fff"
                 app:cardCornerRadius="5dp"
@@ -92,11 +96,14 @@
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
                         </RelativeLayout>
-
                     </net.cachapa.expandablelayout.ExpandableLayout>
                 </RelativeLayout>
-
             </android.support.v7.widget.CardView>
+    <TextView
+        android:textSize="12sp"
+        android:text="个性化配置"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        </LinearLayout>
 </LinearLayout>

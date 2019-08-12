@@ -162,7 +162,8 @@ public class MyApplication extends Application implements Application.ActivityLi
             if (!TextUtils.isEmpty(mianuser)&&!TextUtils.isEmpty(((ListActivity) activity).getVisitor_name()))
             {
                 String vist = ((ListActivity) activity).getVisitor_name();
-                if (vist.equals(mianuser)) {
+                if (vist.equals(mianuser))
+                {
                     //获取相同的实列
                   SpUtils.selectUser(mianuser);
                   ((ListActivity) activity).initdatabyApplication(mianuser);
