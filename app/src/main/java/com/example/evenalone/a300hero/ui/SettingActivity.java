@@ -1,5 +1,6 @@
 package com.example.evenalone.a300hero.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,12 +19,13 @@ import com.example.evenalone.a300hero.adapter.ProxyListAdapter;
 import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.base.BaseActivity;
 import com.example.evenalone.a300hero.bean.NetWorkProx;
-import com.example.evenalone.a300hero.event.ProxEvent;
 import com.example.evenalone.a300hero.event.SProxyEvent;
+import com.example.evenalone.a300hero.event.UpdateEvent;
 import com.example.evenalone.a300hero.utils.SpUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingActivity extends BaseActivity {
@@ -60,10 +63,21 @@ public class SettingActivity extends BaseActivity {
     RecyclerView recyclerProxy;
     @BindView(R.id.tv_next_page)
     TextView tvNextPage;
-    private boolean loading_complete=false;
+    @BindView(R.id.img_charater_manange)
+    ImageView imgCharaterManange;
+    @BindView(R.id.check_x)
+    CheckBox checkX;
+    @BindView(R.id.card_x)
+    LinearLayout cardX;
+    @BindView(R.id.check_y)
+    CheckBox checkY;
+    @BindView(R.id.card_y)
+    LinearLayout cardY;
+    private boolean loading_complete = false;
     private List<NetWorkProx> proxList = new ArrayList<>();
     private ProxyListAdapter listAdapter;
     private int page = 0;
+
     @Override
     protected void initview() {
         tvTopTitle.setText("设置");
@@ -73,7 +87,7 @@ public class SettingActivity extends BaseActivity {
                 if (checkboxProxy.isChecked()) {
                     expandProxyView.expand(true);
                     SpUtils.setPorxy(true);
-                    MyApplication.getOkhttpUtils().updateproxy(page,SettingActivity.class);
+                    MyApplication.getOkhttpUtils().updateproxy(page, SettingActivity.class);
                 } else {
                     expandProxyView.collapse(true);
                     SpUtils.setPorxy(false);
@@ -90,17 +104,64 @@ public class SettingActivity extends BaseActivity {
         tvNextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (loading_complete)
-                {
-                    page=page+1;
-                    MyApplication.getOkhttpUtils().updateproxy(page,SettingActivity.class);
+                if (loading_complete) {
+                    page = page + 1;
+                    MyApplication.getOkhttpUtils().updateproxy(page, SettingActivity.class);
                     loading_complete = false;
+                } else {
+                    Snackbar.make(toolBar, "加载中请稍后", Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        checkX.setChecked(SpUtils.getX());
+        checkY.setChecked(SpUtils.getY());
+        cardX.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkX.isChecked())
+                {
+                    SpUtils.setX(false);
+                    checkX.setChecked(false);
+                    EventBus.getDefault().post(new UpdateEvent());
                 }
                 else
                 {
-                    Snackbar.make(toolBar,"加载中请稍后",Snackbar.LENGTH_SHORT).show();
+                    checkX.setChecked(true);
+                    SpUtils.setX(true);
+                    EventBus.getDefault().post(new UpdateEvent());
                 }
-
+            }
+        });
+        checkX.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SpUtils.setX(isChecked);
+                EventBus.getDefault().post(new UpdateEvent());
+            }
+        });
+        cardY.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkY.isChecked())
+                {
+                    SpUtils.sety(false);
+                    checkY.setChecked(false);
+                    EventBus.getDefault().post(new UpdateEvent());
+                }
+                else
+                {
+                    SpUtils.sety(true);
+                    checkY.setChecked(true);
+                    EventBus.getDefault().post(new UpdateEvent());
+                }
+            }
+        });
+        checkY.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SpUtils.sety(isChecked);
+                EventBus.getDefault().post(new UpdateEvent());
             }
         });
     }
@@ -111,8 +172,7 @@ public class SettingActivity extends BaseActivity {
         recyclerProxy.setHasFixedSize(true);
         recyclerProxy.setLayoutManager(new LinearLayoutManager(this));
         recyclerProxy.setAdapter(listAdapter);
-        if (MyApplication.proxList!=null&&MyApplication.proxList.size()>0)
-        {
+        if (MyApplication.proxList != null && MyApplication.proxList.size() > 0) {
             listAdapter.setProxList(MyApplication.proxList);
             listAdapter.notifyDataSetChanged();
         }
@@ -120,7 +180,7 @@ public class SettingActivity extends BaseActivity {
         checkboxProxy.setChecked(SpUtils.isPorxy());
         if (SpUtils.isPorxy()) {
             expandProxyView.setExpanded(true);
-            MyApplication.getOkhttpUtils().updateproxy(page,SettingActivity.class);
+            MyApplication.getOkhttpUtils().updateproxy(page, SettingActivity.class);
         } else {
             expandProxyView.setExpanded(false);
         }
@@ -142,7 +202,7 @@ public class SettingActivity extends BaseActivity {
         MyApplication.proxList = proxList;
         listAdapter.setProxList(proxList);
         listAdapter.notifyDataSetChanged();
-        MyApplication.getOkhttpUtils().setProxy(MyApplication.proxList,MyApplication.proxList.get(0));
+        MyApplication.getOkhttpUtils().setProxy(MyApplication.proxList, MyApplication.proxList.get(0));
         loading_complete = true;
 
     }

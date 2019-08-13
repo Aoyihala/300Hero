@@ -251,15 +251,33 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             rightAxis.setEnabled(false);
             YAxis leftAxis = lineViewHolder.lineChartItem.getAxisLeft();
             //设置图表左边的y轴禁用
-            leftAxis.setEnabled(false);
+            if (SpUtils.getY())
+            {
+                leftAxis.setEnabled(true);
+            }
+            else
+            {
+                leftAxis.setEnabled(false);
+            }
+
             //设置x轴
             XAxis xAxis = lineViewHolder.lineChartItem.getXAxis();
             xAxis.setTextColor(SpUtils.getMainColor());
             xAxis.setTextSize(10f);
             xAxis.setAxisMinimum(0f);
-            xAxis.setDrawAxisLine(true);//是否绘制轴线
+            if (SpUtils.getX())
+            {
+                xAxis.setDrawAxisLine(true);//是否绘制轴线
+                xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
+            }
+            else
+            {
+                xAxis.setDrawAxisLine(false);
+                xAxis.setDrawLabels(false);//绘制标签  指x轴上的对应数值
+            }
+
             xAxis.setDrawGridLines(false);//设置x轴上每个点对应的线
-            xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
+
             xAxis.setAxisLineColor(SpUtils.getMainColor());
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
             xAxis.setGranularity(1f);//禁止放大后x轴标签重绘

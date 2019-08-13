@@ -101,4 +101,29 @@ public class SpUtils
         boolean color = preferences.getBoolean("more_mode",true);
         return color;
     }
+
+    public static void setX(boolean x) {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("xy",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("x",x);
+        editor.apply();
+    }
+    public static boolean getX()
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("xy",Context.MODE_PRIVATE);
+        boolean color = preferences.getBoolean("x",true);
+        return color;
+    }
+    public static void sety(boolean y) {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("xy",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("y",y);
+        editor.apply();
+    }
+    public static boolean getY()
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("xy",Context.MODE_PRIVATE);
+        boolean color = preferences.getBoolean("y",true);
+        return color;
+    }
 }

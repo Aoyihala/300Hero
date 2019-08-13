@@ -21,11 +21,15 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.example.evenalone.a300hero.bean.MakeViewBean;
+import com.example.evenalone.a300hero.event.UpdateEvent;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.wedgit.MySwitch;
 import com.google.gson.Gson;
 import com.rey.material.widget.Switch;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,7 +100,14 @@ public class UserFragment extends BaseFragment {
     });
     @Override
     protected boolean setEventOpen() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void update(UpdateEvent eva)
+    {
+        //loadUserData();
+        userAdapter.notifyDataSetChanged();
     }
 
     @Override
