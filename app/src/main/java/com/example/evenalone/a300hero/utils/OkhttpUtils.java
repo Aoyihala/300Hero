@@ -314,9 +314,6 @@ public class OkhttpUtils
 
             }
         }
-
-
-
     }
 
     /**

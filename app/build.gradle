@@ -10,11 +10,22 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfigs {
+            release {
+                storeFile file("data.jks")
+                storePassword "asd123"
+                keyAlias "key_data"
+                keyPassword "asd123"
+            }
+        }
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     configurations.all {
