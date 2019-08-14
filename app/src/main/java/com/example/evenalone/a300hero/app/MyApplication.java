@@ -4,19 +4,26 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.evenalone.a300hero.bean.DaoMaster;
 import com.example.evenalone.a300hero.bean.DaoSession;
 import com.example.evenalone.a300hero.bean.NetWorkProx;
+import com.example.evenalone.a300hero.service.JobSchedulerManager;
+import com.example.evenalone.a300hero.service.MyNotifiService;
+import com.example.evenalone.a300hero.service.MyPushService;
+import com.example.evenalone.a300hero.service.PushCallBackService;
 import com.example.evenalone.a300hero.ui.HomeActivity;
 import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
+import com.igexin.sdk.PushManager;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,20 +49,23 @@ public class MyApplication extends Application implements Application.ActivityLi
     public void onCreate() {
         super.onCreate();
         this.registerActivityLifecycleCallbacks(this);
+        context = getApplicationContext();
         x.Ext.init(this);
         initdb();
-        context = getApplicationContext();
+        PushManager.getInstance().initialize(context,MyPushService.class);
+        PushManager.getInstance().registerPushIntentService(context,PushCallBackService.class);
         okhttpUtils = OkhttpUtils.getInstance();
         releasedata();
-
-
+        //启用jobshulder
+        JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();
+        /*Intent intent = new Intent(context,MyNotifiService.class);
+        context.startForegroundService(intent);*/
 
     }
 
     private void inittalk() {
 
     }
-
 
     private void releasedata() {
         //释放资源
