@@ -5,6 +5,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.example.evenalone.a300hero.app.MyApplication;
+import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
 import com.igexin.sdk.PushService;
 
@@ -19,8 +20,8 @@ public class MyPushService extends PushService
         if (SystemUtils.isBackground(MyApplication.getContext()))
         {
             //在后台
-
-
+            if (SpUtils.isClock())
+            {
                 //判断关键服务是否运行
                 if (!SystemUtils.isServiceWork(MyApplication.getContext(),"com.example.evenalone.a300hero.service.MyNotifiService"))
                 {
@@ -29,17 +30,11 @@ public class MyPushService extends PushService
                     }
                     //
                     Log.e("data","唤醒服务");
-                    //唤醒
-                    Intent intent = new Intent(MyApplication.getContext(),MyNotifiService.class);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        MyApplication.getContext().startForegroundService(intent);
-                    }
-                    else
-                    {
-                        MyApplication.getContext().startService(intent);
-                    }
-
-
+                }
+            }
+            else
+            {
+                Log.e("data","闲置");
             }
         }
     }

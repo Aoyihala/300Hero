@@ -1,5 +1,7 @@
 package com.example.evenalone.a300hero.ui;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.adapter.ProxyListAdapter;
@@ -21,6 +24,8 @@ import com.example.evenalone.a300hero.base.BaseActivity;
 import com.example.evenalone.a300hero.bean.NetWorkProx;
 import com.example.evenalone.a300hero.event.SProxyEvent;
 import com.example.evenalone.a300hero.event.UpdateEvent;
+import com.example.evenalone.a300hero.service.JobSchedulerManager;
+import com.example.evenalone.a300hero.service.MyNotifiService;
 import com.example.evenalone.a300hero.utils.SpUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -31,6 +36,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +79,10 @@ public class SettingActivity extends BaseActivity {
     CheckBox checkY;
     @BindView(R.id.card_y)
     LinearLayout cardY;
+    @BindView(R.id.check_clock)
+    CheckBox checkClock;
+    @BindView(R.id.card_clock)
+    CardView cardClock;
     private boolean loading_complete = false;
     private List<NetWorkProx> proxList = new ArrayList<>();
     private ProxyListAdapter listAdapter;
@@ -110,23 +120,21 @@ public class SettingActivity extends BaseActivity {
                     loading_complete = false;
                 } else {
                     Snackbar.make(toolBar, "加载中请稍后", Snackbar.LENGTH_SHORT).show();
-                }
+            }
 
             }
         });
         checkX.setChecked(SpUtils.getX());
         checkY.setChecked(SpUtils.getY());
+        checkClock.setChecked(SpUtils.isClock());
         cardX.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkX.isChecked())
-                {
+                if (checkX.isChecked()) {
                     SpUtils.setX(false);
                     checkX.setChecked(false);
                     EventBus.getDefault().post(new UpdateEvent());
-                }
-                else
-                {
+                } else {
                     checkX.setChecked(true);
                     SpUtils.setX(true);
                     EventBus.getDefault().post(new UpdateEvent());
@@ -143,14 +151,11 @@ public class SettingActivity extends BaseActivity {
         cardY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkY.isChecked())
-                {
+                if (checkY.isChecked()) {
                     SpUtils.sety(false);
                     checkY.setChecked(false);
                     EventBus.getDefault().post(new UpdateEvent());
-                }
-                else
-                {
+                } else {
                     SpUtils.sety(true);
                     checkY.setChecked(true);
                     EventBus.getDefault().post(new UpdateEvent());
@@ -162,6 +167,70 @@ public class SettingActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SpUtils.sety(isChecked);
                 EventBus.getDefault().post(new UpdateEvent());
+            }
+        });
+        //设置定时任务
+        cardClock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkClock.setChecked(!checkClock.isChecked());
+                SpUtils.setClock(checkClock.isChecked());
+                if (checkClock.isChecked())
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        //目的是为了保活
+                        JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).startJobScheduler();
+                    }
+                    else
+                    {
+                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
+                    }
+                    Snackbar.make(toolBar,"记得赋予软件自启权限",Snackbar.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).stopJobScheduler();
+                    }
+                    else
+                    {
+                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
+                    }
+                }
+
+            }
+        });
+        checkClock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SpUtils.setClock(checkClock.isChecked());
+                if (isChecked)
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        //目的是为了保活
+                        JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).startJobScheduler();
+                    }
+                    else
+                    {
+                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
+                    }
+                    Snackbar.make(toolBar,"记得赋予软件自启权限",Snackbar.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).stopJobScheduler();
+                        //停止服务
+                        Intent in = new Intent(SettingActivity.this,MyNotifiService.class);
+                        SettingActivity.this.stopService(in);
+
+                    }
+                    else
+                    {
+                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
+                    }
+                }
+
             }
         });
     }

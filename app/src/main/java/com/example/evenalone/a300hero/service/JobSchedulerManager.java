@@ -46,15 +46,23 @@ public class JobSchedulerManager {
         // 构建JobInfo对象，传递给JobSchedulerService
         JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, new ComponentName(mContext, JobTimer.class));
         //设置每3秒执行一下任务
-        //builder.setPeriodic(3000);
+        if (Build.VERSION.SDK_INT<=24)
+        {
+            builder.setPeriodic(3000);
+        }
+
         // 设置设备重启时，执行该任务
         builder.setPersisted(true);
      /*   builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);*/
-       /* // 当插入充电器，执行该任务
-        builder.setRequiresCharging(true);*/
-        builder.setOverrideDeadline(10000);
-        //设置最小间隔
-        builder.setMinimumLatency(5000);
+        // 当插入充电器，执行该任务
+        builder.setRequiresCharging(true);
+        if (Build.VERSION.SDK_INT>=24)
+        {
+            builder.setOverrideDeadline(3000);
+            //设置最小间隔
+            builder.setMinimumLatency(3000);
+        }
+
         JobInfo info = builder.build();
         //开始定时执行该系统任务
         mJobScheduler.schedule(info);

@@ -270,8 +270,12 @@ public class ListActivity extends BaseActivity {
             public void onclick(LocalUserBean userBean) {
                 //操作
                 //重新走一遍
+                nickname = userBean.getNickname();
                 menuPopwindow.dismiss();
                 SpUtils.selectUser(userBean.getNickname());
+                //清楚mianuser
+                SpUtils.setMianUser(null);
+                //重新加载一次
                 roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
                 roleListAdapter.notifyDataSetChanged();
                 refresh();

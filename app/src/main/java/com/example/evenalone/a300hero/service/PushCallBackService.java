@@ -1,12 +1,17 @@
 package com.example.evenalone.a300hero.service;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.example.evenalone.a300hero.app.MyApplication;
+import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
@@ -24,6 +29,7 @@ public class PushCallBackService extends GTIntentService
 
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onReceiveClientId(Context context, String s) {
         Log.e("当前客户端id",s);
@@ -31,26 +37,22 @@ public class PushCallBackService extends GTIntentService
         if (isBackground(MyApplication.getContext()))
         {
 
-
+            Intent intent = new Intent(MyApplication.getContext(),MyNotifiService.class);
+            //在后台
+            if (SpUtils.isClock())
+            {
                 //判断关键服务是否运行
                 if (!SystemUtils.isServiceWork(MyApplication.getContext(),"com.example.evenalone.a300hero.service.MyNotifiService"))
                 {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         JobSchedulerManager.getJobSchedulerInstance(MyApplication.getContext()).startJobScheduler();
                     }
-                    //
-                    Log.e("data","唤醒服务");
-                    //唤醒
-                    Intent intent = new Intent(MyApplication.getContext(),MyNotifiService.class);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        MyApplication.getContext().startForegroundService(intent);
-                    }
-                    else
-                    {
-                        MyApplication.getContext().startService(intent);
-                    }
                 }
-
+            }
+            else
+            {
+                Log.e("data","闲置");
+            }
 
         }
 

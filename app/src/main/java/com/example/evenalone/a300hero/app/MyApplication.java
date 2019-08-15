@@ -3,10 +3,13 @@ package com.example.evenalone.a300hero.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +26,7 @@ import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
+import com.example.evenalone.a300hero.utils.SystemUtils;
 import com.igexin.sdk.PushManager;
 
 
@@ -55,12 +59,24 @@ public class MyApplication extends Application implements Application.ActivityLi
         PushManager.getInstance().initialize(context,MyPushService.class);
         PushManager.getInstance().registerPushIntentService(context,PushCallBackService.class);
         okhttpUtils = OkhttpUtils.getInstance();
+        checkservice();
         releasedata();
         //启用jobshulder
-        JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();
+      /*  JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();*/
         /*Intent intent = new Intent(context,MyNotifiService.class);
         context.startForegroundService(intent);*/
 
+    }
+
+    private void checkservice() {
+        if (SpUtils.isClock())
+        {
+            if (!SystemUtils.isServiceWork(MyApplication.getContext(),"com.example.evenalone.a300hero.service.MyNotifiService"))
+            {
+                //服务没有运行
+                JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();
+            }
+        }
     }
 
     private void inittalk() {

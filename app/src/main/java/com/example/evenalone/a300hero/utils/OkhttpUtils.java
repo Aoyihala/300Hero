@@ -194,7 +194,6 @@ public class OkhttpUtils
     {
 
         //主动取消
-
         call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override

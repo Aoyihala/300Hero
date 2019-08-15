@@ -126,4 +126,17 @@ public class SpUtils
         boolean color = preferences.getBoolean("y",true);
         return color;
     }
+
+    public static boolean isClock() {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("clock",Context.MODE_PRIVATE);
+        boolean color = preferences.getBoolean("auto",false);
+        return color;
+    }
+    public static void setClock(boolean clock)
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("clock",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("auto",clock);
+        editor.apply();
+    }
 }
