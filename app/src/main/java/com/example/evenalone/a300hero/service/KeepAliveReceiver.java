@@ -30,7 +30,8 @@ public class KeepAliveReceiver extends BroadcastReceiver {
             return;
         }
         Log.e("状态","被kill了");
-        // LogUtils.info("AliveBroadcastReceiver---->复活进程(APP)");
+        //这个地方可以对app进程进行复活
+
 
     }
     /**
@@ -46,7 +47,7 @@ public class KeepAliveReceiver extends BroadcastReceiver {
         // 遍历，进程名即包名
         for (ActivityManager.RunningAppProcessInfo appInfo : appProcessInfoList) {
             Log.e("当前进程", "alive process:" + appInfo.processName);
-            if (appInfo.processName.endsWith(":a300hero")) {
+            if (appInfo.processName.endsWith("a300hero")) {
                 isAPPRunning = true;
                 break;
             }
