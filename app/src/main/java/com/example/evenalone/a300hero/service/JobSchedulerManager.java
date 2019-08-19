@@ -48,7 +48,7 @@ public class JobSchedulerManager {
         //设置每3秒执行一下任务
         if (Build.VERSION.SDK_INT<=24)
         {
-            builder.setPeriodic(3000);
+            builder.setPeriodic(10000);
         }
 
         // 设置设备重启时，执行该任务

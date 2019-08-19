@@ -95,10 +95,11 @@ public class MyNotifiService extends Service {
     public void onCreate() {
         super.onCreate();
         //5秒就挂
-        //不执行的话
-        createNotificationChannel("data","战绩定时通知",NotificationManager.IMPORTANCE_MAX);
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             notafi();
+            //不执行的话
+            createNotificationChannel("data","战绩定时通知",NotificationManager.IMPORTANCE_MAX);
         }
         if (!EventBus.getDefault().isRegistered(this))
         {
@@ -123,6 +124,8 @@ public class MyNotifiService extends Service {
         manager.createNotificationChannel(channel);
         Notification notification = new Notification.Builder(getBaseContext(),"id").build();
         startForeground(10, notification);
+        Intent intent = new Intent(getBaseContext(),NotfiService.class);
+        getBaseContext().startForegroundService(intent);
     }
 
     @Override

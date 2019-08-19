@@ -33,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".service.NotfiService"/>
         <activity android:name=".ui.ListActivity" />
         <activity android:name=".ui.SettingActivity" />
         <activity android:name=".ui.GuaideInfoActivity"

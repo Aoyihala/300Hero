@@ -5,8 +5,9 @@ public class Contacts
 
 
 
+    //public static final String HOST_URL="http://300data.thacg.cn/Apis/";
     public static final String HOST_URL="http://300report.jumpw.com/";
-    public static final String IMG=HOST_URL+"static/images/";
+    public static final String IMG="http://300report.jumpw.com/static/images/";
     /**
      * 参数name
      * 参数index(获取多少条)
