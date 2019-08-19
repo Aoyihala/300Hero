@@ -34,7 +34,7 @@ public class PowerValueMianAdpater extends RecyclerView.Adapter<RecyclerView.Vie
 
     private int POWER_HEAD = 0;
     private int POWER_BODY = 1;
-    private GameInfo data;
+    private GameInfo data = new GameInfo();
     private PowerValueAdapter winadpater;
     private PowerValueAdapter loseadapter;
     @NonNull
@@ -54,6 +54,10 @@ public class PowerValueMianAdpater extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        if (data==null||data.getMatch()==null||data.getMatch().getLoseSide()==null||data.getMatch().getWinSide()==null)
+        {
+            return;
+        }
         List<GameInfo.MatchBean.WinSideBean> winSideBeanList = data.getMatch().getWinSide();
         List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = data.getMatch().getLoseSide();
         if (viewHolder instanceof PowerHeadViewHodler)

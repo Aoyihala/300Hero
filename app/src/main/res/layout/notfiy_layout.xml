@@ -9,16 +9,7 @@
         android:orientation="horizontal"
         android:background="@color/blue"
         android:layout_height="wrap_content">
-        <TextView
-            android:text="WIN"
-            android:textSize="15sp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:id="@+id/tv_notifiy_status"
-            android:layout_gravity="center_vertical"
-            android:textColor="#fff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
         <ImageView
             android:layout_marginLeft="10dp"
             android:id="@+id/img_notify_avator"
@@ -27,7 +18,8 @@
 
         <LinearLayout
             android:paddingLeft="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
@@ -41,6 +33,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:text="2019-8-19 17:12"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:gravity="right"
+                android:id="@+id/tv_notifiy_time"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
                 android:text="12杀 10助 5死"
                 android:textColor="#fff"
                 android:id="@+id/tv_notifiy_info"
@@ -48,16 +49,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <TextView
-            android:text="2019-8-19 17:12"
-            android:textColor="#fff"
-            android:textSize="12sp"
-            android:gravity="right"
-            android:paddingRight="5dp"
-            android:id="@+id/tv_notifiy_time"
-            android:layout_gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:text="WIN"
+        android:textSize="15sp"
+        android:paddingRight="10dp"
+        android:layout_weight="2"
+        android:paddingLeft="10dp"
+        android:id="@+id/tv_notifiy_status"
+        android:layout_gravity="center_vertical"
+        android:textColor="#fff"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 

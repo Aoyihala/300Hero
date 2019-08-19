@@ -145,7 +145,7 @@ public class ListActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
-       if (isfirst)
+        if (isfirst)
         {
             isfirst = false;
             return;

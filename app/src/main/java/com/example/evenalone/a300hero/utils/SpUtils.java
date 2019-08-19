@@ -139,4 +139,18 @@ public class SpUtils
         editor.putBoolean("auto",clock);
         editor.apply();
     }
+
+    public static void setTimeSpeed(long timeSpeed)
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("time_speed",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong("speed",timeSpeed);
+        editor.apply();
+    }
+
+    public static long getLasttime() {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("time_speed",Context.MODE_PRIVATE);
+        return preferences.getLong("speed",0);
+
+    }
 }

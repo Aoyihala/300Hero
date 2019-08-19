@@ -32,8 +32,11 @@ import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.evenalone.a300hero.R;
+import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.bean.GameInfo;
 import com.example.evenalone.a300hero.bean.HeroGuide;
+import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
+import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalUserBean;
 import com.example.evenalone.a300hero.event.JumpValueEvnet;
 import com.example.evenalone.a300hero.event.ListInfoEvent;
@@ -64,17 +67,24 @@ import okhttp3.Request;
 
 public class MyNotifiService extends Service {
     private Timer timer;
+    //时间记录者
+    private Timer timer_record;
     private int not_id=1;
     //15分钟获取一次
     private long time = 1000*60*15;
+    private int lastime = 60*15;
     private ArrayList<HeroGuide.ListBean> listBeans;
-
+    private LocalGaideListInfoDao localGaideListInfoDao;
 
     public class MyBind extends Binder {
         public void startDownload() {
             if (timer==null)
             {
                 timer = new Timer();
+            }
+            if (timer_record==null)
+            {
+                timer_record = new Timer();
             }
             Log.d("换人", "开始前期");
             // 执行具体的下载任务
@@ -95,9 +105,25 @@ public class MyNotifiService extends Service {
 
     public void startRequest()
     {
+        if (timer_record!=null)
+        {
+            //防止意外关闭的计时器
+            //将会每5秒记录一次位置
+            //避免造成一开软件就出现获取新数据状况
+            timer_record.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //一秒一次
+                    lastime = lastime-5;
+                    long re = lastime*1000;
+                    SpUtils.setTimeSpeed(re);
+                }
+            },1000,5000);
+        }
         Log.e("data","定时查询服务已启用");
         if (timer!=null)
         {
+            Log.e("data","从中断记录的"+SpUtils.getLasttime()+"开始");
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -112,7 +138,7 @@ public class MyNotifiService extends Service {
                     OkhttpUtils.getInstance().sendRequest(request,HeroGuide.class);
                     //会延时10秒启动第一次
                 }
-            },10000,time);
+            },SpUtils.getLasttime()==0? 10000:SpUtils.getLasttime(),time);
         }
     }
     private void sendCustomNotification(final HeroGuide.ListBean listBean){
@@ -330,6 +356,9 @@ public class MyNotifiService extends Service {
             EventBus.getDefault().register(this);
         }
         timer = new Timer();
+        timer_record = new Timer();
+        //创建数据库
+        localGaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         if (SystemUtils.isBackground(getBaseContext()))
         {
             //后台创建的服务不会执行
@@ -396,11 +425,22 @@ public class MyNotifiService extends Service {
                 if (listBeans.size()>0)
                 {
                     //获取第一个
+                    LocalGaideListInfo info = gaideListInfo(listBeans.get(0).getMatchID());
+                    if (info!=null&&info.getMatchId()==listBeans.get(0).getMatchID())
+                    {
+                        Log.e("data","目前没有新战绩");
+                        return;
+                    }
                     sendCustomNotification(listBeans.get(0));
                 }
             }
         }
 
+    }
+
+    public LocalGaideListInfo gaideListInfo(long id)
+    {
+       return localGaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.MatchId.eq(id)).unique();
     }
 
     /**
