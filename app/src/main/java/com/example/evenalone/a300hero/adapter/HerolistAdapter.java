@@ -409,6 +409,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     cachemap.put(matchID,result_o);
                 }
                 //指定位置更新
+                //去除更新闪动效果
                 notifyItemChanged(position);
 
             }
