@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layout_notify_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/blue"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/img_notify_avator"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="竞技场"
+                android:layout_gravity="center_vertical"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:id="@+id/tv_notifiy_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="2019-8-19 17:12"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:gravity="right"
+                android:id="@+id/tv_notifiy_time"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="12杀 10助 5死"
+                android:textColor="#fff"
+                android:id="@+id/tv_notifiy_info"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    <TextView
+        android:text="WIN"
+        android:textSize="15sp"
+        android:paddingRight="10dp"
+        android:layout_weight="2"
+        android:paddingLeft="10dp"
+        android:id="@+id/tv_notifiy_status"
+        android:layout_gravity="center_vertical"
+        android:textColor="#fff"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+

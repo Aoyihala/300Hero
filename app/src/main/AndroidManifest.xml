@@ -4,28 +4,30 @@
     package="com.example.evenalone.a300hero">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- 个推3.0电子围栏功能所需权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <service android:name=".service.JobTimer"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            />
+        <service
+            android:name=".service.JobTimer"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <activity android:name=".ui.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,58 +35,78 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".service.NotfiService"/>
+
+        <service android:name=".service.NotfiService" />
+
         <activity android:name=".ui.ListActivity" />
         <activity android:name=".ui.SettingActivity" />
-        <activity android:name=".ui.GuaideInfoActivity"
-            />
-        <!-- 自定义服务继承自GTIntentService,作为SDK与APP桥梁服务,用来接收各种消息和命令回复-->
-        <service android:name=".service.PushCallBackService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:name=".ui.GuaideInfoActivity" />
+        <!-- 自定义服务继承自GTIntentService,作为SDK与APP桥梁服务,用来接收各种消息和命令回复 -->
+        <service
+            android:name=".service.PushCallBackService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <!-- 配置SDK核心服务 -->
         <!-- process必须指定为":pushservice"，切勿随意更改 -->
         <service
             android:name=".service.MyPushService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
             android:label="PushService"
-            android:process=":pushservice">
-        </service>
-        <service android:name=".service.MyNotifiService"
-            android:permission="android.permission.FOREGROUND_SERVICE"/>
-        <!--接收系统广播接收器-->
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":pushservice"></service>
+        <service
+            android:name=".service.MyNotifiService"
+            android:permission="android.permission.FOREGROUND_SERVICE" />
+        <!-- 接收系统广播接收器 -->
         <!-- 目前的新机器都不能用的,或者更换target api -->
         <receiver android:name=".service.KeepAliveReceiver">
-            <!--设备重启广播-->
+
+            <!-- 设备重启广播 -->
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--安装或卸载广播-->
+            <!-- 安装或卸载广播 -->
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
                 <data android:scheme="package" />
             </intent-filter>
-            <!--解锁广播-->
+            <!-- 解锁广播 -->
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_USER_PRESENT" />
             </intent-filter>
-            <!--存储卡挂载广播-->
+            <!-- 存储卡挂载广播 -->
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_MOUNTED" />
                 <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
 
-                <data android:scheme="file"/>
+                <data android:scheme="file" />
             </intent-filter>
-            <!--网络状态广播-->
+            <!-- 网络状态广播 -->
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
+        </receiver>
+        <!-- 小工具 -->
+        <activity android:name=".ui.ToolActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+        <receiver android:name=".wedgit.HeroGuideToolWidget">
+
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/tool_config"/>
+
         </receiver>
     </application>
 

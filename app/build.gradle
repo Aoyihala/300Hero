@@ -11,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86_64","arm64-v8a"
+            abiFilters "armeabi", "armeabi-v7a", "x86_64", "arm64-v8a"
         }
         signingConfigs {
             release {
@@ -22,9 +22,9 @@ android {
             }
         }
         manifestPlaceholders = [
-                GETUI_APP_ID : "KOhfEVUNFr6IGjL5NTyOm6",
-                GETUI_APP_KEY : "AjStxveN5T6idO3qxly9V4",
-                GETUI_APP_SECRET : "EMZwQlv4dy9J1wtsaKupWA"
+                GETUI_APP_ID    : "KOhfEVUNFr6IGjL5NTyOm6",
+                GETUI_APP_KEY   : "AjStxveN5T6idO3qxly9V4",
+                GETUI_APP_SECRET: "EMZwQlv4dy9J1wtsaKupWA"
         ]
 
     }
