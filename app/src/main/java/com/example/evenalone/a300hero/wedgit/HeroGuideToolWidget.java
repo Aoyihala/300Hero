@@ -10,7 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -53,6 +59,7 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
     private ToolsListAdapter toolsListAdapter;
     private LocalGaideListInfoDao gaideListInfoDao;
     private LocalUserBeanDao userBeanDao;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
@@ -97,18 +104,17 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+       Log.e("data","试图改变大小");
     }
 
     // 更新所有的 widget
-    private void updateAllAppWidgets(final Context context, AppWidgetManager appWidgetManager,int[] ints) {
+    private void updateAllAppWidgets(final Context context, final AppWidgetManager appWidgetManager, final int[] ints) {
         Log.d("小工具更新", "updateAllAppWidgets(): size=" + ints.length);
         // widget 的id
-        int appID;
         userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         for (int i=0;i<ints.length;i++)
         {
-            appID = ints[i];
             // 获取 example_appwidget.xml 对应的RemoteViews
             final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.tools_layout);
             //设置头像 昵称 还有自己的团分胜率详情
@@ -121,10 +127,12 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                     if (result!=null)
                     {
                         Bitmap bitmap = BitmapFactory.decodeFile(result.getPath());
-                        remoteView.setImageViewBitmap(R.id.img_tool_hero,bitmap);
+                        bitmap = makeRoundCorner(bitmap);
+                        remoteView.setImageViewBitmap(R.id.img_tool_avator
+                                ,bitmap);
                         //设置其他内容
                         remoteView.setTextViewText(R.id.tv_tool_name,localUserBean.getNickname());
-                        remoteView.setTextViewText(R.id.tv_tool_userdes,"团分"+localUserBean.getJumpvalue()+" 胜率"+localUserBean.getViotory()+"%");
+                        remoteView.setTextViewText(R.id.tv_tool_userdes,"团分"+localUserBean.getJumpvalue()+" 胜率"+localUserBean.getViotory());
                         //判断团分
                         int power = Integer.parseInt(localUserBean.getJumpvalue());
                         if (power > 0 && power < 1000) {
@@ -140,8 +148,9 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                             remoteView.setImageViewResource(R.id.img_tool_duanwei,R.drawable.daemo);
                         }
 
+                        remoteView.setInt(R.id.tools_user_bg, "setBackgroundColor", SpUtils.getMainColor());
                         //Palette用来更漂亮地展示配色
-                        Palette.from(bitmap)
+                       /* Palette.from(bitmap)
                                 .generate(new Palette.PaletteAsyncListener() {
                                     @SuppressLint("NewApi")
                                     @Override
@@ -149,16 +158,16 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                                         List<Palette.Swatch> swatches = palette.getSwatches();
                                         Palette.Swatch swatch = swatches.get(0);
                                         int color = colorBurn(swatch.getRgb());
-                                        remoteView.setInt(R.id.tools_user_bg, "setBackgroundColor", color);
-
+                                        remoteView.setInt(R.id.tools_bg, "setBackgroundColor", SpUtils.getMainColor());
                                     }
-                                });
+                                });*/
                         //设置适配器
                         toolsListAdapter = new ToolsListAdapter(context,R.layout.tools_game_item);
                         //获取数据库里的list,获取最新10条
                         toolsListAdapter.setListBeans(getguadies());
                         //listview配置
-
+                        // 更新 widget
+                        appWidgetManager.updateAppWidget(ints, remoteView);
                     }
 
 
@@ -194,11 +203,47 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
 
                 }
             });
-            // 更新 widget
-            appWidgetManager.updateAppWidget(appID, remoteView);
+
         }
         
     }
+    //获取圆形bitmap
+    public static Bitmap makeRoundCorner(Bitmap bitmap)
+    {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int left = 0, top = 0, right = width, bottom = height;
+        float roundPx = height/2;
+        if (width > height) {
+            left = (width - height)/2;
+            top = 0;
+            right = left + height;
+            bottom = height;
+        } else if (height > width) {
+            left = 0;
+            top = (height - width)/2;
+            right = width;
+            bottom = top + width;
+            roundPx = width/2;
+        }
+
+
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        int color = 0xff424242;
+        Paint paint = new Paint();
+        Rect rect = new Rect(left, top, right, bottom);
+        RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+    //获取保存的user
     private LocalUserBean finduser(String name)
     {
         return userBeanDao.queryBuilder().where(LocalUserBeanDao.Properties.Nickname.eq(name)).unique();

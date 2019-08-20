@@ -320,6 +320,7 @@ public class MyNotifiService extends Service {
                                     intent.putExtras(bundle);
                                     PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
                                     remoteViews.setOnClickPendingIntent(R.id.layout_notify_bg,pendingIntent);
+                                    SpUtils.saveMainColor(color);
                                     NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                     //到此为止 notify加工全部完毕
                                     Notification notification = new NotificationCompat.Builder(getBaseContext(), "data")

@@ -9,14 +9,13 @@
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/tools_user_bg"
-        android:background="@color/blue"
+        android:background="@color/Yellow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-
             android:id="@+id/img_tool_avator"
             android:layout_width="45dp"
-            android:padding="5dp"
+            android:layout_margin="10dp"
             android:layout_height="45dp" />
         <LinearLayout
             android:orientation="vertical"
@@ -31,14 +30,15 @@
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content">
+
                 <TextView
-                    android:textColor="#fff"
-                    android:text="加载中"
-                    android:paddingRight="5dp"
-                    android:textSize="15sp"
                     android:id="@+id/tv_tool_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:paddingRight="5dp"
+                    android:text="加载中"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -48,7 +48,7 @@
                 <TextView
                     android:text="加载中"
                     android:textColor="#fff"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:id="@+id/tv_tool_userdes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -60,6 +60,7 @@
             <ImageView
                 android:background="@drawable/baiying"
                 android:layout_width="25dp"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:id="@+id/img_tool_duanwei"
