@@ -23,6 +23,7 @@ public class LocalGaideListInfo {
 
     private long MatchId;
 
+
     public void setMatchId(long matchId) {
         MatchId = matchId;
     }

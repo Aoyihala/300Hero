@@ -3,6 +3,7 @@ package com.example.evenalone.a300hero.adapter;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class PopLoaclUserListAdapter extends RecyclerView.Adapter<RecyclerView.V
             final LocalUserBean userBean = localUserBeanList.get(i);
             roleViewholder.tvLoaclName.setText(userBean.getNickname());
             roleViewholder.tvLoaclJump.setText("团分:"+userBean.getJumpvalue()+" | 胜率:"+userBean.getViotory());
-            Glide.with(viewHolder.itemView.getContext()).load(Contacts.ROLE_IMG+userBean.getIocnfile()).into(roleViewholder.imgLocalAvator);
+            Glide.with(viewHolder.itemView.getContext()).load(getImgUrl(userBean)).into(roleViewholder.imgLocalAvator);
             roleViewholder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -75,6 +76,16 @@ public class PopLoaclUserListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
         }
+    }
+    public String getImgUrl(LocalUserBean localUserBean)
+    {
+        String role = localUserBean.getRole_iocnfile();
+        String img = localUserBean.getImg_iconfile();
+        if (TextUtils.isEmpty(img))
+        {
+            return Contacts.ROLE_IMG +role;
+        }
+        return Contacts.IMG+img;
     }
 
     @Override

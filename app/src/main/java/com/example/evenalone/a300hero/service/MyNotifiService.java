@@ -37,6 +37,8 @@ import com.example.evenalone.a300hero.bean.GameInfo;
 import com.example.evenalone.a300hero.bean.HeroGuide;
 import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
 import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
+import com.example.evenalone.a300hero.bean.LocalGameInfo;
+import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.example.evenalone.a300hero.bean.LocalUserBean;
 import com.example.evenalone.a300hero.event.JumpValueEvnet;
 import com.example.evenalone.a300hero.event.ListInfoEvent;
@@ -75,7 +77,7 @@ public class MyNotifiService extends Service {
     private int lastime = 60*15;
     private ArrayList<HeroGuide.ListBean> listBeans;
     private LocalGaideListInfoDao localGaideListInfoDao;
-
+    private LocalGameInfoDao gameInfoDao;
     public class MyBind extends Binder {
         public void startDownload() {
             if (timer==null)
@@ -128,7 +130,7 @@ public class MyNotifiService extends Service {
                 @Override
                 public void run() {
                     //一分钟执行一次
-                    String name = SpUtils.getMainUser()==null?SpUtils.getNowUser():SpUtils.getMainUser();
+                    String name = SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getNowUser():SpUtils.getMainUser();
                     Log.e("data","执行了请求,用户是:"+name);
                     //执行网络请求
                     //前十个最新,不需要传index
@@ -273,7 +275,34 @@ public class MyNotifiService extends Service {
                         remoteViews.setTextViewText(R.id.tv_notifiy_type,"战场");
                     }
                     remoteViews.setTextViewText(R.id.tv_notifiy_time,listBean.getMatchDate());
+                    //保存本地游戏
+                    LocalGameInfo gameInfo_local = getoneGame(listBean.getMatchID());
+                    if (gameInfo_local==null)
+                    {
+                        gameInfo_local = new LocalGameInfo();
+                        gameInfo_local.setMactherId(listBean.getMatchID());
+                        gameInfo_local.setMygaide(result_o);
+                        gameInfo_local.setResult(result);
+                        gameInfoDao.save(gameInfo_local);
+                    }
+                    else
+                    {
+                        gameInfo_local.setId(gameInfo_local.getId());
+                        gameInfo_local.setMactherId(listBean.getMatchID());
+                        gameInfo_local.setMygaide(result_o);
+                        gameInfo_local.setResult(result);
+                        gameInfoDao.update(gameInfo_local);
+                    }
                     //获取颜色
+                    LocalGaideListInfo info = gaideListInfo(listBean.getMatchID());
+                    if (info!=null&&info.getMatchId()==listBean.getMatchID())
+                    {
+                        Log.e("data","目前没有新战绩");
+                        //不展示通知栏
+                        return;
+                    }
+                    //通知appwidget
+
                     //Palette用来更漂亮地展示配色
                     Palette.from(drawable)
                             .generate(new Palette.PaletteAsyncListener() {
@@ -326,7 +355,16 @@ public class MyNotifiService extends Service {
             }
         });
     }
-
+    /**
+     * 请求数据库战局详情
+     * @param matchid
+     * @return
+     */
+    public LocalGameInfo getoneGame(long matchid)
+    {
+        LocalGameInfo gameInfo = gameInfoDao.queryBuilder().where(LocalGameInfoDao.Properties.MactherId.eq(matchid)).unique();
+        return gameInfo;
+    }
     /*
      * 颜色加深处理
      * */
@@ -359,6 +397,7 @@ public class MyNotifiService extends Service {
         timer_record = new Timer();
         //创建数据库
         localGaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
+        gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
         if (SystemUtils.isBackground(getBaseContext()))
         {
             //后台创建的服务不会执行
@@ -425,11 +464,33 @@ public class MyNotifiService extends Service {
                 if (listBeans.size()>0)
                 {
                     //获取第一个
-                    LocalGaideListInfo info = gaideListInfo(listBeans.get(0).getMatchID());
-                    if (info!=null&&info.getMatchId()==listBeans.get(0).getMatchID())
+
+                    //保存
+                    if (listBeans.size()>0)
                     {
-                        Log.e("data","目前没有新战绩");
-                        return;
+                        for (HeroGuide.ListBean listBean:listBeans)
+                        {
+                            LocalGaideListInfo info1 = gaideListInfo(listBean.getMatchID());
+                            if (info1==null)
+                            {
+                                info1=new LocalGaideListInfo();
+                                info1.setMatchId(listBean.getMatchID());
+                                info1.setNickname(SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getMainUser():SpUtils.getNowUser());
+                                info1.setTime(listBean.getMatchDate());
+                                info1.setResult(new Gson().toJson(listBean));
+                                //保存
+                                localGaideListInfoDao.save(info1);
+                            }
+                            else
+                            {
+                                info1.setId(info1.getId());
+                                info1.setMatchId(listBean.getMatchID());
+                                info1.setNickname(SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getMainUser():SpUtils.getNowUser());
+                                info1.setTime(listBean.getMatchDate());
+                                info1.setResult(new Gson().toJson(listBean));
+                                localGaideListInfoDao.update(info1);
+                            }
+                        }
                     }
                     sendCustomNotification(listBeans.get(0));
                 }

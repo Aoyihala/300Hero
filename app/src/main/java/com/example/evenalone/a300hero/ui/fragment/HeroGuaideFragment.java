@@ -61,6 +61,7 @@ public class HeroGuaideFragment extends BaseFragment {
     private List<HeroGuide.ListBean> listBeans = new ArrayList<>();
     private List<HeroGuide.ListBean> alllist = new ArrayList<>();
     private LocalGaideListInfoDao localGaideListInfoDao;
+
     @Override
     protected boolean setEventOpen() {
         return true;

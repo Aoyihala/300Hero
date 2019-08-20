@@ -233,7 +233,7 @@ public class HomeActivity extends BaseActivity {
             int viotory = (int) (((double) wincount / (double) all) * 100);
             localUserBean.setNickname(name);
             localUserBean.setViotory(viotory + "%");
-            localUserBean.setIocnfile(type_icon);
+            localUserBean.setRole_iocnfile(type_icon);
             localUserBean.setJumpvalue(power);
             localUserBean.setResult(new Gson().toJson(role));
             //暂时未接入极光

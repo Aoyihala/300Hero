@@ -425,7 +425,7 @@ public class ListActivity extends BaseActivity {
         tv_jump_viotroy.setText("胜率:" + localUserBean.getViotory());
         tv_jump_value.setText("团分:" + localUserBean.getJumpvalue());
         //设置基本信息
-        Glide.with(this).load(Contacts.ROLE_IMG + localUserBean.getIocnfile()).addListener(new RequestListener<Drawable>() {
+        Glide.with(this).load(getImgUrl()).addListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 //去加载默认的头像
@@ -538,7 +538,7 @@ public class ListActivity extends BaseActivity {
                 int wincount = role.getRole().getWinCount();
                 int all = role.getRole().getMatchCount();
                 int viotory = (int) (((double) wincount / (double) all) * 100);
-                localUserBean.setIocnfile(type_icon);
+                localUserBean.setRole_iocnfile(type_icon);
 
                 if (TextUtils.isEmpty(power) || power == null) {
                     localUserBean.setJumpvalue(oldpower);
@@ -595,7 +595,8 @@ public class ListActivity extends BaseActivity {
                 int wincount = role.getRole().getWinCount();
                 int all = role.getRole().getMatchCount();
                 int viotory = (int) (((double) wincount / (double) all) * 100);
-                localUserBean_user.setIocnfile(type_icon);
+                //只是针对第一次
+                localUserBean_user.setRole_iocnfile(type_icon);
                 localUserBean_user.setJumpvalue(power);
                 localUserBean_user.setViotory(viotory + "%");
                 localUserBean_user.setNickname(role.getRole().getRoleName());
@@ -609,6 +610,16 @@ public class ListActivity extends BaseActivity {
         tvJumpGuaideHome.setText("团分:" + value);
     }
 
+    public String getImgUrl()
+    {
+        String role = localUserBean.getRole_iocnfile();
+        String img = localUserBean.getImg_iconfile();
+        if (TextUtils.isEmpty(img))
+        {
+            return Contacts.ROLE_IMG +role;
+        }
+        return Contacts.IMG+img;
+    }
     /**
      * 更新视图,网络请求后的
      *
@@ -618,7 +629,7 @@ public class ListActivity extends BaseActivity {
 
         tvSearchNickname.setText(localUserBean.getNickname());
         tvSearchNickname.setTextColor(Color.WHITE);
-        Glide.with(this).load(Contacts.ROLE_IMG + localUserBean.getIocnfile()).into(imgUserhead);
+        Glide.with(this).load(getImgUrl()).into(imgUserhead);
         tvJumpNameHome.setText(localUserBean.getNickname());
         tvJumpViotoryHome.setText("胜率:" + localUserBean.getViotory());
         if (localUserBean.getJumpvalue() == null || TextUtils.isEmpty(localUserBean.getJumpvalue()) || localUserBean.getJumpvalue().equals("null")) {
@@ -648,7 +659,7 @@ public class ListActivity extends BaseActivity {
         }
 
         //设置基本信息
-        Glide.with(this).load(Contacts.ROLE_IMG + localUserBean.getIocnfile()).addListener(new RequestListener<Drawable>() {
+        Glide.with(this).load(getImgUrl()).addListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 //去加载默认的头像

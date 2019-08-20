@@ -204,6 +204,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         LocalUserBean localUserBean = getMy(SpUtils.getNowUser());
                         if (localUserBean != null) {
                             localUserBean.setJumpvalue(power);
+                            localUserBean.setRole_iocnfile(winSideBean.getHero().getIconFile());
                             localUserBean.setId(localUserBean.getId());
                             userBeanDao.update(localUserBean);
                             //反正是给主页搞的
@@ -236,6 +237,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         if (localUserBean != null) {
                             localUserBean.setJumpvalue(power);
                             localUserBean.setId(localUserBean.getId());
+                            localUserBean.setImg_iconfile(loseSideBean.getHero().getIconFile());
                             userBeanDao.update(localUserBean);
                             EventBus.getDefault().post(new JumpValueEvnet(SpUtils.getNowUser(),power));
                         } else {
