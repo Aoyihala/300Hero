@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -24,6 +26,7 @@ import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.adapter.ToolsListAdapter;
@@ -33,6 +36,7 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
 import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalUserBean;
 import com.example.evenalone.a300hero.bean.LocalUserBeanDao;
+import com.example.evenalone.a300hero.service.BindToolsService;
 import com.example.evenalone.a300hero.ui.GuaideInfoActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
@@ -59,12 +63,33 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
     private ToolsListAdapter toolsListAdapter;
     private LocalGaideListInfoDao gaideListInfoDao;
     private LocalUserBeanDao userBeanDao;
+    private String clickAction = "com.example.evenalone.a300hero.wedgit.CLICK_ACTION";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         Log.e("data","小工具执行了广播刷新");
         //第二步接收了广播
+
+        String action = intent.getAction();
+
+        if (action.equals("refresh")) {
+            // 刷新Widget
+            final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+            final ComponentName cn = new ComponentName(context,HeroGuideToolWidget.class);
+
+           /* MyRemoteViewsFactory.mList.add("音乐"+ i);*/
+
+            // 这句话会调用RemoteViewSerivce中RemoteViewsFactory的onDataSetChanged()方法。
+            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn),
+                    R.id.list_tool_listview);
+
+        }else if (action.equals(clickAction)) {
+                // 单击Wdiget中ListView的某一项会显示一个Toast提示。
+                Toast.makeText(context, intent.getLongExtra("id",0)+" ",
+                        Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -113,10 +138,31 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
         // widget 的id
         userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
+        // 获取Widget的组件名
+        final ComponentName thisWidget = new ComponentName(context,
+                HeroGuideToolWidget.class);
         for (int i=0;i<ints.length;i++)
         {
             // 获取 example_appwidget.xml 对应的RemoteViews
             final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.tools_layout);
+            // 把这个Widget绑定到RemoteViewsService
+            Intent intent = new Intent(context,BindToolsService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, thisWidget);
+
+            // 设置适配器
+            remoteView.setRemoteAdapter(R.id.list_tool_listview, intent);
+            // 点击列表触发事件
+            Intent clickIntent = new Intent(context, HeroGuideToolWidget.class);
+            // 设置Action，方便在onReceive中区别点击事件
+            clickIntent.setAction(clickAction);
+            clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+            PendingIntent pendingIntentTemplate = PendingIntent.getBroadcast(
+                    context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            remoteView.setPendingIntentTemplate(R.id.list_tool_listview,
+                    pendingIntentTemplate);
+
             //设置头像 昵称 还有自己的团分胜率详情
             String user = SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getNowUser():SpUtils.getMainUser();
             final LocalUserBean localUserBean = finduser(user);
@@ -148,6 +194,9 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                             remoteView.setImageViewResource(R.id.img_tool_duanwei,R.drawable.daemo);
                         }
 
+                        // 设置当显示的widget_list为空显示的View
+                        //remoteView.setEmptyView(R.id.widget_list, R.layout.none_data);
+
                         remoteView.setInt(R.id.tools_user_bg, "setBackgroundColor", SpUtils.getMainColor());
                         //Palette用来更漂亮地展示配色
                        /* Palette.from(bitmap)
@@ -161,15 +210,10 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                                         remoteView.setInt(R.id.tools_bg, "setBackgroundColor", SpUtils.getMainColor());
                                     }
                                 });*/
-                        //设置适配器
-                        toolsListAdapter = new ToolsListAdapter(context,R.layout.tools_game_item);
-                        //获取数据库里的list,获取最新10条
-                        toolsListAdapter.setListBeans(getguadies());
-                        //listview配置
-                        // 更新 widget
-                        appWidgetManager.updateAppWidget(ints, remoteView);
-                    }
 
+                        //只有一个widget所以
+                        appWidgetManager.updateAppWidget(thisWidget, remoteView);
+                    }
 
                 }
 

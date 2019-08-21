@@ -487,6 +487,10 @@ public class ListActivity extends BaseActivity {
             if (role == null) {
                 return;
             }
+            if (role.getRole().getRoleName()==null)
+            {
+                return;
+            }
             if (!vistormode) {
 
                 Snackbar.make(toolBar, "欢迎召唤师," + role.getRole().getRoleName(), Snackbar.LENGTH_SHORT).show();

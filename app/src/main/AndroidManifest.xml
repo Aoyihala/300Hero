@@ -57,6 +57,10 @@
         <service
             android:name=".service.MyNotifiService"
             android:permission="android.permission.FOREGROUND_SERVICE" />
+        <service
+            android:name=".service.BindToolsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            />
         <!-- 接收系统广播接收器 -->
         <!-- 目前的新机器都不能用的,或者更换target api -->
         <receiver android:name=".service.KeepAliveReceiver">
@@ -100,7 +104,10 @@
         </activity>
         <receiver android:name=".wedgit.HeroGuideToolWidget">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+
+                <action android:name="com.example.evenalone.a300hero.wedgit.CLICK_ACTION" />
+
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/tool_config"/>
