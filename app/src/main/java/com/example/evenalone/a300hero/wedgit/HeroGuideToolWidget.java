@@ -111,6 +111,7 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
     private void updateAllAppWidgets(final Context context, final AppWidgetManager appWidgetManager, final int[] ints) {
         Log.d("小工具更新", "updateAllAppWidgets(): size=" + ints.length);
         // widget 的id
+
         userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         for (int i=0;i<ints.length;i++)
