@@ -3,22 +3,17 @@ package com.example.evenalone.a300hero.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.downloader.PRDownloader;
+import com.downloader.PRDownloaderConfig;
 import com.example.evenalone.a300hero.bean.DaoMaster;
 import com.example.evenalone.a300hero.bean.DaoSession;
 import com.example.evenalone.a300hero.bean.NetWorkProx;
 import com.example.evenalone.a300hero.service.JobSchedulerManager;
-import com.example.evenalone.a300hero.service.MyNotifiService;
 import com.example.evenalone.a300hero.service.MyPushService;
 import com.example.evenalone.a300hero.service.PushCallBackService;
 import com.example.evenalone.a300hero.ui.HomeActivity;
@@ -45,6 +40,7 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static Context context;
     private static OkhttpUtils okhttpUtils;
     private static DaoSession daoSession;
+
     //全局代理词
     public static List<NetWorkProx> proxList = new ArrayList<>();
     private static Map<String,ListActivity> listActivities = new HashMap<>();
@@ -56,16 +52,35 @@ public class MyApplication extends Application implements Application.ActivityLi
         context = getApplicationContext();
         x.Ext.init(this);
         initdb();
+        initdownloader();
         PushManager.getInstance().initialize(context,MyPushService.class);
         PushManager.getInstance().registerPushIntentService(context,PushCallBackService.class);
         okhttpUtils = OkhttpUtils.getInstance();
         checkservice();
+
         releasedata();
         //启用jobshulder
       /*  JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();*/
         /*Intent intent = new Intent(context,MyNotifiService.class);
         context.startForegroundService(intent);*/
 
+    }
+
+    private void initdownloader() {
+        PRDownloader.initialize(getApplicationContext());
+
+// Enabling database for resume support even after the application is killed:
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
+                .setDatabaseEnabled(true)
+                .build();
+        PRDownloader.initialize(getApplicationContext(), config);
+
+// Setting timeout globally for the download network requests:
+        PRDownloaderConfig config1 = PRDownloaderConfig.newBuilder()
+                .setReadTimeout(30000)
+                .setConnectTimeout(30000)
+                .build();
+        PRDownloader.initialize(getApplicationContext(), config1);
     }
 
     private void checkservice() {

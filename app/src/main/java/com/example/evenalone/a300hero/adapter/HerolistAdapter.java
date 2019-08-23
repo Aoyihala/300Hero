@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,11 +14,12 @@ import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.bean.GameInfo;
 import com.example.evenalone.a300hero.bean.HeroGuide;
+import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
+import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.example.evenalone.a300hero.bean.LocalUserBean;
 import com.example.evenalone.a300hero.bean.LocalUserBeanDao;
-import com.example.evenalone.a300hero.event.BaseEvent;
 import com.example.evenalone.a300hero.event.JumpValueEvnet;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.GameUtils;
@@ -38,13 +38,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
-import javax.sql.StatementEvent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 此部分优化的地方相当的多
@@ -56,6 +52,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Map<Long,Integer> cache_rank = new HashMap<>();
     private LocalGameInfoDao gameInfoDao;
     private LocalUserBeanDao userBeanDao;
+    private LocalGaideListInfoDao gaideListInfoDao;
     private boolean loadingjumpvalue=false;
     private OnGuaideClickListener guaideClickListener;
 
@@ -71,8 +68,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public HerolistAdapter()
     {
         userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
+        gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
 
+    }
+    private LocalGaideListInfo findlistinfo(long matchid)
+    {
+      return   gaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.MatchId.eq(matchid)).unique();
     }
 
     @NonNull
@@ -105,7 +107,9 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             listViewHolder.imgHero.setTag(R.id.img_hero,listBean.getHero().getID());
             if ((listViewHolder.imgHero.getTag(R.id.img_hero).toString().equals(listBean.getHero().getID()+"")))
             {
-                Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);
+
+                            Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);
+
             }
             if (listBean.getMatchType()==1)
             {
@@ -435,6 +439,19 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
     }
 
+    private boolean saveWeiZhi(long matchid,String w)
+    {
+        LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
+        if (localGaideListInfo!=null)
+        {
+            localGaideListInfo.setId(localGaideListInfo.getId());
+            localGaideListInfo.setMyWeizi(w);
+            gaideListInfoDao.update(localGaideListInfo);
+            return true;
+        }
+        Log.e("设置位置失败","id"+matchid);
+        return false;
+    }
     /**
      * 计算mvp/躺输
      * @param result
@@ -473,6 +490,8 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagEnable(true);
                     viewHolder.imgHero.setTagText("MVP");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                    saveWeiZhi(listBean.getMatchID(),"MVP");
+
                 }
                 else
                 {
@@ -494,6 +513,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewHolder.imgHero.setTagText("划水");
                         viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
                      /*   viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
+                        saveWeiZhi(listBean.getMatchID(),"划水");
                     }
                     else
                     {
@@ -509,6 +529,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             viewHolder.imgHero.setTagEnable(true);
                             viewHolder.imgHero.setTagText("神队友");
                             viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                            saveWeiZhi(listBean.getMatchID(),"神队友");
                         }
                         else
                         {
@@ -530,6 +551,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagEnable(true);
                 viewHolder.imgHero.setTagText("MVP");
                 viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                saveWeiZhi(listBean.getMatchID(),"MVP");
             }
             else
             {
@@ -553,6 +575,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagText("划水");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
                     /*viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
+                    saveWeiZhi(listBean.getMatchID(),"划水");
                 }
                 else
                 {
@@ -570,6 +593,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewHolder.imgHero.setTagEnable(true);
                         viewHolder.imgHero.setTagText("神队友");
                         viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                        saveWeiZhi(listBean.getMatchID(),"神队友");
                     }
                     else
                     {
@@ -603,6 +627,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagEnable(true);
                     viewHolder.imgHero.setTagText("躺输");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                    saveWeiZhi(listBean.getMatchID(),"躺输");
                 }
                 else
                 {
@@ -631,6 +656,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagText("坑");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.black));
                 /*    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
+                    saveWeiZhi(listBean.getMatchID(),"坑");
                 }
                 else
                 {
@@ -648,6 +674,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagEnable(true);
                 viewHolder.imgHero.setTagText("躺输");
                 viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.Red));
+                saveWeiZhi(listBean.getMatchID(),"躺输");
             }
             else
             {
@@ -676,6 +703,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.imgHero.setTagText("坑");
                 viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.black));
                 /*viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
+                saveWeiZhi(listBean.getMatchID(),"坑");
             }
             else
             {

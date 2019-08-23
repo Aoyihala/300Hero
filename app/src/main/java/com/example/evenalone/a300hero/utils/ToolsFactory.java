@@ -10,19 +10,24 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.bean.HeroGuide;
+
 import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
 import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
+import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
-import com.example.evenalone.a300hero.event.ListInfoEvent;
 import com.google.gson.Gson;
 
-import org.greenrobot.greendao.AbstractDao;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -33,17 +38,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context context;
     private LocalGaideListInfoDao gaideListInfoDao;
     private List<HeroGuide.ListBean> localGaideListInfos = new ArrayList<>();
+    private List<LocalGaideListInfo> localGaideListInfoList = new ArrayList<>();
+    private RemoteViews rv;
+    private Map<Integer, Boolean> flags = Collections.synchronizedMap(new HashMap<Integer, Boolean>());
+    private Intent intent;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private LocalGameInfoDao gameInfoDao;
+    private Bitmap mBitmap;
 
     public ToolsFactory(Context applicationContext, Intent intent) {
         this.context = applicationContext;
         gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
+        gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
+    }
+
+
+    private LocalGameInfo findoneGame(long matchid)
+    {
+        return gameInfoDao.queryBuilder().where(LocalGameInfoDao.Properties.MactherId.eq(matchid)).unique();
     }
 
     @Override
@@ -72,70 +93,127 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
     }
 
     @Override
-    public RemoteViews getViewAt(int position) {
+    public RemoteViews getViewAt(final int position) {
         // 创建在当前索引位置要显示的View
         final HeroGuide.ListBean listBean = localGaideListInfos.get(position);
         final RemoteViews rv = new RemoteViews(context.getPackageName(),
                 R.layout.tools_game_item);
         rv.setTextViewText(R.id.tv_tool_type,listBean.getMatchType()==1?"竞技场":"战场");
         rv.setTextViewText(R.id.tv_tool_time,listBean.getMatchDate());
-        x.http().get(new RequestParams(Contacts.IMG + listBean.getHero().getIconFile()), new Callback.ProgressCallback<File>() {
-            @Override
-            public void onSuccess(File result) {
-                if (result != null) {
-                    /*//头像 id资源
-                    SimpleTagImageView simpleTagImageView = convertView.findViewById(R.id.img_tool_hero);
-                    //描述
-                    TextView tv_win_lose = convertView.findViewById(R.id.tv_tool_flag);
-                    //类型
-                    TextView tv_type = convertView.findViewById(R.id.tv_tool_type);
-                    TextView tv_time = convertView.findViewWithTag(R.id.tv_tool_time);
-                    TextView tv_user_des = convertView.findViewById(R.id.tv_tool_userdes);*/
-
-                    Bitmap bitmap = BitmapFactory.decodeFile(result.getPath());
-                    bitmap = makeRoundCorner(bitmap);
-                    rv.setImageViewBitmap(R.id.img_tool_hero,bitmap);
-                    rv.setTextViewText(R.id.tv_tool_type,listBean.getMatchType()==1?"竞技场":"战场");
-                    rv.setTextViewText(R.id.tv_tool_time,listBean.getMatchDate());
-                    rv.setTextViewText(R.id.tv_tool_guaide,"开发中");
-                    // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
-                    Intent intent = new Intent();
-                    // 传入点击行的数据
-                    intent.putExtra("id",listBean.getMatchID());
-                    rv.setOnClickFillInIntent(R.id.tool_game_item_bg, intent);
-                }
+        LocalGameInfo gameInfo = findoneGame(listBean.getMatchID());
+        LocalGaideListInfo gaideListInfo = localGaideListInfoList.get(position);
+        String wei = gaideListInfo.getMyWeizi();
+        if (!TextUtils.isEmpty(wei))
+        {
+            rv.setTextViewText(R.id.tv_tool_weizi,wei);
+            if (wei.equals("MVP")||wei.equals("躺输")||wei.equals("神队友"))
+            {
+                rv.setInt(R.id.tv_tool_weizi,"setBackground",R.drawable.shap_mvp);
             }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-
+            if (wei.equals("划水"))
+            {
+                rv.setInt(R.id.tv_tool_weizi,"setBackground",R.drawable.shap_huashui);
             }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
+            if (wei.equals("坑"))
+            {
+                rv.setInt(R.id.tv_tool_weizi,"setBackground",R.drawable.shap_keng);
             }
+        }
 
+        if (gameInfo!=null)
+        {
+            rv.setTextViewText(R.id.tv_tool_guaide,gameInfo.getMygaide());
+
+
+        }
+        else
+        {
+            rv.setTextViewText(R.id.tv_tool_guaide,"点击查看页面获取");
+
+        }
+
+        if (listBean.getResult()==1)
+        {
+            rv.setTextViewText(R.id.tv_tool_flag,"WIN");
+            rv.setTextColor(R.id.tv_tool_flag,UiUtlis.getColor(R.color.colorPrimary));
+        }
+        if (listBean.getResult()==2)
+        {
+            rv.setTextViewText(R.id.tv_tool_flag,"LOSE");
+            rv.setTextColor(R.id.tv_tool_flag,UiUtlis.getColor(R.color.Red));
+        }
+        if (listBean.getResult()==3)
+        {
+            rv.setTextViewText(R.id.tv_tool_flag,"ESCAPE");
+            rv.setTextColor(R.id.tv_tool_flag,UiUtlis.getColor(R.color.blue));
+        }
+        flags.put(position, false);
+        handler.post(new Runnable() {
             @Override
-            public void onFinished() {
+            public void run() {
+                x.http().get(new RequestParams(Contacts.IMG + listBean.getHero().getIconFile()), new Callback.ProgressCallback<File>() {
+                    @Override
+                    public void onSuccess(File result) {
+                        if (result!=null)
+                        {
+                            mBitmap = BitmapFactory.decodeFile(result.getAbsolutePath());
+                            flags.put(position, true);
+                        }
+                    }
 
-            }
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        flags.put(position, true);
+                    }
 
-            @Override
-            public void onWaiting() {
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+                        flags.put(position, true);
+                    }
 
-            }
+                    @Override
+                    public void onFinished() {
+                        flags.put(position, true);
+                    }
 
-            @Override
-            public void onStarted() {
+                    @Override
+                    public void onWaiting() {
+                        flags.put(position, true);
+                    }
 
-            }
+                    @Override
+                    public void onStarted() {
+                        flags.put(position, true);
+                    }
 
-            @Override
-            public void onLoading(long total, long current, boolean isDownloading) {
-
+                    @Override
+                    public void onLoading(long total, long current, boolean isDownloading) {
+                        flags.put(position, true);
+                    }
+                });
             }
         });
+//在此一直等待获取到网络图片
+        while (!flags.get(position)) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        flags.put(position, false);
+        if (mBitmap != null) {
+            rv.setImageViewBitmap(R.id.img_tool_hero,makeRoundCorner(mBitmap));
+        } else {
+            rv.setImageViewResource(R.id.img_tool_hero, R.drawable.fish);
+        }
+        mBitmap = null;
+        // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
+        Intent intent = new Intent();
+        // 传入点击行的数据
+        intent.putExtra("id",listBean.getMatchID());
+        rv.setOnClickFillInIntent(R.id.tool_game_item_bg, intent);
+
         return rv;
     }
 
@@ -146,7 +224,7 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 10;
     }
 
     @Override
@@ -160,14 +238,14 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
     }
 
     private List<HeroGuide.ListBean> getguadies() {
-        List<LocalGaideListInfo> localGaideListInfos = gaideListInfoDao.loadAll();
+     localGaideListInfoList = gaideListInfoDao.loadAll();
         //排序
-        ListSort(localGaideListInfos);
-        if (localGaideListInfos.size() > 10) {
-            localGaideListInfos = localGaideListInfos.subList(0, 10);
+        ListSort(localGaideListInfoList);
+        if (localGaideListInfoList.size() > 10) {
+            localGaideListInfoList= localGaideListInfoList.subList(0, 10);
         }
         List<HeroGuide.ListBean> hero_guaidelist = new ArrayList<>();
-        for (LocalGaideListInfo info : localGaideListInfos) {
+        for (LocalGaideListInfo info : localGaideListInfoList) {
             hero_guaidelist.add(new Gson().fromJson(info.getResult(), HeroGuide.ListBean.class));
         }
         return hero_guaidelist;

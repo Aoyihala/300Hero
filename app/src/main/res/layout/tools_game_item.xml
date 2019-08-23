@@ -63,7 +63,13 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+            <TextView
 
+                android:textColor="#fff"
+
+                android:id="@+id/tv_tool_weizi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
             android:gravity="center_vertical"

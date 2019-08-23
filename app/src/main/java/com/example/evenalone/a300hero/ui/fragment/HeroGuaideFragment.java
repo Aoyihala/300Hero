@@ -208,7 +208,7 @@ public class HeroGuaideFragment extends BaseFragment {
             }
             if (!eva.getGuide().getResult().equals("OK"))
             {
-                Log.e("访问战绩列表失败",eva.getErroMsg());
+                Log.e("访问战绩列表失败",eva.getErroMsg()+" ");
                 Snackbar.make(tvNextPage,"今日访问很频繁，请避开高峰期比如周末或者尝试到设置界面打开代理模式",Snackbar.LENGTH_SHORT).show();
                 return;
             }

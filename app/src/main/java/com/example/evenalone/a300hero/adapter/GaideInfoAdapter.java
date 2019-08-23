@@ -3,7 +3,6 @@ package com.example.evenalone.a300hero.adapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,15 +13,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
+import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.bean.GameInfo;
-import com.example.evenalone.a300hero.ui.HomeActivity;
 import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
 import com.example.evenalone.a300hero.wedgit.NoScrollLinearLayout;
-import com.example.evenalone.a300hero.wedgit.SpaceItemDecoration;
 
 import net.wujingchao.android.view.SimpleTagImageView;
 
@@ -235,8 +233,11 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
 
 
+
+
+
                 //加载图片
-                Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getHero().getIconFile()).into(gaideInfoViewHolder.imgGaideAvator);
+               Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getHero().getIconFile()).into(gaideInfoViewHolder.imgGaideAvator);
                 //召唤师技能
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getSkill().get(0).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill1);
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getSkill().get(1).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill2);

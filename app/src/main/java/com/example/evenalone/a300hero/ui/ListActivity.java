@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -63,7 +62,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Request;
 
@@ -425,7 +423,7 @@ public class ListActivity extends BaseActivity {
         tv_jump_viotroy.setText("胜率:" + localUserBean.getViotory());
         tv_jump_value.setText("团分:" + localUserBean.getJumpvalue());
         //设置基本信息
-        Glide.with(this).load(getImgUrl()).addListener(new RequestListener<Drawable>() {
+        Glide.with(this).load(getImgUrl(localUserBean)).addListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 //去加载默认的头像
@@ -614,7 +612,7 @@ public class ListActivity extends BaseActivity {
         tvJumpGuaideHome.setText("团分:" + value);
     }
 
-    public String getImgUrl()
+    public String getImgUrl(LocalUserBean localUserBean)
     {
         String role = localUserBean.getRole_iocnfile();
         String img = localUserBean.getImg_iconfile();
@@ -633,7 +631,7 @@ public class ListActivity extends BaseActivity {
 
         tvSearchNickname.setText(localUserBean.getNickname());
         tvSearchNickname.setTextColor(Color.WHITE);
-        Glide.with(this).load(getImgUrl()).into(imgUserhead);
+        Glide.with(this).load(getImgUrl(localUserBean)).into(imgUserhead);
         tvJumpNameHome.setText(localUserBean.getNickname());
         tvJumpViotoryHome.setText("胜率:" + localUserBean.getViotory());
         if (localUserBean.getJumpvalue() == null || TextUtils.isEmpty(localUserBean.getJumpvalue()) || localUserBean.getJumpvalue().equals("null")) {
@@ -663,7 +661,7 @@ public class ListActivity extends BaseActivity {
         }
 
         //设置基本信息
-        Glide.with(this).load(getImgUrl()).addListener(new RequestListener<Drawable>() {
+        Glide.with(this).load(getImgUrl(localUserBean)).addListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 //去加载默认的头像

@@ -17,6 +17,9 @@ public class LocalGameInfo {
 
     private String mygaide;
 
+
+
+
     public void setMygaide(String mygaide) {
         this.mygaide = mygaide;
     }

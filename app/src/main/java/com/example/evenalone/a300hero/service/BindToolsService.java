@@ -13,7 +13,6 @@ public class BindToolsService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
 
 
-
         return new ToolsFactory(getApplicationContext(), intent);
     }
 }

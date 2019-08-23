@@ -148,7 +148,7 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
             final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.tools_layout);
             // 把这个Widget绑定到RemoteViewsService
             Intent intent = new Intent(context,BindToolsService.class);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, thisWidget);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ints);
 
             // 设置适配器
             remoteView.setRemoteAdapter(R.id.list_tool_listview, intent);

@@ -95,5 +95,6 @@ dependencies {
     implementation 'cn.dreamtobe.percentsmoothhandler:library:0.1.1'
     //个推
     implementation 'com.getui:sdk:2.13.2.0'
-
+    //pr
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
 }

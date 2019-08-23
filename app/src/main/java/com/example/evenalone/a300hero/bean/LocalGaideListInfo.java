@@ -21,8 +21,17 @@ public class LocalGaideListInfo {
 
     private String nickname;
 
+    private String MyWeizi;
+
     private long MatchId;
 
+    public void setMyWeizi(String myWeizi) {
+        MyWeizi = myWeizi;
+    }
+
+    public String getMyWeizi() {
+        return MyWeizi;
+    }
 
     public void setMatchId(long matchId) {
         MatchId = matchId;
@@ -32,13 +41,14 @@ public class LocalGaideListInfo {
         return MatchId;
     }
 
-    @Generated(hash = 1744191600)
+    @Generated(hash = 68035792)
     public LocalGaideListInfo(Long id, String time, String result, String nickname,
-            long MatchId) {
+            String MyWeizi, long MatchId) {
         this.id = id;
         this.time = time;
         this.result = result;
         this.nickname = nickname;
+        this.MyWeizi = MyWeizi;
         this.MatchId = MatchId;
     }
 
