@@ -53,6 +53,16 @@ public class HeroGuide {
         private int MatchType;
         private int HeroLevel;
         private int Result;
+        private String weizi;
+
+        public String getWeizi() {
+            return weizi;
+        }
+
+        public void setWeizi(String weizi) {
+            this.weizi = weizi;
+        }
+
         private String MatchDate;
         private HeroBean Hero;
 

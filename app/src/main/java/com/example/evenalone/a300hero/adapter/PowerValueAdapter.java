@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
+import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.bean.GameInfo;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.UiUtlis;
@@ -57,7 +58,8 @@ public class PowerValueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (viewHolder instanceof PowerValue) {
             PowerValue value = (PowerValue) viewHolder;
             if (maxPower > 0 && winData != null) {
-                Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + winData.get(i).getHero().getIconFile()).into(value.imgPowerAvator);
+               /* Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + winData.get(i).getHero().getIconFile()).into(value.imgPowerAvator);*/
+                MyApplication.getImageCenter().setPic(value.imgPowerAvator,winData.get(i).getHero().getName(),Contacts.IMG+winData.get(i).getHero().getIconFile());
                 double pecent = (((double) winData.get(i).getELO() / (double) maxPower));
                 value.progressPowervalue.setSmoothPercent((float) pecent, 2000);
                 value.tvPowerDes.setText(winData.get(i).getRoleName() );
@@ -73,7 +75,8 @@ public class PowerValueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (viewHolder instanceof PowerValueRight) {
             PowerValueRight valueRight = (PowerValueRight) viewHolder;
             if (maxPower > 0 && loseData != null) {
-                Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + loseData.get(i).getHero().getIconFile()).into(valueRight.imgPowerAvator2);
+                /*Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + loseData.get(i).getHero().getIconFile()).into(valueRight.imgPowerAvator2);*/
+                MyApplication.getImageCenter().setPic(valueRight.imgPowerAvator2,loseData.get(i).getHero().getName(),Contacts.IMG+loseData.get(i).getHero().getIconFile());
                 double pecent = (((double) loseData.get(i).getELO() / (double) maxPower));
                 valueRight.progressPowervalue2.setSmoothPercent((float) pecent, 2000);
                 valueRight.tvPowerDes2.setText(loseData.get(i).getRoleName());

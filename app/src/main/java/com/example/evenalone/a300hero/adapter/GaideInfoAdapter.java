@@ -144,7 +144,8 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
 
                 //加载图片
-                Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+winSideBean.getHero().getIconFile()).into(gaideInfoViewHolder.imgGaideAvator);
+             /*   Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+winSideBean.getHero().getIconFile()).into(gaideInfoViewHolder.imgGaideAvator);*/
+                MyApplication.getImageCenter().setPic(gaideInfoViewHolder.imgGaideAvator,winSideBean.getHero().getName(),Contacts.IMG+winSideBean.getHero().getIconFile());
                 //召唤师技能
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+winSideBean.getSkill().get(0).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill1);
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+winSideBean.getSkill().get(1).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill2);
@@ -237,7 +238,8 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
                 //加载图片
-               Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getHero().getIconFile()).into(gaideInfoViewHolder.imgGaideAvator);
+             /*  Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getHero().getIconFile()).into(gaideInfoViewHolder.imgGaideAvator);*/
+                MyApplication.getImageCenter().setPic(gaideInfoViewHolder.imgGaideAvator,loseSideBean.getHero().getName(),Contacts.IMG+loseSideBean.getHero().getIconFile());
                 //召唤师技能
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getSkill().get(0).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill1);
                 Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+loseSideBean.getSkill().get(1).getIconFile()).into(gaideInfoViewHolder.imgGuadieUserskill2);

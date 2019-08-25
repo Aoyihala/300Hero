@@ -19,6 +19,7 @@ import com.example.evenalone.a300hero.service.PushCallBackService;
 import com.example.evenalone.a300hero.ui.HomeActivity;
 import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
+import com.example.evenalone.a300hero.utils.ImageCenter;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
@@ -40,7 +41,7 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static Context context;
     private static OkhttpUtils okhttpUtils;
     private static DaoSession daoSession;
-
+    private static ImageCenter imageCenter;
     //全局代理词
     public static List<NetWorkProx> proxList = new ArrayList<>();
     private static Map<String,ListActivity> listActivities = new HashMap<>();
@@ -56,6 +57,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         PushManager.getInstance().initialize(context,MyPushService.class);
         PushManager.getInstance().registerPushIntentService(context,PushCallBackService.class);
         okhttpUtils = OkhttpUtils.getInstance();
+        imageCenter = ImageCenter.getInstance(context);
         checkservice();
 
         releasedata();
@@ -64,6 +66,10 @@ public class MyApplication extends Application implements Application.ActivityLi
         /*Intent intent = new Intent(context,MyNotifiService.class);
         context.startForegroundService(intent);*/
 
+    }
+
+    public static ImageCenter getImageCenter() {
+        return imageCenter;
     }
 
     private void initdownloader() {
@@ -102,6 +108,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         //释放资源
         //释放
         SpUtils.setMianUser(null);
+
     }
 
     private void initdb() {
@@ -208,6 +215,7 @@ public class MyApplication extends Application implements Application.ActivityLi
                     //获取相同的实列
                   SpUtils.selectUser(mianuser);
                   ((ListActivity) activity).initdatabyApplication(mianuser);
+
                 }
             }
         }

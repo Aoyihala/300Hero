@@ -74,11 +74,15 @@ public class LocalRoleListAdapter extends RecyclerView.Adapter<RecyclerView.View
     {
         String role = localUserBean.getRole_iocnfile();
         String img = localUserBean.getImg_iconfile();
-        if (TextUtils.isEmpty(img))
+        if (TextUtils.isEmpty(role))
         {
-            return Contacts.ROLE_IMG +role;
+            return Contacts.IMG+img;
         }
-        return Contacts.IMG+img;
+        if (role.contains("herohead"))
+        {
+            return Contacts.IMG+role;
+        }
+        return Contacts.ROLE_IMG +role;
     }
     @Override
     public int getItemCount() {

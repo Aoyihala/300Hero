@@ -34,6 +34,10 @@
 > - 4.团分对比简图,蓝队和红队其实是不能分的,是胜利方和失败方  
 ![团分趋势1](https://github.com/Aoyihala/img/blob/master/300data/power1.png?raw=true)  
 ![团分趋势2](https://github.com/Aoyihala/img/blob/master/300data/power2.png?raw=true)  
+##### 2019.8.25
+> - 1.添加小工具功能
+> - 2.添加通知栏定时推送功能
+> - 3.新增对统计图的详细操作
 
 #### 关于ip地址代理池
 [西刺](https://www.xicidaili.com)ip代理池，利用[jsoup](https://jsoup.org/download)解析

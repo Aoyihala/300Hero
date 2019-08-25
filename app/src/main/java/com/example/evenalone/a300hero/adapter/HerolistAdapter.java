@@ -107,8 +107,8 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             listViewHolder.imgHero.setTag(R.id.img_hero,listBean.getHero().getID());
             if ((listViewHolder.imgHero.getTag(R.id.img_hero).toString().equals(listBean.getHero().getID()+"")))
             {
-
-                            Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);
+                /* Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);*/
+                MyApplication.getImageCenter().setPic(listViewHolder.imgHero,listBean.getHero().getName(),Contacts.IMG+listBean.getHero().getIconFile());
 
             }
             if (listBean.getMatchType()==1)

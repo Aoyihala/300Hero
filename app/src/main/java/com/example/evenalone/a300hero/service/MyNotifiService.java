@@ -152,6 +152,8 @@ public class MyNotifiService extends Service {
             public void onSuccess(File result) {
                 Bitmap result_b = BitmapFactory.decodeFile(result.getAbsolutePath());
                 remoteViews.setImageViewBitmap(R.id.img_notify_avator,result_b);
+                //图片到手
+                MyApplication.getImageCenter().addMermory(listBean.getHero().getName(),result_b);
                 //处理数据
                 if (listBean.getResult()==1)
                 {
@@ -209,6 +211,7 @@ public class MyNotifiService extends Service {
             public void onSuccess(String result) {
                 if (result != null) {
                     Log.e("获取的对局数据",result);
+
                     //这里序列化完成后记得存入数据库,或者不,少一点操作
                     GameInfo gameInfo = new Gson().fromJson(result, GameInfo.class);
                     //筛选自己的战绩结果
@@ -456,6 +459,7 @@ public class MyNotifiService extends Service {
                 }
                 HeroGuide guide = eva.getGuide();
                 if (guide == null) {
+                    Log.e("没有获取到任何内容","当前应该处于高峰期");
                     return;
                 }
                 Log.e("获取到的数据",guide.getLocalruselt());

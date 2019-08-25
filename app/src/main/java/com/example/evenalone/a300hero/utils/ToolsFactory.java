@@ -13,12 +13,18 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.bumptech.glide.Glide;
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.PRDownloader;
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.app.MyApplication;
+import com.example.evenalone.a300hero.bean.DaoMaster;
+import com.example.evenalone.a300hero.bean.DaoSession;
 import com.example.evenalone.a300hero.bean.HeroGuide;
 
 import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
@@ -28,6 +34,7 @@ import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.google.gson.Gson;
 
 
+import org.greenrobot.greendao.database.Database;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -57,8 +64,8 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     public ToolsFactory(Context applicationContext, Intent intent) {
         this.context = applicationContext;
-        gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
-        gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
+        gaideListInfoDao =MyApplication.getDaoSession().getLocalGaideListInfoDao();
+        gameInfoDao =MyApplication.getDaoSession().getLocalGameInfoDao();
     }
 
 
@@ -70,7 +77,7 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onCreate() {
         //创建时
-        localGaideListInfos = getguadies();
+        localGaideListInfos = getguadies(SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getNowUser():SpUtils.getMainUser());
 
     }
     /*
@@ -102,29 +109,40 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
         rv.setTextViewText(R.id.tv_tool_time,listBean.getMatchDate());
         LocalGameInfo gameInfo = findoneGame(listBean.getMatchID());
         LocalGaideListInfo gaideListInfo = localGaideListInfoList.get(position);
-        String wei = gaideListInfo.getMyWeizi();
+        String wei=null;
+        for (LocalGaideListInfo info:localGaideListInfoList)
+        {
+            if (info.getMatchId()==listBean.getMatchID())
+            {
+                wei =info.getMyWeizi();
+            }
+        }
+
         if (!TextUtils.isEmpty(wei))
         {
             rv.setTextViewText(R.id.tv_tool_weizi,wei);
             if (wei.equals("MVP")||wei.equals("躺输")||wei.equals("神队友"))
             {
-                rv.setInt(R.id.tv_tool_weizi,"setBackground",R.drawable.shap_mvp);
+                rv.setInt(R.id.tv_tool_weizi,"setBackgroundResource",R.drawable.shap_mvp);
             }
             if (wei.equals("划水"))
             {
-                rv.setInt(R.id.tv_tool_weizi,"setBackground",R.drawable.shap_huashui);
+                rv.setInt(R.id.tv_tool_weizi,"setBackgroundResource",R.drawable.shap_huashui);
             }
             if (wei.equals("坑"))
             {
-                rv.setInt(R.id.tv_tool_weizi,"setBackground",R.drawable.shap_keng);
+                rv.setInt(R.id.tv_tool_weizi,"setBackgroundResource",R.drawable.shap_keng);
             }
+        }
+        else
+        {
+            rv.setTextViewText(R.id.tv_tool_weizi,"");
+            rv.setInt(R.id.tv_tool_weizi,"setBackgroundResource",0);
         }
 
         if (gameInfo!=null)
         {
             rv.setTextViewText(R.id.tv_tool_guaide,gameInfo.getMygaide());
-
-
         }
         else
         {
@@ -147,53 +165,65 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
             rv.setTextViewText(R.id.tv_tool_flag,"ESCAPE");
             rv.setTextColor(R.id.tv_tool_flag,UiUtlis.getColor(R.color.blue));
         }
-        flags.put(position, false);
+        Bitmap bitmap_cache = ImageCenter.getInstance(context).getCache(listBean.getHero().getName());
+        /*if (bitmap_cache!=null)
+        {
+            flags.put(position,true);
+
+            //截断
+
+        }
+        else
+        {
+            flags.put(position,true);
+        }
+        //在此一直等待获取到图片
+        while (!flags.get(position)) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        flags.put(position, false);*/
+        if (bitmap_cache!=null)
+        {
+            rv.setImageViewBitmap(R.id.img_tool_hero,makeRoundCorner(bitmap_cache));
+        }
+        else
+        {
+            rv.setImageViewResource(R.id.img_tool_hero,R.drawable.fish);
+        }
+        // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
+        Intent intent = new Intent();
+        // 传入点击行的数据
+        intent.putExtra("id",listBean.getMatchID());
+        rv.setOnClickFillInIntent(R.id.tool_game_item_bg, intent);
+      /*  flags.put(position, false);
+        //伪同步针对于没有缓存的图片
         handler.post(new Runnable() {
             @Override
             public void run() {
-                x.http().get(new RequestParams(Contacts.IMG + listBean.getHero().getIconFile()), new Callback.ProgressCallback<File>() {
-                    @Override
-                    public void onSuccess(File result) {
-                        if (result!=null)
-                        {
-                            mBitmap = BitmapFactory.decodeFile(result.getAbsolutePath());
-                            flags.put(position, true);
-                        }
-                    }
+                PRDownloader.download(Contacts.IMG+listBean.getHero().getIconFile(),context.getFilesDir()+"/imgfile",
+                        Base64.encodeToString(listBean.getHero().getName().getBytes(),Base64.DEFAULT))
+                        .build()
+                        .start(new OnDownloadListener() {
+                            @Override
+                            public void onDownloadComplete() {
+                                Bitmap bitmap = BitmapFactory.decodeFile(context.getFilesDir()+"/imgfile"+"/"+
+                                                Base64.encodeToString(listBean.getHero().getName().getBytes(),Base64.DEFAULT));
+                                //放入内存缓存
+                                MyApplication.getImageCenter().addMermory(listBean.getHero().getName(),bitmap);
+                            }
 
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-                        flags.put(position, true);
-                    }
+                            @Override
+                            public void onError(Error error) {
 
-                    @Override
-                    public void onCancelled(CancelledException cex) {
-                        flags.put(position, true);
-                    }
-
-                    @Override
-                    public void onFinished() {
-                        flags.put(position, true);
-                    }
-
-                    @Override
-                    public void onWaiting() {
-                        flags.put(position, true);
-                    }
-
-                    @Override
-                    public void onStarted() {
-                        flags.put(position, true);
-                    }
-
-                    @Override
-                    public void onLoading(long total, long current, boolean isDownloading) {
-                        flags.put(position, true);
-                    }
-                });
+                            }
+                        });
             }
         });
-//在此一直等待获取到网络图片
+        //在此一直等待获取到网络图片
         while (!flags.get(position)) {
             try {
                 Thread.sleep(2000);
@@ -207,13 +237,8 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
         } else {
             rv.setImageViewResource(R.id.img_tool_hero, R.drawable.fish);
         }
-        mBitmap = null;
+        mBitmap = null;*/
         // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
-        Intent intent = new Intent();
-        // 传入点击行的数据
-        intent.putExtra("id",listBean.getMatchID());
-        rv.setOnClickFillInIntent(R.id.tool_game_item_bg, intent);
-
         return rv;
     }
 
@@ -237,8 +262,12 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
         return false;
     }
 
-    private List<HeroGuide.ListBean> getguadies() {
-     localGaideListInfoList = gaideListInfoDao.loadAll();
+    private List<LocalGaideListInfo> getme(String nickname)
+    {
+        return gaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.Nickname.eq(nickname)).list();
+    }
+    private List<HeroGuide.ListBean> getguadies(String nickname) {
+     localGaideListInfoList = getme(nickname);
         //排序
         ListSort(localGaideListInfoList);
         if (localGaideListInfoList.size() > 10) {
@@ -246,7 +275,9 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
         }
         List<HeroGuide.ListBean> hero_guaidelist = new ArrayList<>();
         for (LocalGaideListInfo info : localGaideListInfoList) {
-            hero_guaidelist.add(new Gson().fromJson(info.getResult(), HeroGuide.ListBean.class));
+            HeroGuide.ListBean listBean = new Gson().fromJson(info.getResult(), HeroGuide.ListBean.class);
+            listBean.setWeizi(listBean.getWeizi());
+            hero_guaidelist.add(listBean);
         }
         return hero_guaidelist;
     }
@@ -302,7 +333,6 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
         Paint paint = new Paint();
         Rect rect = new Rect(left, top, right, bottom);
         RectF rectF = new RectF(rect);
-
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);

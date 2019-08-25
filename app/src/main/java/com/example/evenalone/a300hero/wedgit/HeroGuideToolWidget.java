@@ -41,6 +41,7 @@ import com.example.evenalone.a300hero.ui.GuaideInfoActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.google.gson.Gson;
+import com.igexin.sdk.GActivity;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -88,6 +89,13 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                 // 单击Wdiget中ListView的某一项会显示一个Toast提示。
                 Toast.makeText(context, intent.getLongExtra("id",0)+" ",
                         Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putLong("id",intent.getLongExtra("id",0));
+                Intent intent1 = new Intent(context,GuaideInfoActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent1.putExtras(bundle);
+                context.startActivity(intent1);
+
         }
 
     }
@@ -338,11 +346,16 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
     {
         String role = localUserBean.getRole_iocnfile();
         String img = localUserBean.getImg_iconfile();
-        if (TextUtils.isEmpty(img))
+        if (TextUtils.isEmpty(role))
         {
-            return Contacts.ROLE_IMG +role;
+            return Contacts.IMG+img;
         }
-        return Contacts.IMG+img;
+        if (role.contains("herohead"))
+        {
+            return Contacts.IMG+role;
+        }
+        return Contacts.ROLE_IMG +role;
+
     }
     /*
      * 颜色加深处理
