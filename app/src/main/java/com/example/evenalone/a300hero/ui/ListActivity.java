@@ -168,7 +168,6 @@ public class ListActivity extends BaseActivity {
         }
        /* nickname = getIntent().getExtras().getString("nickname");
         vistormode = getIntent().getExtras().getBoolean("mode");*/
-        refresh();
     }
     @Override
     protected void initview() {
