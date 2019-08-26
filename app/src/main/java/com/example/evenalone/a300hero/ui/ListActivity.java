@@ -303,14 +303,15 @@ public class ListActivity extends BaseActivity {
         btn_back_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
+             /*   Bundle bundle = new Bundle();
                 bundle.putBoolean("mode",false);
                 bundle.putString("nickname",SpUtils.getMainUser());
                 Intent intent = new Intent(ListActivity.this,ListActivity.class);
                 intent.putExtras(bundle);
                 //清除所有相关的页面 创建新的在顶部
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                startActivity(intent);*/
+             MyApplication.removeStack();
               /* setVistormode(false);
                setNickname(SpUtils.getMainUser());
                refresh();*/

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
@@ -33,6 +34,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +50,7 @@ public class MyApplication extends Application implements Application.ActivityLi
     //全局的list页面
     public static ListActivity listactivity;
     public static Map<String,ListActivity> listActivityMap = new HashMap<>();
+    private static List<Activity> activitiesall = new LinkedList<>();
 
     @Override
     public void onCreate() {
@@ -125,7 +128,21 @@ public class MyApplication extends Application implements Application.ActivityLi
         DaoMaster master = new DaoMaster(db);
         daoSession = master.newSession();
     }
-
+    //回转页面只剩一个
+    public static void removeStack()
+    {
+        if (activitiesall.size()>0)
+        {
+            for (int i=0;i<activitiesall.size();i++)
+            {
+                if (i>0)
+                {
+                    activitiesall.get(i).finish();
+                }
+            }
+            Toast.makeText(context, "已回到首页", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     public static DaoSession getDaoSession() {
@@ -155,6 +172,7 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        activitiesall.add(activity);
         if (activity instanceof AppCompatActivity)
         {
             //随机页面启动
@@ -225,6 +243,7 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     @Override
     public void onActivityDestroyed(Activity activity) {
+        activitiesall.remove(activity);
         //战绩列表界面
         if (activity instanceof ListActivity)
         {

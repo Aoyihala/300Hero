@@ -441,7 +441,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private boolean saveWeiZhi(long matchid,String w)
     {
-     /*   LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
+       /* LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
         if (localGaideListInfo!=null)
         {
             localGaideListInfo.setId(localGaideListInfo.getId());
