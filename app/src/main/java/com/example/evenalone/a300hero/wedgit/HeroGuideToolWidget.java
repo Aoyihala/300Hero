@@ -91,6 +91,7 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                         Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putLong("id",intent.getLongExtra("id",0));
+                 bundle.putString("nickname",SpUtils.getMainUser());
                 Intent intent1 = new Intent(context,GuaideInfoActivity.class);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent1.putExtras(bundle);
@@ -173,10 +174,10 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                     pendingIntentTemplate);
 
             //设置头像 昵称 还有自己的团分胜率详情
-            String user = SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getNowUser():SpUtils.getMainUser();
+            String user = SpUtils.getMainUser();
             final LocalUserBean localUserBean = finduser(user);
             //下载头像
-            x.http().get(new RequestParams(getImgUrl(localUserBean)), new Callback.ProgressCallback<File>() {
+            x.http().get(new RequestParams(Contacts.ROLE_IMG+localUserBean.getIocnfile()), new Callback.ProgressCallback<File>() {
                 @Override
                 public void onSuccess(File result) {
                     if (result!=null)
@@ -342,21 +343,7 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
         });
     }
 
-    public String getImgUrl(LocalUserBean localUserBean)
-    {
-        String role = localUserBean.getRole_iocnfile();
-        String img = localUserBean.getImg_iconfile();
-        if (TextUtils.isEmpty(role))
-        {
-            return Contacts.IMG+img;
-        }
-        if (role.contains("herohead"))
-        {
-            return Contacts.IMG+role;
-        }
-        return Contacts.ROLE_IMG +role;
 
-    }
     /*
      * 颜色加深处理
      * */

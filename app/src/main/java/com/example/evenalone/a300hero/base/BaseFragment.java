@@ -18,6 +18,8 @@ public abstract class BaseFragment extends LibFragmnet {
 
     private Boolean flag;
     protected AppCompatActivity compatActivity;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,4 +80,6 @@ public abstract class BaseFragment extends LibFragmnet {
     protected abstract void initdata();
 
     protected abstract int getLayoutId();
+
+
 }

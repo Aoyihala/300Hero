@@ -33,7 +33,7 @@ public class JobTimer extends JobService {
       if (!SystemUtils.isServiceWork(MyApplication.getContext(),"com.example.evenalone.a300hero.service.MyNotifiService"))
         {
             //保存一个cachename
-            nickname = SpUtils.getNowUser();
+            nickname = SpUtils.getMainUser();
             Log.e("data","重新唤醒服务");
             //没有存活
             Intent intent = new Intent(MyApplication.getContext(),MyNotifiService.class);
@@ -50,7 +50,7 @@ public class JobTimer extends JobService {
        {
            if (!TextUtils.isEmpty(nickname))
            {
-               if (nickname.equals(SpUtils.getNowUser()))
+               if (nickname.equals(SpUtils.getMainUser()))
                {
                    //到这里就该结束了
                    jobFinished(params,true);

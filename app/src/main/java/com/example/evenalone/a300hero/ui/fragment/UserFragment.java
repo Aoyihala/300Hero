@@ -63,6 +63,7 @@ public class UserFragment extends BaseFragment {
     private UserAdapter userAdapter;
     private Thread my_thread;
     private GameUtils gameUtils;
+    private String nickname;
     private Handler handler=new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -98,6 +99,11 @@ public class UserFragment extends BaseFragment {
             return true;
         }
     });
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Override
     protected boolean setEventOpen() {
         return true;
@@ -161,9 +167,9 @@ public class UserFragment extends BaseFragment {
                     {
                         gameUtils = new GameUtils();
                     }
-                         /*   gameUtils.getMyGuaide(SpUtils.getNowUser(),handler);
-                            gameUtils.getUsedHero(SpUtils.getNowUser(),handler);*/
-                    gameUtils.getMyPower(SpUtils.getNowUser(),handler);
+                         /*   gameUtils.getMyGuaide(nickname,handler);
+                            gameUtils.getUsedHero(nickname,handler);*/
+                    gameUtils.getMyPower(nickname,handler);
                 }
             });
             my_thread.start();
@@ -171,6 +177,7 @@ public class UserFragment extends BaseFragment {
 
     @Override
     protected void initdata() {
+        nickname = getArguments().getString("nickname");
         gameUtils = new GameUtils();
         userAdapter = new UserAdapter();
         gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
@@ -190,9 +197,9 @@ public class UserFragment extends BaseFragment {
                     {
                         gameUtils = new GameUtils();
                     }
-                    gameUtils.getMyGuaide(SpUtils.getNowUser(),handler);
-                    gameUtils.getUsedHero(SpUtils.getNowUser(),handler);
-                    gameUtils.getMyPower(SpUtils.getNowUser(),handler);
+                    gameUtils.getMyGuaide(nickname,handler);
+                    gameUtils.getUsedHero(nickname,handler);
+                    gameUtils.getMyPower(nickname,handler);
 
     }
 });
@@ -209,5 +216,16 @@ public class UserFragment extends BaseFragment {
     }
 
 
+    public void clearData() {
+        if (powerlist!=null&&my_guaide!=null)
+        {
+            powerlist.clear();
+            my_guaide.clear();
+        }
+        userAdapter.setPwoerList(powerlist);
+        userAdapter.setUsedHero(icon_map);
+        userAdapter.setYourCard(my_guaide);
 
+
+    }
 }

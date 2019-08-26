@@ -1,5 +1,6 @@
 package com.example.evenalone.a300hero.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -114,8 +115,12 @@ public class HomeActivity extends BaseActivity {
         roleListAdapter.setOnlocalHisClickListener(new LocalRoleListAdapter.OnlocalHisClickListener() {
             @Override
             public void onClick(String name) {
-                SpUtils.selectUser(name);
-                startActivty(ListActivity.class,true);
+               /* SpUtils.selectUser(name);*/
+                SpUtils.setMianUser(name);
+                Bundle bundle = new Bundle();
+                bundle.putString("nickname",name);
+                bundle.putBoolean("mode",false);
+                startActivtyWithBundle(ListActivity.class,true,bundle);
             }
         });
     }
@@ -124,6 +129,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initdata() {
         //建立数据库储存
+
         roleListAdapter = new LocalRoleListAdapter();
         userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         userBeanList = userBeanDao.loadAll();
@@ -233,7 +239,7 @@ public class HomeActivity extends BaseActivity {
             int viotory = (int) (((double) wincount / (double) all) * 100);
             localUserBean.setNickname(name);
             localUserBean.setViotory(viotory + "%");
-            localUserBean.setRole_iocnfile(type_icon);
+            localUserBean.setIocnfile(type_icon);
             localUserBean.setJumpvalue(power);
             localUserBean.setResult(new Gson().toJson(role));
             //暂时未接入极光
@@ -245,8 +251,12 @@ public class HomeActivity extends BaseActivity {
             }
             progressBinding.setVisibility(View.GONE);
             //选定
-            SpUtils.selectUser(localUserBean.getNickname());
-            startActivty(ListActivity.class, true);
+            /*SpUtils.selectUser(localUserBean.getNickname());*/
+            SpUtils.setMianUser(localUserBean.getNickname());
+            Bundle bundle = new Bundle();
+            bundle.putString("nickname",name);
+            bundle.putBoolean("mode",false);
+            startActivtyWithBundle(ListActivity.class, true,bundle);
         } else {
             Snackbar.make(imgSearch, "查询角色失败:" + event.getErroMsg(), Snackbar.LENGTH_SHORT).show();
             progressBinding.setVisibility(View.GONE);

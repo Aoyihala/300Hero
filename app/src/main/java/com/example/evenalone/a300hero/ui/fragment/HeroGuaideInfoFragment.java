@@ -68,7 +68,7 @@ public class HeroGuaideInfoFragment extends BaseFragment {
     private GaideInfoAdapter winadapter;
     private GaideInfoAdapter loseadapter;
     private GameUtils gameUtils;
-
+    private String nickname;
     //0蓝 1红
     @Override
     protected boolean setEventOpen() {
@@ -82,10 +82,11 @@ public class HeroGuaideInfoFragment extends BaseFragment {
 
     @Override
     protected void initdata() {
+        nickname = getArguments().getString("nickname");
         gameUtils = new GameUtils();
-        winadapter = new GaideInfoAdapter();
+        winadapter = new GaideInfoAdapter(nickname,getActivity());
         winadapter.setIswin(true);
-        loseadapter = new GaideInfoAdapter();
+        loseadapter = new GaideInfoAdapter(nickname,getActivity());
         loseadapter.setIswin(false);
         recycerWinsaide.setAdapter(winadapter);
         recycerLoseside.setAdapter(loseadapter);
@@ -254,8 +255,8 @@ public class HeroGuaideInfoFragment extends BaseFragment {
                 localGameInfo = new LocalGameInfo();
                 localGameInfo.setResult(eva.getGameInfo().getLocalruselt());
                 localGameInfo.setMactherId(id);
-                String res = gameUtils.getKillUserDataWin(eva.getGameInfo().getMatch().getWinSide(), SpUtils.getNowUser());
-                String res_lose = gameUtils.getKillUserDataLose(eva.getGameInfo().getMatch().getLoseSide(), SpUtils.getNowUser());
+                String res = gameUtils.getKillUserDataWin(eva.getGameInfo().getMatch().getWinSide(), nickname);
+                String res_lose = gameUtils.getKillUserDataLose(eva.getGameInfo().getMatch().getLoseSide(), nickname);
                 if (TextUtils.isEmpty(res)) {
                     localGameInfo.setMygaide(res_lose);
                 } else {

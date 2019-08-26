@@ -27,18 +27,27 @@ public class PopLoaclUserListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private List<LocalUserBean> localUserBeanList = new ArrayList<>();
     private ClickItemListenner clickItemListenner;
+    private String nickname;
+    public PopLoaclUserListAdapter(String nickname)
+    {
+        this.nickname = nickname;
+    }
     public void setLocalUserBeanList(List<LocalUserBean> localUserBeanList) {
         this.localUserBeanList = localUserBeanList;
         LocalUserBean localUserBean_me=null;
         for (LocalUserBean localUserBean:localUserBeanList)
         {
-            if (localUserBean.getNickname().equals(SpUtils.getNowUser()))
+            if (localUserBean.getNickname().equals(nickname))
             {
                 //移除当前页面
                localUserBean_me = localUserBean;
             }
         }
         localUserBeanList.remove(localUserBean_me);
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void setClickPoslistener(ClickItemListenner listenner)
@@ -65,7 +74,7 @@ public class PopLoaclUserListAdapter extends RecyclerView.Adapter<RecyclerView.V
             final LocalUserBean userBean = localUserBeanList.get(i);
             roleViewholder.tvLoaclName.setText(userBean.getNickname());
             roleViewholder.tvLoaclJump.setText("团分:"+userBean.getJumpvalue()+" | 胜率:"+userBean.getViotory());
-            Glide.with(viewHolder.itemView.getContext()).load(getImgUrl(userBean)).into(roleViewholder.imgLocalAvator);
+            Glide.with(viewHolder.itemView.getContext()).load(Contacts.ROLE_IMG+userBean.getIocnfile()).into(roleViewholder.imgLocalAvator);
             roleViewholder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -76,20 +85,6 @@ public class PopLoaclUserListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
         }
-    }
-    public String getImgUrl(LocalUserBean localUserBean)
-    {
-        String role = localUserBean.getRole_iocnfile();
-        String img = localUserBean.getImg_iconfile();
-        if (TextUtils.isEmpty(role))
-        {
-            return Contacts.IMG+img;
-        }
-        if (role.contains("herohead"))
-        {
-            return Contacts.IMG+role;
-        }
-        return Contacts.ROLE_IMG +role;
     }
 
     @Override

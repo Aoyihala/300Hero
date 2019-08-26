@@ -61,12 +61,15 @@ public class HeroGuaideFragment extends BaseFragment {
     private List<HeroGuide.ListBean> listBeans = new ArrayList<>();
     private List<HeroGuide.ListBean> alllist = new ArrayList<>();
     private LocalGaideListInfoDao localGaideListInfoDao;
-
+    private String nickname;
     @Override
     protected boolean setEventOpen() {
         return true;
     }
-
+    public void setNickname(String nickname)
+    {
+        this.nickname = nickname;
+    }
     @Override
     protected void initview() {
         startRefresh();
@@ -139,6 +142,7 @@ public class HeroGuaideFragment extends BaseFragment {
             public void click(long macth) {
                 Bundle bundle = new Bundle();
                 bundle.putLong("id",macth);
+                bundle.putString("nickname",nickname);
                 Intent intent = new Intent(compatActivity,GuaideInfoActivity.class);
                 intent.putExtras(bundle);
                 compatActivity.startActivity(intent);
@@ -161,8 +165,8 @@ public class HeroGuaideFragment extends BaseFragment {
 
     @Override
     protected void initdata() {
-
-        herolistAdapter = new HerolistAdapter();
+        nickname = getArguments().getString("nickname");
+        herolistAdapter = new HerolistAdapter(nickname);
        localGaideListInfoDao =  MyApplication.getDaoSession().getLocalGaideListInfoDao();
         requestData(page, false);
     }
@@ -182,7 +186,7 @@ public class HeroGuaideFragment extends BaseFragment {
         }
         tvState.setText(R.string.loading);
         Request request = new Request.Builder()
-                .url(Contacts.LIST_URL + "?name=" + SpUtils.getNowUser() + "&index=" + page)
+                .url(Contacts.LIST_URL + "?name=" + nickname+ "&index=" + page)
                 .build();
         MyApplication.getOkhttpUtils().sendRequest(request, HeroGuide.class);
     }
@@ -231,13 +235,13 @@ public class HeroGuaideFragment extends BaseFragment {
             //保存作战数据用于本地测量,该数据只用于展示图表
             for (HeroGuide.ListBean listBean:eva.getGuide().getList())
             {
-                LocalGaideListInfo info = searchGuideinfo(listBean.getMatchID(),SpUtils.getNowUser());
+                LocalGaideListInfo info = searchGuideinfo(listBean.getMatchID(),nickname);
                 if (info!=null)
                 {
                     //更新
                     info.setId(info.getId());
                     info.setMatchId(listBean.getMatchID());
-                    info.setNickname(SpUtils.getNowUser());
+                    info.setNickname(nickname);
                     info.setTime(listBean.getMatchDate());
                     info.setResult(new Gson().toJson(listBean));
                     localGaideListInfoDao.update(info);
@@ -247,7 +251,7 @@ public class HeroGuaideFragment extends BaseFragment {
                     //保存
                     info = new LocalGaideListInfo();
                     info.setMatchId(listBean.getMatchID());
-                    info.setNickname(SpUtils.getNowUser());
+                    info.setNickname(nickname);
                     info.setTime(listBean.getMatchDate());
                     info.setResult(new Gson().toJson(listBean));
                     localGaideListInfoDao.save(info);
@@ -303,5 +307,11 @@ public class HeroGuaideFragment extends BaseFragment {
 
         }
 
+    }
+
+    public void clearData() {
+        listBeans.clear();
+        herolistAdapter.setListBeans(listBeans);
+        herolistAdapter.notifyDataSetChanged();
     }
 }

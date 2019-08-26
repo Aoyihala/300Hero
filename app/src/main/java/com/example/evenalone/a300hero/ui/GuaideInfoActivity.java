@@ -87,6 +87,7 @@ public class GuaideInfoActivity extends BaseActivity {
     private void inintfragment() {
         infoFragment = new HeroGuaideInfoFragment();
         valueFragment = new PowerValueFragment();
+        Bundle bundle = getIntent().getExtras();
         infoFragment.setArguments(getIntent().getExtras());
         valueFragment.setArguments(getIntent().getExtras());
         fragmentList.add(infoFragment);

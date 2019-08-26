@@ -1,5 +1,6 @@
 package com.example.evenalone.a300hero.adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,8 +36,15 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<GameInfo.MatchBean.WinSideBean> winSideBeanList = new ArrayList<>();
     private List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = new ArrayList<>();
-
+    private String nickname;
+    private Activity activity;
+    public GaideInfoAdapter(String nickname,Activity activity)
+    {
+        this.nickname = nickname;
+        this.activity = activity;
+    }
     private boolean iswin = false;
+
 
     public void setIswin(boolean iswin) {
         this.iswin = iswin;
@@ -69,7 +77,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             {
                 //赢
                 final GameInfo.MatchBean.WinSideBean winSideBean = winSideBeanList.get(i);
-                if (winSideBean.getRoleName().equals(SpUtils.getNowUser()))
+                if (winSideBean.getRoleName().equals(nickname))
                 {
                     gaideInfoViewHolder.tvGuaideUserguaide.setVisibility(View.VISIBLE);
                 }
@@ -161,16 +169,18 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean("mode",true);
-                        bundle.putString("nickname",winSideBean.getRoleName());
-                        if (SpUtils.getMainUser()==null)
+
+                            Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean("mode",true);
+                            bundle.putString("nickname",winSideBean.getRoleName());
+                     /*   if (SpUtils.getMainUser()==null)
                         {
-                            SpUtils.setMianUser(SpUtils.getNowUser());
+                            SpUtils.setbackUser(SpUtils.getNowUser());
                         }
-                        SpUtils.selectUser(winSideBean.getRoleName());
-                        viewHolder.itemView.getContext().startActivity(intent);
+                        SpUtils.selectUser(winSideBean.getRoleName());*/
+                            intent.putExtras(bundle);
+                            viewHolder.itemView.getContext().startActivity(intent);
                     }
                 });
             }
@@ -178,7 +188,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             {
                 //输
                 final GameInfo.MatchBean.LoseSideBean loseSideBean = loseSideBeanList.get(i);
-                if (loseSideBean.getRoleName().equals(SpUtils.getNowUser()))
+                if (loseSideBean.getRoleName().equals(nickname))
                 {
                     gaideInfoViewHolder.tvGuaideUserguaide.setVisibility(View.VISIBLE);
                 }
@@ -256,16 +266,20 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean("mode",true);
-                        bundle.putString("nickname",loseSideBean.getRoleName());
-                        if (SpUtils.getMainUser()==null)
+
+                            Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean("mode",true);
+                            bundle.putString("nickname",loseSideBean.getRoleName());
+                     /*   if (SpUtils.getMainUser()==null)
                         {
-                            SpUtils.setMianUser(SpUtils.getNowUser());
+                            SpUtils.setbackUser(SpUtils.getNowUser());
                         }
-                        SpUtils.selectUser(loseSideBean.getRoleName());
-                        viewHolder.itemView.getContext().startActivity(intent);
+                        SpUtils.selectUser(winSideBean.getRoleName());*/
+                            intent.putExtras(bundle);
+                            viewHolder.itemView.getContext().startActivity(intent);
+
+
                     }
                 });
 

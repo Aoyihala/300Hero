@@ -9,16 +9,34 @@ import com.example.evenalone.a300hero.bean.LocalUserBean;
 
 public class SpUtils
 {
-    /**
+   /* *//**
      * 切换当前用户
      * @param name
-     */
+     *//*
     public static void selectUser(String name)
     {
         SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("nowuser",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("nickname",name);
         editor.apply();
+    }
+    *//**
+     * 切换当前用户
+     * @param name
+     *//*
+    public static void setbackUser(String name)
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("nowuser",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("back_nickname",name);
+        editor.apply();
+    }*/
+    public static String getBackUser()
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("nowuser",Context.MODE_PRIVATE);
+        String nickname = preferences.getString("back_nickname",null);
+
+        return nickname;
     }
     /**
      * 切换当前用户
@@ -41,10 +59,10 @@ public class SpUtils
         return userBean.getNickname();
     }
 
-    /**
+ /*   *//**
      * 获取当前选中的用户
      * @return
-     */
+     *//*
     public static String getNowUser()
     {
         SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("nowuser",Context.MODE_PRIVATE);
@@ -52,7 +70,7 @@ public class SpUtils
         LocalUserBean userBean = new LocalUserBean();
         userBean.setNickname(nickname);
         return userBean.getNickname();
-    }
+    }*/
 
     /**
      * 设置代理按钮

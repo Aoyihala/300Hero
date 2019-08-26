@@ -49,18 +49,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-    <TextView
-        android:text="WIN"
-        android:textSize="15sp"
-        android:paddingRight="10dp"
-        android:layout_weight="2"
-        android:paddingLeft="10dp"
-        android:id="@+id/tv_notifiy_status"
-        android:layout_gravity="center_vertical"
-        android:textColor="#fff"
-        android:gravity="right"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="WIN"
+            android:textSize="15sp"
+            android:paddingRight="10dp"
+            android:layout_weight="2"
+            android:paddingLeft="10dp"
+            android:id="@+id/tv_notifiy_status"
+            android:layout_gravity="center_vertical"
+            android:textColor="#fff"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="#fff"
+            android:text="玩家：本萌新不高兴了"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:id="@+id/tv_notifiy_name"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     </LinearLayout>
 

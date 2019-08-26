@@ -55,7 +55,7 @@ public class LocalRoleListAdapter extends RecyclerView.Adapter<RecyclerView.View
             final LocalUserBean userBean = localUserBeans.get(i);
             roleViewholder.tvLoaclName.setText(userBean.getNickname());
             roleViewholder.tvLoaclJump.setText("团分:"+userBean.getJumpvalue()+" | 胜率:"+userBean.getViotory());
-            Glide.with(viewHolder.itemView.getContext()).load(getImgUrl(userBean)).into(roleViewholder.imgLocalAvator);
+            Glide.with(viewHolder.itemView.getContext()).load(Contacts.ROLE_IMG+userBean.getIocnfile()).into(roleViewholder.imgLocalAvator);
             roleViewholder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -70,20 +70,7 @@ public class LocalRoleListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    public String getImgUrl(LocalUserBean localUserBean)
-    {
-        String role = localUserBean.getRole_iocnfile();
-        String img = localUserBean.getImg_iconfile();
-        if (TextUtils.isEmpty(role))
-        {
-            return Contacts.IMG+img;
-        }
-        if (role.contains("herohead"))
-        {
-            return Contacts.IMG+role;
-        }
-        return Contacts.ROLE_IMG +role;
-    }
+
     @Override
     public int getItemCount() {
         return localUserBeans==null?0:localUserBeans.size();

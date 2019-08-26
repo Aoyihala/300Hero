@@ -1,10 +1,14 @@
 package com.example.evenalone.a300hero.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -18,6 +22,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.graphics.Palette;
@@ -62,6 +67,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Request;
 
@@ -81,8 +87,6 @@ public class ListActivity extends BaseActivity {
     Toolbar toolBar;
     @BindView(R.id.left_menu)
     NavigationView leftMenu;
-    @BindView(R.id.btn_add_acount)
-    FloatingActionButton btnAddAcount;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @BindView(R.id.img_jump_bg)
@@ -113,6 +117,8 @@ public class ListActivity extends BaseActivity {
     ImageView imgHomeDuanwei;
     @BindView(R.id.tv_home_duanwei)
     TextView tvHomeDuanwei;
+    @BindView(R.id.btn_back)
+    FloatingActionButton btn_back_action;
     private LocalUserBean localUserBean;
     private LocalUserBeanDao userBeanDao;
     private View head_view;
@@ -128,7 +134,7 @@ public class ListActivity extends BaseActivity {
     private List<Fragment> fragmentList = new ArrayList<>();
     private HeroGuaideFragment guaideFragment;
     private UserFragment userFragment;
-    private GayFragment gayFragment;
+  /*  private GayFragment gayFragment;*/
     private MenuPopwindow menuPopwindow;
     private LinearLayout li_pop_setting;
     private LinearLayout li_pop_add;
@@ -139,6 +145,18 @@ public class ListActivity extends BaseActivity {
     public boolean isfirst=true;
     private String visitor_name;
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setVistormode(boolean vistormode) {
+        this.vistormode = vistormode;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -148,47 +166,10 @@ public class ListActivity extends BaseActivity {
             isfirst = false;
             return;
         }
-       /* if (!vistormode)
-        {
-            //不是观察模式
-            String nickname = SpUtils.getMainUser();
-            if (!TextUtils.isEmpty(nickname))
-            {
-                //回来惹
-                SpUtils.selectUser(nickname);
-                this.nickname = SpUtils.getNowUser();
-                //释放
-                SpUtils.setMianUser(null);
-                refresh();
-            }
-
-        }*/
+       /* nickname = getIntent().getExtras().getString("nickname");
+        vistormode = getIntent().getExtras().getBoolean("mode");*/
+        refresh();
     }
-
-    public void setTag(String visitor_name)
-    {
-        this.visitor_name=visitor_name;
-    }
-
-    public String getVisitor_name() {
-        return visitor_name;
-    }
-
-    public void initviewbyApplication()
-    {
-        initview();
-    }
-    public void initdatabyApplication(String username)
-    {
-        //这里分两种情况
-        nickname = username;
-        if (fragmentList.size()>0&&viewPager.getAdapter()!=null)
-        {
-            refresh();
-        }
-
-    }
-
     @Override
     protected void initview() {
         setSupportActionBar(toolBar);
@@ -196,6 +177,9 @@ public class ListActivity extends BaseActivity {
         tvTopTitle.setVisibility(View.GONE);
         toolBar.setBackgroundColor(Color.TRANSPARENT);
         imgBtn.setImageResource(R.drawable.ic_keyboard_backspace_white_24dp);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fish_avator);
+        //高斯模糊化
+        imgJumpBg.setImageBitmap(praseBitmap(bitmap));
         //监听appbar收缩事件
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
@@ -203,19 +187,30 @@ public class ListActivity extends BaseActivity {
                 if (state == State.EXPANDED) {
                     //
                     liUserinfo.setVisibility(View.GONE);
-                    imgBtn.setVisibility(View.VISIBLE);
+                    imgBtn.setVisibility(View.GONE);
+                    if (vistormode)
+                    {
+                        btn_back_action.show();
+                    }
+
                 } else if (state == State.COLLAPSED) {
 
                     liUserinfo.setVisibility(View.VISIBLE);
                     imgBtn.setVisibility(View.GONE);
+                    if (vistormode)
+                    {
+                        btn_back_action.hide();
+                    }
+
                 } else {
                     liUserinfo.setVisibility(View.GONE);
-                    imgBtn.setVisibility(View.VISIBLE);
+                    imgBtn.setVisibility(View.GONE);
+
                 }
             }
         });
         //角色列表
-        roleListAdapter = new PopLoaclUserListAdapter();
+        roleListAdapter = new PopLoaclUserListAdapter(nickname);
         roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
         menuPopwindow = new MenuPopwindow(this);
         recyclerView_local = menuPopwindow.getContentView().findViewById(R.id.recycler_user_history);
@@ -270,9 +265,9 @@ public class ListActivity extends BaseActivity {
                 //重新走一遍
                 nickname = userBean.getNickname();
                 menuPopwindow.dismiss();
-                SpUtils.selectUser(userBean.getNickname());
-                //清楚mianuser
-                SpUtils.setMianUser(null);
+                /*SpUtils.selectUser(userBean.getNickname());*/
+                //不用清除mianuser
+                SpUtils.setMianUser(userBean.getNickname());
                 //重新加载一次
                 roleListAdapter.setLocalUserBeanList(userBeanDao.loadAll());
                 roleListAdapter.notifyDataSetChanged();
@@ -302,28 +297,96 @@ public class ListActivity extends BaseActivity {
 
             }
         });
-
+        /**
+         * 返回自己的战绩
+         */
+        btn_back_action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("mode",false);
+                bundle.putString("nickname",SpUtils.getMainUser());
+                Intent intent = new Intent(ListActivity.this,ListActivity.class);
+                intent.putExtras(bundle);
+                //清除所有相关的页面 创建新的在顶部
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+              /* setVistormode(false);
+               setNickname(SpUtils.getMainUser());
+               refresh();*/
+            }
+        });
 
     }
     //刷新当前界面
-    private void refresh() {
+    public void refresh() {
+        //清除所有的视图状态
+        clearViews();
         if (!vistormode) {
             //前往本地获取自己选择的用户
             userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
             //在本地获取
-            localUserBean = searchuser(nickname == null ? SpUtils.getNowUser() : nickname);
+            localUserBean = searchuser(nickname);
             if (localUserBean != null) {
                 updateView(localUserBean);
             }
             //请求网络加载用户信息(更新)
+            btn_back_action.hide();
             requestUser();
         } else {
             //自己看别人的战绩
+            btn_back_action.show();
             requestUser();
         }
         //提示fragment刷新
+        guaideFragment.setNickname(nickname);
         guaideFragment.requestData(0, true);
+        userFragment.setNickname(nickname);
         userFragment.loadUserData();
+
+
+    }
+
+    private void clearViews() {
+        imgJumpUserhead.setImageBitmap(null);
+        imgJumpUserhead.setImageDrawable(null);
+        imgJumpUserhead.setBackgroundResource(R.drawable.fish_avator);
+        imgHomeDuanwei.setBackgroundResource(0);
+        tvHomeDuanwei.setText("加载中");
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.fish_avator);
+        //高斯模糊化
+        imgJumpBg.setImageBitmap(praseBitmap(bitmap));
+        tvJumpGuaideHome.setText("加载中");
+        tvJumpViotoryHome.setText("加载中");
+        tvJumpNameHome.setText(nickname);
+        guaideFragment.clearData();
+        userFragment.clearData();
+
+    }
+
+    private Bitmap praseBitmap(Bitmap bitmap) {
+
+        //创建一个缩小后的bitmap
+        Bitmap inputBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
+        //创建将在ondraw中使用到的经过模糊处理后的bitmap
+        Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+
+        //创建RenderScript，ScriptIntrinsicBlur固定写法
+        RenderScript rs = RenderScript.create(ListActivity.this);
+        ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+
+        //根据inputBitmap，outputBitmap分别分配内存
+        Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+        Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+
+        //设置模糊半径取值0-25之间，不同半径得到的模糊效果不同
+        blurScript.setRadius(10);
+        blurScript.setInput(tmpIn);
+        blurScript.forEach(tmpOut);
+
+        //得到最终的模糊bitmap
+        tmpOut.copyTo(outputBitmap);
+        return outputBitmap;
     }
 
     @Override
@@ -341,11 +404,11 @@ public class ListActivity extends BaseActivity {
         viewPager.setOffscreenPageLimit(myViewPagerAdapter.getCount());
         tabLayout.setupWithViewPager(viewPager);
         //这里分两种情况
+        userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         if (!vistormode) {
             //前往本地获取自己选择的用户
-            userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
             //在本地获取
-            localUserBean = searchuser(nickname == null ? SpUtils.getNowUser() : nickname);
+            localUserBean = searchuser(nickname );
             if (localUserBean != null) {
                 updateView(localUserBean);
             }
@@ -359,7 +422,7 @@ public class ListActivity extends BaseActivity {
 
     private void requestUser() {
         Request request = new Request.Builder()
-                .url(Contacts.ROLE_URL + "?name=" + (nickname == null ? SpUtils.getNowUser() : nickname))
+                .url(Contacts.ROLE_URL + "?name=" + (nickname ))
                 .build();
         MyApplication.getOkhttpUtils().sendRequest(request, YourRole.class);
     }
@@ -368,13 +431,16 @@ public class ListActivity extends BaseActivity {
 
     @SuppressLint("ResourceType")
     private void initfragment() {
+        Bundle bundle = new Bundle();
+        bundle.putString("nickname",nickname);
         guaideFragment = new HeroGuaideFragment();
         userFragment = new UserFragment();
-        gayFragment = new GayFragment();
+      /*  gayFragment = new GayFragment();*/
+        guaideFragment.setArguments(bundle);
+        userFragment.setArguments(bundle);
         titles = UiUtlis.getViewPagerTitle(R.array.title);
         fragmentList.add(guaideFragment);
         fragmentList.add(userFragment);
-        fragmentList.add(gayFragment);
     }
 
     public LocalUserBean searchuser(String nickname) {
@@ -423,7 +489,7 @@ public class ListActivity extends BaseActivity {
         tv_jump_viotroy.setText("胜率:" + localUserBean.getViotory());
         tv_jump_value.setText("团分:" + localUserBean.getJumpvalue());
         //设置基本信息
-        Glide.with(this).load(getImgUrl(localUserBean)).addListener(new RequestListener<Drawable>() {
+        Glide.with(this).load(Contacts.ROLE_IMG + localUserBean.getIocnfile()).addListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 //去加载默认的头像
@@ -434,28 +500,9 @@ public class ListActivity extends BaseActivity {
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                 Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
-                //创建一个缩小后的bitmap
-                Bitmap inputBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
-                //创建将在ondraw中使用到的经过模糊处理后的bitmap
-                Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
 
-                //创建RenderScript，ScriptIntrinsicBlur固定写法
-                RenderScript rs = RenderScript.create(ListActivity.this);
-                ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-
-                //根据inputBitmap，outputBitmap分别分配内存
-                Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
-                Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
-
-                //设置模糊半径取值0-25之间，不同半径得到的模糊效果不同
-                blurScript.setRadius(10);
-                blurScript.setInput(tmpIn);
-                blurScript.forEach(tmpOut);
-
-                //得到最终的模糊bitmap
-                tmpOut.copyTo(outputBitmap);
                 //设置图片
-                img_bg.setImageBitmap(outputBitmap);
+                img_bg.setImageBitmap(praseBitmap(bitmap));
 
 
                 return false;
@@ -485,13 +532,9 @@ public class ListActivity extends BaseActivity {
             if (role == null) {
                 return;
             }
-            if (role.getRole().getRoleName()==null)
-            {
-                return;
-            }
             if (!vistormode) {
 
-                Snackbar.make(toolBar, "欢迎召唤师," + role.getRole().getRoleName(), Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(toolBar, "欢迎召唤师," + role.getRole().getRoleName(), Snackbar.LENGTH_SHORT).show();
                 LocalUserBean localUserBean = searchuser(role.getRole().getRoleName());
                 String oldpower = null;
                 boolean ishad = false;
@@ -540,7 +583,7 @@ public class ListActivity extends BaseActivity {
                 int wincount = role.getRole().getWinCount();
                 int all = role.getRole().getMatchCount();
                 int viotory = (int) (((double) wincount / (double) all) * 100);
-                localUserBean.setRole_iocnfile(type_icon);
+                localUserBean.setIocnfile(type_icon);
 
                 if (TextUtils.isEmpty(power) || power == null) {
                     localUserBean.setJumpvalue(oldpower);
@@ -597,8 +640,7 @@ public class ListActivity extends BaseActivity {
                 int wincount = role.getRole().getWinCount();
                 int all = role.getRole().getMatchCount();
                 int viotory = (int) (((double) wincount / (double) all) * 100);
-                //只是针对第一次
-                localUserBean_user.setRole_iocnfile(type_icon);
+                localUserBean_user.setIocnfile(type_icon);
                 localUserBean_user.setJumpvalue(power);
                 localUserBean_user.setViotory(viotory + "%");
                 localUserBean_user.setNickname(role.getRole().getRoleName());
@@ -612,20 +654,6 @@ public class ListActivity extends BaseActivity {
         tvJumpGuaideHome.setText("团分:" + value);
     }
 
-    public String getImgUrl(LocalUserBean localUserBean)
-    {
-        String role = localUserBean.getRole_iocnfile();
-        String img = localUserBean.getImg_iconfile();
-        if (TextUtils.isEmpty(role))
-        {
-            return Contacts.IMG+img;
-        }
-        if (role.contains("herohead"))
-        {
-            return Contacts.IMG+role;
-        }
-        return Contacts.ROLE_IMG +role;
-    }
     /**
      * 更新视图,网络请求后的
      *
@@ -635,7 +663,7 @@ public class ListActivity extends BaseActivity {
 
         tvSearchNickname.setText(localUserBean.getNickname());
         tvSearchNickname.setTextColor(Color.WHITE);
-        Glide.with(this).load(getImgUrl(localUserBean)).into(imgUserhead);
+        Glide.with(this).load(Contacts.ROLE_IMG + localUserBean.getIocnfile()).into(imgUserhead);
         tvJumpNameHome.setText(localUserBean.getNickname());
         tvJumpViotoryHome.setText("胜率:" + localUserBean.getViotory());
         if (localUserBean.getJumpvalue() == null || TextUtils.isEmpty(localUserBean.getJumpvalue()) || localUserBean.getJumpvalue().equals("null")) {
@@ -647,7 +675,7 @@ public class ListActivity extends BaseActivity {
             tvJumpGuaideHome.setText("团分:" + localUserBean.getJumpvalue());
             int pwoer_win_adv = Integer.parseInt(localUserBean.getJumpvalue());
             if (pwoer_win_adv > 0 && pwoer_win_adv < 1000) {
-                 imgHomeDuanwei.setBackgroundResource(R.drawable.tong);
+                imgHomeDuanwei.setBackgroundResource(R.drawable.tong);
                 tvHomeDuanwei.setText("青铜");
             }
             if (pwoer_win_adv >= 1000 && pwoer_win_adv < 2000) {
@@ -665,7 +693,7 @@ public class ListActivity extends BaseActivity {
         }
 
         //设置基本信息
-        Glide.with(this).load(getImgUrl(localUserBean)).addListener(new RequestListener<Drawable>() {
+        Glide.with(this).load(Contacts.ROLE_IMG + localUserBean.getIocnfile()).addListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 //去加载默认的头像
@@ -711,6 +739,9 @@ public class ListActivity extends BaseActivity {
                                 SpUtils.saveMainColor(color);
                                 //暂时没有找到比较好的透明状态栏来适配这一套效果布局。直接替换掉StatusBar的颜色
                                 getWindow().setStatusBarColor(color);
+                                //修改fab图片前景颜色
+                                //btn_back_action.setColorFilter(color);
+                                btn_back_action.setBackgroundTintList(getColorStateListTest(color));
                             }
                         });
 
@@ -719,11 +750,21 @@ public class ListActivity extends BaseActivity {
         }).into(imgJumpUserhead);
 
     }
-
+    //获取方法，Fab颜色
+    private ColorStateList getColorStateListTest(int color1) {
+        int[][] states = new int[][]{
+                new int[]{android.R.attr.state_enabled}, // enabled
+                new int[]{-android.R.attr.state_enabled}, // disabled
+                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{android.R.attr.state_pressed}  // pressed
+        };
+        int color = color1;
+        int[] colors = new int[]{color, color, color, color};
+        return new ColorStateList(states, colors);
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void jumpValue(JumpValueEvnet eva) {
         String nickname_j = eva.getNickname();
-        nickname = SpUtils.getNowUser();
         if (nickname_j.equals(nickname)) {
             setJumpvalue(eva.getValue());
             int pwoer_win_adv = Integer.parseInt(eva.getValue());
@@ -746,6 +787,7 @@ public class ListActivity extends BaseActivity {
         }
 
     }
+
 
     /*
      * 颜色加深处理

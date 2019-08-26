@@ -82,7 +82,7 @@ public class GameUtils {
                     //获取赢的玩家列表
                     List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
                     for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
-                        if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                        if (winSideBean.getRoleName().equals(usernmae)) {
                             MakeViewBean makeViewBean = new MakeViewBean();
                             makeViewBean.setMatch_id(listBean.getMatchID());
                             makeViewBean.setPower(winSideBean.getELO());
@@ -107,7 +107,7 @@ public class GameUtils {
                     List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
                     List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
                     for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
-                        if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                        if (loseSideBean.getRoleName().equals(usernmae)) {
                             MakeViewBean makeViewBean = new MakeViewBean();
                             makeViewBean.setMatch_id(listBean.getMatchID());
                             makeViewBean.setPower(loseSideBean.getELO());
@@ -126,7 +126,7 @@ public class GameUtils {
                         }
                     }
                     for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
-                        if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                        if (winSideBean.getRoleName().equals(usernmae)) {
                             MakeViewBean makeViewBean = new MakeViewBean();
                             makeViewBean.setMatch_id(listBean.getMatchID());
                             makeViewBean.setPower(winSideBean.getELO());
@@ -153,7 +153,7 @@ public class GameUtils {
                 {
                     List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
                     for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
-                        if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                        if (loseSideBean.getRoleName().equals(usernmae)) {
                             MakeViewBean makeViewBean = new MakeViewBean();
                             makeViewBean.setPower(loseSideBean.getELO());
                             makeViewBean.setMatch_id(listBean.getMatchID());
@@ -185,14 +185,14 @@ public class GameUtils {
      * @param listBean
      * @return
      */
-    public int getNowUserPower(GameInfo gameInfo, HeroGuide.ListBean listBean) {
+    public int getNowUserPower(GameInfo gameInfo, HeroGuide.ListBean listBean,String username) {
         int power = 0;
         if (listBean.getResult() == 1) {
             //赢了
             //获取赢的玩家列表
             List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
             for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
-                if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                if (winSideBean.getRoleName().equals(username)) {
 
                     //获取自己的团分
                     power = winSideBean.getELO();
@@ -205,7 +205,7 @@ public class GameUtils {
             //输了
             List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
             for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
-                if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                if (loseSideBean.getRoleName().equals(username)) {
                     power = loseSideBean.getELO();
                 }
             }
@@ -407,7 +407,7 @@ public class GameUtils {
                 {
                     for (GameInfo.MatchBean.WinSideBean winSideBean:info.getMatch().getWinSide())
                     {
-                        if (winSideBean.getRoleName().equals(SpUtils.getNowUser()))
+                        if (winSideBean.getRoleName().equals(nickname))
                         {
                             jumpvalue.add(winSideBean.getELO());
                             all_killcount = all_killcount+winSideBean.getKillCount();
@@ -422,7 +422,7 @@ public class GameUtils {
                 {
                     for (GameInfo.MatchBean.LoseSideBean loseSideBean:info.getMatch().getLoseSide())
                     {
-                        if (loseSideBean.getRoleName().equals(SpUtils.getNowUser()))
+                        if (loseSideBean.getRoleName().equals(nickname))
                         {
                             jumpvalue.add(loseSideBean.getELO());
                             all_killcount = all_killcount+loseSideBean.getKillCount();

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
@@ -44,7 +45,9 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static ImageCenter imageCenter;
     //全局代理词
     public static List<NetWorkProx> proxList = new ArrayList<>();
-    private static Map<String,ListActivity> listActivities = new HashMap<>();
+    //全局的list页面
+    public static ListActivity listactivity;
+    public static Map<String,ListActivity> listActivityMap = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -60,12 +63,16 @@ public class MyApplication extends Application implements Application.ActivityLi
         imageCenter = ImageCenter.getInstance(context);
         checkservice();
 
-        releasedata();
+       // releasedata();
         //启用jobshulder
       /*  JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();*/
         /*Intent intent = new Intent(context,MyNotifiService.class);
         context.startForegroundService(intent);*/
 
+    }
+
+    public static ListActivity getListactivity() {
+        return listactivity;
     }
 
     public static ImageCenter getImageCenter() {
@@ -118,11 +125,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         DaoMaster master = new DaoMaster(db);
         daoSession = master.newSession();
     }
-    //列表activity的栈
-    public static void addlistActivityStack(ListActivity activity,String name)
-    {
-        listActivities.put(name,activity);
-    }
+
 
 
     public static DaoSession getDaoSession() {
@@ -161,12 +164,12 @@ public class MyApplication extends Application implements Application.ActivityLi
                 //统一操作toolbar
             }
         }
-        //属于战绩列表页面
         if (activity instanceof ListActivity)
         {
-            ((ListActivity) activity).setTag(SpUtils.getNowUser());
-
+          String nickname =  ((ListActivity) activity).getNickname();
+          listActivityMap.put(nickname, (ListActivity) activity);
         }
+
     }
 
     @Override
@@ -186,39 +189,12 @@ public class MyApplication extends Application implements Application.ActivityLi
         {
             register(activity);
         }
+
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        //判断是否是第一个界面
-        if (activity instanceof ListActivity)
-        {
-            String mianuser = SpUtils.getMainUser();
-           /* if (!TextUtils.isEmpty(mianuser)&&!TextUtils.isEmpty(((ListActivity) activity).getVisitor_name()))
-            {
-                String vist = ((ListActivity) activity).getVisitor_name();
-                if (vist.equals(mianuser))
-                {
-                    //相同的什么也不干
-                    return;
-                }
-                SpUtils.selectUser(mianuser);
-                ((ListActivity) activity).initdatabyApplication();
-                ((ListActivity) activity).initviewbyApplication();
 
-            }*/
-            if (!TextUtils.isEmpty(mianuser)&&!TextUtils.isEmpty(((ListActivity) activity).getVisitor_name()))
-            {
-                String vist = ((ListActivity) activity).getVisitor_name();
-                if (vist.equals(mianuser))
-                {
-                    //获取相同的实列
-                  SpUtils.selectUser(mianuser);
-                  ((ListActivity) activity).initdatabyApplication(mianuser);
-
-                }
-            }
-        }
     }
 
     @Override
@@ -234,6 +210,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         {
             unregister(activity);
         }
+
     }
 
     @Override
@@ -252,6 +229,8 @@ public class MyApplication extends Application implements Application.ActivityLi
         if (activity instanceof ListActivity)
         {
             unregister(activity);
+            //移除
+            listActivityMap.remove(((ListActivity) activity).getNickname());
         }
     }
 }

@@ -77,7 +77,7 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onCreate() {
         //创建时
-        localGaideListInfos = getguadies(SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getNowUser():SpUtils.getMainUser());
+        localGaideListInfos = getguadies(SpUtils.getMainUser());
 
     }
     /*

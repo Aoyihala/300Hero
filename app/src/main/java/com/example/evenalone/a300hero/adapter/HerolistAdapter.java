@@ -55,7 +55,8 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private LocalGaideListInfoDao gaideListInfoDao;
     private boolean loadingjumpvalue=false;
     private OnGuaideClickListener guaideClickListener;
-
+    private String nickname;
+   
     public void setGuaideClickListener(OnGuaideClickListener guaideClickListener) {
         this.guaideClickListener = guaideClickListener;
     }
@@ -65,8 +66,9 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    public HerolistAdapter()
+    public HerolistAdapter(String nickname)
     {
+        this.nickname = nickname;
         userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         gaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
@@ -201,20 +203,19 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //获取赢的玩家列表
             List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
             for (GameInfo.MatchBean.WinSideBean winSideBean : winSideBeanList) {
-                if (winSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                if (winSideBean.getRoleName().equals(nickname)) {
                     if (!loadingjumpvalue) {
                         //获取自己的团分
                         power = winSideBean.getELO() + "";
-                        LocalUserBean localUserBean = getMy(SpUtils.getNowUser());
+                        LocalUserBean localUserBean = getMy(nickname);
                         if (localUserBean != null) {
                             localUserBean.setJumpvalue(power);
-                            localUserBean.setRole_iocnfile(winSideBean.getHero().getIconFile());
                             localUserBean.setId(localUserBean.getId());
                             userBeanDao.update(localUserBean);
                             //反正是给主页搞的
-                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
+                            EventBus.getDefault().postSticky(new JumpValueEvnet(nickname,power));
                         } else {
-                            EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
+                            EventBus.getDefault().postSticky(new JumpValueEvnet(nickname,power));
                         }
                         loadingjumpvalue = true;
 
@@ -234,18 +235,17 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //输了
             List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
             for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
-                if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                if (loseSideBean.getRoleName().equals(nickname)) {
                     if (!loadingjumpvalue) {
                         power = loseSideBean.getELO() + "";
-                        LocalUserBean localUserBean = getMy(SpUtils.getNowUser());
+                        LocalUserBean localUserBean = getMy(nickname);
                         if (localUserBean != null) {
                             localUserBean.setJumpvalue(power);
                             localUserBean.setId(localUserBean.getId());
-                            localUserBean.setImg_iconfile(loseSideBean.getHero().getIconFile());
                             userBeanDao.update(localUserBean);
-                            EventBus.getDefault().post(new JumpValueEvnet(SpUtils.getNowUser(),power));
+                            EventBus.getDefault().post(new JumpValueEvnet(nickname,power));
                         } else {
-                            EventBus.getDefault().post(new JumpValueEvnet(SpUtils.getNowUser(),power));
+                            EventBus.getDefault().post(new JumpValueEvnet(nickname,power));
                         }
                         loadingjumpvalue = true;
                     }
@@ -316,12 +316,12 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         List<GameInfo.MatchBean.WinSideBean> winSideBeanList = gameInfo.getMatch().getWinSide();
                         for (GameInfo.MatchBean.WinSideBean winSideBean:winSideBeanList)
                         {
-                            if (winSideBean.getRoleName().equals(SpUtils.getNowUser()))
+                            if (winSideBean.getRoleName().equals(nickname))
                             {
                                 if (!loadingjumpvalue)
                                 {
                                     power = winSideBean.getELO()+"";
-                                    LocalUserBean localUserBean = getMy(SpUtils.getNowUser());
+                                    LocalUserBean localUserBean = getMy(nickname);
                                     if (localUserBean!=null)
                                     {
                                         localUserBean.setJumpvalue(power);
@@ -330,7 +330,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     }
                                     else
                                     {
-                                        EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
+                                        EventBus.getDefault().postSticky(new JumpValueEvnet(nickname,power));
                                     }
                                     loadingjumpvalue = true;
 
@@ -357,12 +357,12 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
                         for (GameInfo.MatchBean.LoseSideBean loseSideBean:loseSideBeanList)
                         {
-                            if (loseSideBean.getRoleName().equals(SpUtils.getNowUser()))
+                            if (loseSideBean.getRoleName().equals(nickname))
                             {
                                 if (!loadingjumpvalue)
                                 {
                                     power = loseSideBean.getELO()+"";
-                                    LocalUserBean localUserBean = getMy(SpUtils.getNowUser());
+                                    LocalUserBean localUserBean = getMy(nickname);
                                     if (localUserBean!=null)
                                     {
                                         localUserBean.setJumpvalue(power);
@@ -371,7 +371,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     }
                                     else
                                     {
-                                        EventBus.getDefault().postSticky(new JumpValueEvnet(SpUtils.getNowUser(),power));
+                                        EventBus.getDefault().postSticky(new JumpValueEvnet(nickname,power));
                                     }
                                    loadingjumpvalue=true;
 
@@ -441,15 +441,16 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private boolean saveWeiZhi(long matchid,String w)
     {
-        LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
+     /*   LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
         if (localGaideListInfo!=null)
         {
             localGaideListInfo.setId(localGaideListInfo.getId());
             localGaideListInfo.setMyWeizi(w);
-            gaideListInfoDao.update(localGaideListInfo);
+            gaideListInfoDao.delete(localGaideListInfo);
+            gaideListInfoDao.save(localGaideListInfo);
             return true;
         }
-        Log.e("设置位置失败","id"+matchid);
+        Log.e("设置位置失败","id"+matchid);*/
         return false;
     }
     /**
@@ -473,7 +474,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             GameInfo.MatchBean.WinSideBean winSideBean =gameUtils.winMvpget(winSideBeanList);
             if (winSideBean!=null)
             {
-                if (winSideBean.getRoleName().equals(SpUtils.getNowUser().getNickname()))
+                if (winSideBean.getRoleName().equals(nickname.getNickname()))
                 {
                     //本人没错了
                     viewHolder.tvJumpGuaide.setText("MVP");
@@ -520,7 +521,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewHolder.imgHero.setTagEnable(false);
                     }
                     String name = gameUtils.getWinAsstentRole(winSideBeanList);
-                    if (name.equals(SpUtils.getNowUser()))
+                    if (name.equals(nickname))
                     {
                         if (rank_cache!=1&&rank_cache!=7)
                         {
@@ -543,7 +544,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 return;
             }
-            int rank = gameUtils.getWinRank(winSideBeanList,SpUtils.getNowUser());
+            int rank = gameUtils.getWinRank(winSideBeanList,nickname);
             Log.e("名次:赢",rank+"名");
             if (rank==1)
             {
@@ -583,7 +584,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
                 //计算是否是神队友
                 String name = gameUtils.getWinAsstentRole(winSideBeanList);
-                if (name.equals(SpUtils.getNowUser()))
+                if (name.equals(nickname))
                 {
 
                     if (rank!=1&&rank!=7)
@@ -611,7 +612,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             GameInfo.MatchBean.LoseSideBean loseSideBean = gameUtils.loseMvpget(loseSideBeanList);
             if (loseSideBean!=null)
             {
-                if (loseSideBean.getRoleName().equals(SpUtils.getNowUser().getNickname()))
+                if (loseSideBean.getRoleName().equals(nickname.getNickname()))
                 {
                     //本人没错了
                     viewHolder.tvJumpGuaide.setText("躺输");
@@ -666,7 +667,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 return;
             }
-            int rank_lose = gameUtils.getLoseRank(loseSideBeanList,SpUtils.getNowUser());
+            int rank_lose = gameUtils.getLoseRank(loseSideBeanList,nickname);
             Log.e("名次:输",rank_lose+"名");
             if (rank_lose==1)
             {

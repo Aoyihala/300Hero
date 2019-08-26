@@ -134,7 +134,7 @@ public class MyNotifiService extends Service {
                 @Override
                 public void run() {
                     //一分钟执行一次
-                    String name = SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getNowUser():SpUtils.getMainUser();
+                    String name = SpUtils.getMainUser();
                     Log.e("data","执行了请求,用户是:"+name);
                     //执行网络请求
                     //前十个最新,不需要传index
@@ -171,6 +171,7 @@ public class MyNotifiService extends Service {
                 {
                     remoteViews.setTextViewText(R.id.tv_notifiy_status,"ESCAPE");
                 }
+                remoteViews.setTextViewText(R.id.tv_notifiy_name,"召唤师:"+SpUtils.getMainUser());
                 //请求战绩详情
                 requestInfo(listBean,remoteViews,result_b);
             }
@@ -257,7 +258,7 @@ public class MyNotifiService extends Service {
                         //输了
                         List<GameInfo.MatchBean.LoseSideBean> loseSideBeanList = gameInfo.getMatch().getLoseSide();
                         for (GameInfo.MatchBean.LoseSideBean loseSideBean : loseSideBeanList) {
-                            if (loseSideBean.getRoleName().equals(SpUtils.getNowUser())) {
+                            if (loseSideBean.getRoleName().equals(SpUtils.getMainUser())) {
                                 kill = loseSideBean.getKillCount();
                                 money = loseSideBean.getTotalMoney();
                                 deadcount = loseSideBean.getDeathCount();
@@ -479,25 +480,29 @@ public class MyNotifiService extends Service {
                     {
                         for (HeroGuide.ListBean listBean:listBeans)
                         {
-                            LocalGaideListInfo info1 = gaideListInfo(listBean.getMatchID());
-                            if (info1==null)
+                            if (SpUtils.getMainUser().equals(SpUtils.getMainUser()))
                             {
-                                info1=new LocalGaideListInfo();
-                                info1.setMatchId(listBean.getMatchID());
-                                info1.setNickname(SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getMainUser():SpUtils.getNowUser());
-                                info1.setTime(listBean.getMatchDate());
-                                info1.setResult(new Gson().toJson(listBean));
-                                //保存
-                                localGaideListInfoDao.save(info1);
-                            }
-                            else
-                            {
-                                info1.setId(info1.getId());
-                                info1.setMatchId(listBean.getMatchID());
-                                info1.setNickname(SpUtils.getMainUser()==null||SpUtils.getMainUser().equals("")?SpUtils.getMainUser():SpUtils.getNowUser());
-                                info1.setTime(listBean.getMatchDate());
-                                info1.setResult(new Gson().toJson(listBean));
-                                localGaideListInfoDao.update(info1);
+                                LocalGaideListInfo info1 = gaideListInfo(listBean.getMatchID());
+                                if (info1==null)
+                                {
+                                    info1=new LocalGaideListInfo();
+                                    info1.setMatchId(listBean.getMatchID());
+                                    info1.setNickname(SpUtils.getMainUser());
+                                    info1.setTime(listBean.getMatchDate());
+                                    info1.setResult(new Gson().toJson(listBean));
+                                    //保存
+                                    localGaideListInfoDao.save(info1);
+                                }
+                                else
+                                {
+                                    info1.setId(info1.getId());
+                                    info1.setMatchId(listBean.getMatchID());
+                                    info1.setNickname(SpUtils.getMainUser());
+                                    info1.setTime(listBean.getMatchDate());
+                                    info1.setResult(new Gson().toJson(listBean));
+                                    localGaideListInfoDao.delete(info1);
+                                    localGaideListInfoDao.save(info1);
+                                }
                             }
                         }
                     }

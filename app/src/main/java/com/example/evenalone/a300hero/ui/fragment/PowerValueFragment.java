@@ -40,6 +40,7 @@ public class PowerValueFragment extends BaseFragment {
     private GameInfo gameInfo_real;
     private GameUtils gameUtils;
     private PowerValueMianAdpater mianAdpater;
+    private String nickname;
     @Override
     protected boolean setEventOpen() {
         return true;
@@ -60,6 +61,7 @@ public class PowerValueFragment extends BaseFragment {
         bundle = getArguments();
         if (bundle != null) {
             id = bundle.getLong("id");
+            nickname = bundle.getString("nickname");
             //查询
             gameInfo = searchGameinfoById(id);
             if (gameInfo != null) {
@@ -118,8 +120,8 @@ public class PowerValueFragment extends BaseFragment {
                 localGameInfo = new LocalGameInfo();
                 localGameInfo.setResult(eva.getGameInfo().getLocalruselt());
                 localGameInfo.setMactherId(id);
-                String res = gameUtils.getKillUserDataWin(eva.getGameInfo().getMatch().getWinSide(), SpUtils.getNowUser());
-                String res_lose = gameUtils.getKillUserDataLose(eva.getGameInfo().getMatch().getLoseSide(), SpUtils.getNowUser());
+                String res = gameUtils.getKillUserDataWin(eva.getGameInfo().getMatch().getWinSide(), nickname);
+                String res_lose = gameUtils.getKillUserDataLose(eva.getGameInfo().getMatch().getLoseSide(), nickname);
                 if (TextUtils.isEmpty(res)) {
                     localGameInfo.setMygaide(res_lose);
                 } else {
