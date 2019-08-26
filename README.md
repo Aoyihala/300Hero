@@ -37,10 +37,10 @@
 ##### 2019.8.25
 > - 1.添加小工具功能
 > - 2.添加通知栏定时推送功能
-> - 3.新增对统计图的详细操作
+> - 3.新增对统计图的详细操作  
 ![通知栏1](https://github.com/Aoyihala/img/blob/master/300data/notify2.png?raw=true)  
-![通知栏1](https://github.com/Aoyihala/img/blob/master/300data/notify1.png?raw=true)  
-![通知栏1](https://github.com/Aoyihala/img/blob/master/300data/tool.png?raw=true)  
+![通知栏2](https://github.com/Aoyihala/img/blob/master/300data/notify1.png?raw=true)  
+![小工具1](https://github.com/Aoyihala/img/blob/master/300data/tool.png?raw=true)  
 #### 关于ip地址代理池
 [西刺](https://www.xicidaili.com)ip代理池，利用[jsoup](https://jsoup.org/download)解析
 ## License
