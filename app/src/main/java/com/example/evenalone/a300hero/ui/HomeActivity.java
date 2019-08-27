@@ -115,7 +115,7 @@ public class HomeActivity extends BaseActivity {
         roleListAdapter.setOnlocalHisClickListener(new LocalRoleListAdapter.OnlocalHisClickListener() {
             @Override
             public void onClick(String name) {
-               /* SpUtils.selectUser(name);*/
+
                 SpUtils.setMianUser(name);
                 Bundle bundle = new Bundle();
                 bundle.putString("nickname",name);
@@ -247,11 +247,10 @@ public class HomeActivity extends BaseActivity {
             if (ishad) {
                 userBeanDao.update(localUserBean);
             } else {
-                userBeanDao.save(localUserBean);
+                userBeanDao.insert(localUserBean);
             }
             progressBinding.setVisibility(View.GONE);
             //选定
-            /*SpUtils.selectUser(localUserBean.getNickname());*/
             SpUtils.setMianUser(localUserBean.getNickname());
             Bundle bundle = new Bundle();
             bundle.putString("nickname",name);

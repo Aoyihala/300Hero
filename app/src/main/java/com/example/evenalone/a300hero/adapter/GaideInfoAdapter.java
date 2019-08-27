@@ -276,6 +276,7 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             SpUtils.setbackUser(SpUtils.getNowUser());
                         }
                         SpUtils.selectUser(winSideBean.getRoleName());*/
+
                             intent.putExtras(bundle);
                             viewHolder.itemView.getContext().startActivity(intent);
 

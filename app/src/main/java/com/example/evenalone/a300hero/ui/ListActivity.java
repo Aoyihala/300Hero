@@ -168,6 +168,7 @@ public class ListActivity extends BaseActivity {
         }
        /* nickname = getIntent().getExtras().getString("nickname");
         vistormode = getIntent().getExtras().getBoolean("mode");*/
+       refresh();
     }
     @Override
     protected void initview() {
@@ -264,7 +265,7 @@ public class ListActivity extends BaseActivity {
                 //重新走一遍
                 nickname = userBean.getNickname();
                 menuPopwindow.dismiss();
-                /*SpUtils.selectUser(userBean.getNickname());*/
+                //选中当前用户作为数据库的键
                 //不用清除mianuser
                 SpUtils.setMianUser(userBean.getNickname());
                 //重新加载一次
@@ -310,7 +311,8 @@ public class ListActivity extends BaseActivity {
                 //清除所有相关的页面 创建新的在顶部
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);*/
-             MyApplication.removeStack();
+
+                MyApplication.removeStack();
               /* setVistormode(false);
                setNickname(SpUtils.getMainUser());
                refresh();*/
@@ -697,35 +699,16 @@ public class ListActivity extends BaseActivity {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 //去加载默认的头像
-
+                imgJumpUserhead.setBackgroundResource(R.drawable.fish_avator);
+                imgJumpBg.setImageBitmap(praseBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.fish_avator)));
                 return false;
             }
 
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                 Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
-                //创建一个缩小后的bitmap
-                Bitmap inputBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
-                //创建将在ondraw中使用到的经过模糊处理后的bitmap
-                Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
-
-                //创建RenderScript，ScriptIntrinsicBlur固定写法
-                RenderScript rs = RenderScript.create(ListActivity.this);
-                ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-
-                //根据inputBitmap，outputBitmap分别分配内存
-                Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
-                Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
-
-                //设置模糊半径取值0-25之间，不同半径得到的模糊效果不同
-                blurScript.setRadius(10);
-                blurScript.setInput(tmpIn);
-                blurScript.forEach(tmpOut);
-
-                //得到最终的模糊bitmap
-                tmpOut.copyTo(outputBitmap);
                 //设置图片
-                imgJumpBg.setImageBitmap(outputBitmap);
+                imgJumpBg.setImageBitmap(praseBitmap(bitmap));
                 //Palette用来更漂亮地展示配色
                 Palette.from(bitmap)
                         .generate(new Palette.PaletteAsyncListener() {
@@ -762,6 +745,8 @@ public class ListActivity extends BaseActivity {
         int[] colors = new int[]{color, color, color, color};
         return new ColorStateList(states, colors);
     }
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void jumpValue(JumpValueEvnet eva) {
         String nickname_j = eva.getNickname();

@@ -25,6 +25,7 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.event.ListInfoEvent;
 import com.example.evenalone.a300hero.event.NetWorkCancelEvent;
 import com.example.evenalone.a300hero.ui.GuaideInfoActivity;
+import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
@@ -175,6 +176,11 @@ public class HeroGuaideFragment extends BaseFragment {
 
     public void requestData(int page, boolean b)
     {
+        //请求之前
+        if (!nickname.equals(((ListActivity)(compatActivity)).getNickname()))
+        {
+            Log.e("旧页面不要调用",nickname);
+        }
         if (b)
         {
             tvBackPage.setVisibility(View.GONE);
@@ -254,7 +260,7 @@ public class HeroGuaideFragment extends BaseFragment {
                     info.setNickname(nickname);
                     info.setTime(listBean.getMatchDate());
                     info.setResult(new Gson().toJson(listBean));
-                    localGaideListInfoDao.save(info);
+                    localGaideListInfoDao.insert(info);
                 }
             }
             if (page>=10)
@@ -311,7 +317,8 @@ public class HeroGuaideFragment extends BaseFragment {
 
     public void clearData() {
         listBeans.clear();
+        herolistAdapter.setNickName(nickname);
         herolistAdapter.setListBeans(listBeans);
-        herolistAdapter.notifyDataSetChanged();
+
     }
 }

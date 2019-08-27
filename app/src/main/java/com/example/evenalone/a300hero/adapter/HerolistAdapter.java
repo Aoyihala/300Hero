@@ -56,7 +56,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean loadingjumpvalue=false;
     private OnGuaideClickListener guaideClickListener;
     private String nickname;
-   
+
     public void setGuaideClickListener(OnGuaideClickListener guaideClickListener) {
         this.guaideClickListener = guaideClickListener;
     }
@@ -76,7 +76,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
     private LocalGaideListInfo findlistinfo(long matchid)
     {
-      return   gaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.MatchId.eq(matchid)).unique();
+        return   gaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.MatchId.eq(matchid)).unique();
     }
 
     @NonNull
@@ -373,7 +373,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     {
                                         EventBus.getDefault().postSticky(new JumpValueEvnet(nickname,power));
                                     }
-                                   loadingjumpvalue=true;
+                                    loadingjumpvalue=true;
 
                                 }
                                 kill = loseSideBean.getKillCount();
@@ -407,7 +407,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         gameinf_loal.setMactherId(matchID);
                         gameinf_loal.setResult(result);
                         gameinf_loal.setMygaide(result_o);
-                        gameInfoDao.save(gameinf_loal);
+                        gameInfoDao.insert(gameinf_loal);
                     }
 
 
@@ -441,7 +441,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private boolean saveWeiZhi(long matchid,String w)
     {
-       /* LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
+     /*   LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
         if (localGaideListInfo!=null)
         {
             localGaideListInfo.setId(localGaideListInfo.getId());
@@ -499,13 +499,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (rank_cache>=1&&rank_cache<=3)
                     {
 
-                      /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
+                        /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
                     }
 
                     if (rank_cache>=4&&rank_cache<=5)
                     {
                         viewHolder.imgHero.setTagEnable(false);
-                      /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
+                        /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
                     }
 
                     if (rank_cache>=6&&rank_cache<=7)
@@ -513,7 +513,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewHolder.imgHero.setTagEnable(true);
                         viewHolder.imgHero.setTagText("划水");
                         viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.blue));
-                     /*   viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
+                        /*   viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
                         saveWeiZhi(listBean.getMatchID(),"划水");
                     }
                     else
@@ -644,7 +644,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (rank_cache>=4&&rank_cache<=5)
                 {
                     viewHolder.imgHero.setTagEnable(false);
-                   /* viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
+                    /* viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
                 }
                 else
                 {
@@ -656,7 +656,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.imgHero.setTagEnable(true);
                     viewHolder.imgHero.setTagText("坑");
                     viewHolder.imgHero.setTagBackgroundColor(UiUtlis.getColor(R.color.black));
-                /*    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
+                    /*    viewHolder.tvStar.setImageResource(R.drawable.ic_star_border_yellow_500_24dp);*/
                     saveWeiZhi(listBean.getMatchID(),"坑");
                 }
                 else
@@ -685,13 +685,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             {
 
 
-              /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
+                /*  viewHolder.tvStar.setImageResource(R.drawable.ic_star_yellow_500_24dp);*/
             }
 
             if (rank_lose>=4&&rank_lose<=5)
             {
                 viewHolder.imgHero.setTagEnable(false);
-             /*   viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
+                /*   viewHolder.tvStar.setImageResource(R.drawable.ic_star_half_yellow_500_24dp);*/
             }
             else
             {
@@ -722,6 +722,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return listBeans == null ? 0 : listBeans.size();
+    }
+
+    public void setNickName(String nickname) {
+        this.nickname = nickname;
     }
 
     class HeroListViewHolder extends RecyclerView.ViewHolder {

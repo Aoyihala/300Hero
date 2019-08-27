@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.util.LruCache;
 
 import java.io.File;
@@ -37,9 +38,14 @@ public class ImageCache
 
     public Bitmap findDisk(String heroname)
     {
-        String bs = Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeFile(path+"/"+bs);
-        return bitmap;
+            String bs = Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeFile(path+"/"+bs);
+            if (bitmap==null)
+            {
+                Log.e("英雄头像:"+heroname,"重新下载");
+                return null;
+            }
+            return bitmap;
     }
 
     public void add(Bitmap bitmap, String heroname) {

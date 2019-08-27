@@ -35,12 +35,18 @@ public abstract class BaseFragment extends LibFragmnet {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         if (flag)
         {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
     }
 
 

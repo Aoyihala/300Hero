@@ -34,6 +34,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +50,10 @@ public class MyApplication extends Application implements Application.ActivityLi
     public static List<NetWorkProx> proxList = new ArrayList<>();
     //全局的list页面
     public static ListActivity listactivity;
-    public static Map<String,ListActivity> listActivityMap = new HashMap<>();
+    public static Map<String,ListActivity> listActivityMap = new LinkedHashMap<>();
     private static List<Activity> activitiesall = new LinkedList<>();
+
+
 
     @Override
     public void onCreate() {
@@ -184,8 +187,10 @@ public class MyApplication extends Application implements Application.ActivityLi
         }
         if (activity instanceof ListActivity)
         {
-          String nickname =  ((ListActivity) activity).getNickname();
-          listActivityMap.put(nickname, (ListActivity) activity);
+            //当前界面的用户
+         /*   String nickname = SpUtils.getNowUser();
+            listActivityMap.put(nickname, (ListActivity) activity);
+            Log.e("用户:"+nickname,"页面");*/
         }
 
     }
@@ -248,8 +253,8 @@ public class MyApplication extends Application implements Application.ActivityLi
         if (activity instanceof ListActivity)
         {
             unregister(activity);
-            //移除
-            listActivityMap.remove(((ListActivity) activity).getNickname());
+           /* //移除
+            listActivityMap.remove(((ListActivity) activity).getNickname());*/
         }
     }
 }

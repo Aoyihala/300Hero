@@ -38,8 +38,7 @@
 
         <service android:name=".service.NotfiService" />
 
-        <activity android:name=".ui.ListActivity"
-            android:launchMode="standard"/>
+        <activity android:name=".ui.ListActivity" />
         <activity android:name=".ui.SettingActivity" />
         <activity android:name=".ui.GuaideInfoActivity" />
         <!-- 自定义服务继承自GTIntentService,作为SDK与APP桥梁服务,用来接收各种消息和命令回复 -->
