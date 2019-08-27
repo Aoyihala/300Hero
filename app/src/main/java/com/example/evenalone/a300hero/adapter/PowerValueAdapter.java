@@ -59,7 +59,13 @@ public class PowerValueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             PowerValue value = (PowerValue) viewHolder;
             if (maxPower > 0 && winData != null) {
                /* Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + winData.get(i).getHero().getIconFile()).into(value.imgPowerAvator);*/
-                MyApplication.getImageCenter().setPic(value.imgPowerAvator,winData.get(i).getHero().getName(),Contacts.IMG+winData.get(i).getHero().getIconFile());
+                try {
+                    value.imgPowerAvator.setTag(null);
+                    MyApplication.getImageCenter().setPic(value.imgPowerAvator,winData.get(i).getHero().getName(),Contacts.IMG+winData.get(i).getHero().getIconFile());
+                } catch (Exception e) {
+                    value.imgPowerAvator.setTag(null);
+                    Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + winData.get(i).getHero().getIconFile()).into(value.imgPowerAvator);
+                }
                 double pecent = (((double) winData.get(i).getELO() / (double) maxPower));
                 value.progressPowervalue.setSmoothPercent((float) pecent, 2000);
                 value.tvPowerDes.setText(winData.get(i).getRoleName() );
@@ -76,7 +82,13 @@ public class PowerValueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             PowerValueRight valueRight = (PowerValueRight) viewHolder;
             if (maxPower > 0 && loseData != null) {
                 /*Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + loseData.get(i).getHero().getIconFile()).into(valueRight.imgPowerAvator2);*/
-                MyApplication.getImageCenter().setPic(valueRight.imgPowerAvator2,loseData.get(i).getHero().getName(),Contacts.IMG+loseData.get(i).getHero().getIconFile());
+                try {
+                    valueRight.imgPowerAvator2.setTag(null);
+                    MyApplication.getImageCenter().setPic(valueRight.imgPowerAvator2,loseData.get(i).getHero().getName(),Contacts.IMG+loseData.get(i).getHero().getIconFile());
+                } catch (Exception e) {
+                    valueRight.imgPowerAvator2.setTag(null);
+                    Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG + loseData.get(i).getHero().getIconFile()).into(valueRight.imgPowerAvator2);
+                }
                 double pecent = (((double) loseData.get(i).getELO() / (double) maxPower));
                 valueRight.progressPowervalue2.setSmoothPercent((float) pecent, 2000);
                 valueRight.tvPowerDes2.setText(loseData.get(i).getRoleName());

@@ -165,7 +165,21 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
             rv.setTextViewText(R.id.tv_tool_flag,"ESCAPE");
             rv.setTextColor(R.id.tv_tool_flag,UiUtlis.getColor(R.color.blue));
         }
-        Bitmap bitmap_cache = ImageCenter.getInstance(context).getCache(listBean.getHero().getName());
+        Bitmap bitmap_cache = null;
+        try {
+            bitmap_cache = ImageCenter.getInstance(context).getCache(listBean.getHero().getName());
+            if (bitmap_cache!=null)
+            {
+                rv.setImageViewBitmap(R.id.img_tool_hero,makeRoundCorner(bitmap_cache));
+            }
+            else
+            {
+                rv.setImageViewResource(R.id.img_tool_hero,R.drawable.fish);
+            }
+        } catch (Exception e) {
+            //这里可以去伪同步加载图片
+            rv.setImageViewResource(R.id.img_tool_hero,R.drawable.fish);
+        }
         /*if (bitmap_cache!=null)
         {
             flags.put(position,true);
@@ -186,14 +200,7 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
             }
         }
         flags.put(position, false);*/
-        if (bitmap_cache!=null)
-        {
-            rv.setImageViewBitmap(R.id.img_tool_hero,makeRoundCorner(bitmap_cache));
-        }
-        else
-        {
-            rv.setImageViewResource(R.id.img_tool_hero,R.drawable.fish);
-        }
+
         // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
         Intent intent = new Intent();
         // 传入点击行的数据

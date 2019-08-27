@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.downloader.Error;
@@ -21,14 +22,30 @@ public class ImageDownLoader
     }
 
     public void downloadAndSet(final ImageView imageView, final String heroname, final String imgurl) {
-        final String bs = Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT);
-        PRDownloader.download(imgurl,imageCache.path,bs)
+        File file = new File(imageCache.path,heroname);
+        if (file.exists())
+        {
+            Log.e("缓存文件已存在",heroname);
+            Bitmap bitmap = BitmapFactory.decodeFile(imageCache.path+"/"+heroname);
+            if (bitmap!=null)
+            {
+                //加入内存
+                imageCache.add(bitmap,heroname);
+                //判断tag
+                if (imageView.getTag().equals(heroname))
+                {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
+            return;
+        }
+        PRDownloader.download(imgurl,imageCache.path,heroname)
         .build()
         .start(new OnDownloadListener() {
             @Override
             public void onDownloadComplete() {
                 //到这里diskCache已经完成
-                Bitmap bitmap = BitmapFactory.decodeFile(imageCache.path+"/"+bs);
+                Bitmap bitmap = BitmapFactory.decodeFile(imageCache.path+"/"+heroname);
                 if (bitmap!=null)
                 {
                     //加入内存
@@ -48,7 +65,7 @@ public class ImageDownLoader
                 if ((error.getConnectionException().getLocalizedMessage()+" ").contains("Rename"))
                 {
                     //删除
-                    File file = new File(imageCache.path,Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT));
+                    File file = new File(imageCache.path,heroname);
                     //重新调用该方法
                     if (file.delete())
                     {
@@ -58,5 +75,29 @@ public class ImageDownLoader
             }
         });
 
+    }
+
+    public void downloadonely(final String heroname) {
+
+        final String bs = Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT);
+        PRDownloader.download(Contacts.IMG+heroname,imageCache.path,bs)
+                .build()
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        //到这里diskCache已经完成
+                        Bitmap bitmap = BitmapFactory.decodeFile(imageCache.path+"/"+bs);
+                        if (bitmap!=null)
+                        {
+                            //加入内存
+                            imageCache.add(bitmap,heroname);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+
+                    }
+                });
     }
 }

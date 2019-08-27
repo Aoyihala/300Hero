@@ -203,6 +203,7 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                         if (power >= 3000) {
                             remoteView.setImageViewResource(R.id.img_tool_duanwei,R.drawable.daemo);
                         }
+                        remoteView.setInt(R.id.tool_foot_bg,"setBackgroundColor",SpUtils.getMainColor());
 
                         // 设置当显示的widget_list为空显示的View
                         //remoteView.setEmptyView(R.id.widget_list, R.layout.none_data);

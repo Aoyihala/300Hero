@@ -69,6 +69,30 @@
     <ListView
         android:id="@+id/list_tool_listview"
         android:layout_width="match_parent"
+        android:layout_weight="1"
         android:layout_height="match_parent">
     </ListView>
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:id="@+id/tool_foot_bg"
+        android:background="@color/Yellow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="距离上次刷新"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:id="@+id/tv_tool_updatetime"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/img_tool_refresh"
+            android:layout_width="wrap_content"
+            android:background="@drawable/ic_refresh_grey_500_24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 </LinearLayout>

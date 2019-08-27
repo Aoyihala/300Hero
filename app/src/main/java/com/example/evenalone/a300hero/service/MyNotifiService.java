@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -147,7 +148,7 @@ public class MyNotifiService extends Service {
             },SpUtils.getLasttime()==0? 10000:SpUtils.getLasttime(),time);
         }
     }
-    private void sendCustomNotification(final HeroGuide.ListBean listBean){
+    private void sendCustomNotificationOrWidget(final HeroGuide.ListBean listBean){
         final RemoteViews remoteViews =new RemoteViews(getPackageName(),R.layout.notfiy_layout);
         //使用图片加载
         String url = Contacts.IMG+listBean.getHero().getIconFile();
@@ -155,6 +156,8 @@ public class MyNotifiService extends Service {
             @Override
             public void onSuccess(File result) {
                 Bitmap result_b = BitmapFactory.decodeFile(result.getAbsolutePath());
+                //copy文件到本地储存
+
                 remoteViews.setImageViewBitmap(R.id.img_notify_avator,result_b);
                 //图片到手
                 MyApplication.getImageCenter().addMermory(listBean.getHero().getName(),result_b);
@@ -312,38 +315,43 @@ public class MyNotifiService extends Service {
                     //通知appwidget
 
                     //Palette用来更漂亮地展示配色
-                    Palette.from(drawable)
-                            .generate(new Palette.PaletteAsyncListener() {
-                                @SuppressLint("NewApi")
-                                @Override
-                                public void onGenerated(@NonNull Palette palette) {
-                                    List<Palette.Swatch> swatches = palette.getSwatches();
-                                    Palette.Swatch swatch = swatches.get(0);
-                                    int color = colorBurn(swatch.getRgb());
-                                    remoteViews.setInt(R.id.layout_notify_bg, "setBackgroundColor", color);
-                                    Intent intent = new Intent(getApplicationContext(),GuaideInfoActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putLong("id",listBean.getMatchID());
-                                    intent.putExtras(bundle);
-                                    PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                                    remoteViews.setOnClickPendingIntent(R.id.layout_notify_bg,pendingIntent);
-                                    SpUtils.saveMainColor(color);
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    //到此为止 notify加工全部完毕
-                                    Notification notification = new NotificationCompat.Builder(getBaseContext(), "data")
-                                            .setCustomContentView(remoteViews)
-                                            .setCustomBigContentView(remoteViews)
-                                            .setWhen(System.currentTimeMillis())
-                                            .setTicker("新通知")
-                                            .setSmallIcon(R.drawable.baiying)
-                                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.baiying))
-                                            .setAutoCancel(true)
-                                            .build();
-                                    not_id = not_id+1;
-                                    manager.notify(not_id, notification);
-                                }
-                            });
+                    if (SpUtils.isClock())
+                    {
+                        //一定得是设置过才行
+                        Palette.from(drawable)
+                                .generate(new Palette.PaletteAsyncListener() {
+                                    @SuppressLint("NewApi")
+                                    @Override
+                                    public void onGenerated(@NonNull Palette palette) {
+                                        List<Palette.Swatch> swatches = palette.getSwatches();
+                                        Palette.Swatch swatch = swatches.get(0);
+                                        int color = colorBurn(swatch.getRgb());
+                                        remoteViews.setInt(R.id.layout_notify_bg, "setBackgroundColor", color);
+                                        Intent intent = new Intent(getApplicationContext(),GuaideInfoActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putLong("id",listBean.getMatchID());
+                                        intent.putExtras(bundle);
+                                        PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                                        remoteViews.setOnClickPendingIntent(R.id.layout_notify_bg,pendingIntent);
+                                        SpUtils.saveMainColor(color);
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        //到此为止 notify加工全部完毕
+                                        Notification notification = new NotificationCompat.Builder(getBaseContext(), "data")
+                                                .setCustomContentView(remoteViews)
+                                                .setCustomBigContentView(remoteViews)
+                                                .setWhen(System.currentTimeMillis())
+                                                .setTicker("新通知")
+                                                .setSmallIcon(R.drawable.baiying)
+                                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.baiying))
+                                                .setAutoCancel(true)
+                                                .build();
+                                        not_id = not_id+1;
+                                        manager.notify(not_id, notification);
+                                    }
+                                });
+                    }
+                    updateToolsView(listBean,drawable);
                     }
 
             }
@@ -364,6 +372,27 @@ public class MyNotifiService extends Service {
             }
         });
     }
+
+    private void updateToolsView(HeroGuide.ListBean listBean, Bitmap drawable) {
+        // 更新widget的界面
+        ComponentName name = new ComponentName("com.example.evenalone.a300hero",
+                "com.example.evenalone.a300hero.wedgit.HeroGuideToolWidget");// 获取前面参数包下的后参数的Widget
+        RemoteViews views = new RemoteViews("cn.itcast.mobilesafe",
+                R.layout.process_widget);// 获取Widget的布局
+        views.setTextViewText(R.id.process_count, "XXXX");//给process_count设置文本
+        views.setTextColor(R.id.process_count, Color.RED);//给process_count设置文本颜色
+        views.setTextViewText(R.id.process_memory, "XXXX");
+        views.setTextColor(R.id.process_memory, Color.RED);
+        Intent intent = new Intent(UpdateWidgetService.this, XXXX.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getApplicationContext(), 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.btn_clear, pendingIntent);// 给布局文件中的btn_clear设置点击事件
+        widgetmanager.updateAppWidget(name, views);//更新Widget
+    }
+
+
+    }
+
     /**
      * 请求数据库战局详情
      * @param matchid
@@ -506,7 +535,7 @@ public class MyNotifiService extends Service {
                             }
                         }
                     }
-                    sendCustomNotification(listBeans.get(0));
+                    sendCustomNotificationOrWidget(listBeans.get(0));
                 }
             }
         }

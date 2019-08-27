@@ -110,7 +110,16 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if ((listViewHolder.imgHero.getTag(R.id.img_hero).toString().equals(listBean.getHero().getID()+"")))
             {
                 /* Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);*/
-                MyApplication.getImageCenter().setPic(listViewHolder.imgHero,listBean.getHero().getName(),Contacts.IMG+listBean.getHero().getIconFile());
+                try {
+                    listViewHolder.imgHero.setTag(null);
+                    MyApplication.getImageCenter().setPic(listViewHolder.imgHero,listBean.getHero().getName(),Contacts.IMG+listBean.getHero().getIconFile());
+                } catch (Exception e) {
+                    //接受自定义错误
+                    //这里由于没有及时的载入缓存或者文件正在读取中,使用图片加载框架
+                    //清除tag,有的图片框架是不需要清除的
+                    listViewHolder.imgHero.setTag(null);
+                    Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);
+                }
 
             }
             if (listBean.getMatchType()==1)
@@ -441,7 +450,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private boolean saveWeiZhi(long matchid,String w)
     {
-     /*   LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
+       /* LocalGaideListInfo localGaideListInfo = findlistinfo(matchid);
         if (localGaideListInfo!=null)
         {
             localGaideListInfo.setId(localGaideListInfo.getId());

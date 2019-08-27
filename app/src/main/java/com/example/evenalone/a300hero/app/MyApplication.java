@@ -103,14 +103,12 @@ public class MyApplication extends Application implements Application.ActivityLi
     }
 
     private void checkservice() {
-        if (SpUtils.isClock())
-        {
             if (!SystemUtils.isServiceWork(MyApplication.getContext(),"com.example.evenalone.a300hero.service.MyNotifiService"))
             {
                 //服务没有运行
                 JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();
             }
-        }
+
     }
 
     private void inittalk() {
@@ -185,13 +183,7 @@ public class MyApplication extends Application implements Application.ActivityLi
                 //统一操作toolbar
             }
         }
-        if (activity instanceof ListActivity)
-        {
-            //当前界面的用户
-         /*   String nickname = SpUtils.getNowUser();
-            listActivityMap.put(nickname, (ListActivity) activity);
-            Log.e("用户:"+nickname,"页面");*/
-        }
+
 
     }
 
@@ -233,6 +225,13 @@ public class MyApplication extends Application implements Application.ActivityLi
         {
             unregister(activity);
         }
+        //战绩列表界面
+        if (activity instanceof ListActivity)
+        {
+            unregister(activity);
+           /* //移除
+            listActivityMap.remove(((ListActivity) activity).getNickname());*/
+        }
 
     }
 
@@ -249,12 +248,6 @@ public class MyApplication extends Application implements Application.ActivityLi
     @Override
     public void onActivityDestroyed(Activity activity) {
         activitiesall.remove(activity);
-        //战绩列表界面
-        if (activity instanceof ListActivity)
-        {
-            unregister(activity);
-           /* //移除
-            listActivityMap.remove(((ListActivity) activity).getNickname());*/
-        }
+
     }
 }

@@ -31,7 +31,12 @@ public abstract class BaseFragment extends LibFragmnet {
     @Override
     public void onStart() {
         super.onStart();
-
+        if (flag)
+        {
+            if (!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this);
+            }
+        }
     }
 
     @Override
@@ -62,12 +67,6 @@ public abstract class BaseFragment extends LibFragmnet {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(),container,false);
         ButterKnife.bind(this,view);
-        if (flag)
-        {
-            if (!EventBus.getDefault().isRegistered(this)) {
-                EventBus.getDefault().register(this);
-            }
-        }
         initdata();
         initview();
         return view;

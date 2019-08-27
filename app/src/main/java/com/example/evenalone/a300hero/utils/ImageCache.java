@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.LruCache;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class ImageCache
 {
@@ -32,23 +33,28 @@ public class ImageCache
 
     public Bitmap findMemory(String heroname) {
         //转换为base64
-        String bs = Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT);
-        return lruCache_img.get(bs);
+
+        return lruCache_img.get(heroname);
     }
 
-    public Bitmap findDisk(String heroname)
-    {
-            String bs = Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeFile(path+"/"+bs);
+    public Bitmap findDisk(String heroname)  {
+
+            Bitmap bitmap = BitmapFactory.decodeFile(path+"/"+heroname);
             if (bitmap==null)
             {
                 Log.e("英雄头像:"+heroname,"重新下载");
+                //在扔之前先下载
                 return null;
             }
             return bitmap;
     }
 
     public void add(Bitmap bitmap, String heroname) {
-        lruCache_img.put(Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT),bitmap);
+        if (lruCache_img.get(heroname)!=null)
+        {
+            //相同英雄头像就不用下了
+            return;
+        }
+        lruCache_img.put(heroname,bitmap);
     }
 }

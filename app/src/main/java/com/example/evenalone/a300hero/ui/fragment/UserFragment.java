@@ -28,6 +28,7 @@ import com.example.evenalone.a300hero.wedgit.MySwitch;
 import com.google.gson.Gson;
 import com.rey.material.widget.Switch;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -105,8 +106,24 @@ public class UserFragment extends BaseFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().register(this);
+        }
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected boolean setEventOpen() {
-        return true;
+        return false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

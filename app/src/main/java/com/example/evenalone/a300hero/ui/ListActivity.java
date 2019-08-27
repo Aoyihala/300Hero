@@ -362,7 +362,6 @@ public class ListActivity extends BaseActivity {
         tvJumpViotoryHome.setText("加载中");
         tvJumpNameHome.setText(nickname);
         guaideFragment.clearData();
-        userFragment.clearData();
 
     }
 

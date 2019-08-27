@@ -110,11 +110,12 @@
 </android.support.v4.view.ViewPager>
 <android.support.design.widget.FloatingActionButton
     android:layout_width="wrap_content"
-    app:layout_anchor="@id/collse_layout"
-    android:layout_marginRight="10dp"
+    app:layout_anchor="@id/view_pager"
+    android:visibility="gone"
+    android:layout_marginRight="15dp"
     app:layout_anchorGravity="bottom|right"
     android:id="@+id/btn_back"
-    android:visibility="gone"
+    android:layout_marginBottom="25dp"
     app:fabSize="mini"
     android:src="@drawable/back_floating"
     android:layout_height="wrap_content" />
