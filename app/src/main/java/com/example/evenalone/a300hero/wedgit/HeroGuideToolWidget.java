@@ -40,6 +40,7 @@ import com.example.evenalone.a300hero.service.BindToolsService;
 import com.example.evenalone.a300hero.ui.GuaideInfoActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
+import com.example.evenalone.a300hero.utils.SystemUtils;
 import com.google.gson.Gson;
 import com.igexin.sdk.GActivity;
 
@@ -55,17 +56,19 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
  * 桌面小工具 类似于广播
  */
 public class HeroGuideToolWidget extends AppWidgetProvider {
+    public static Integer randomNumber;
     private ToolsListAdapter toolsListAdapter;
     private LocalGaideListInfoDao gaideListInfoDao;
     private LocalUserBeanDao userBeanDao;
-    private String clickAction = "com.example.evenalone.a300hero.wedgit.CLICK_ACTION";
-
+    public final static String clickAction = "com.example.evenalone.a300hero.wedgit.CLICK_ACTION";
+    private static final String ACTION_PACKAGE_DATA_CLEARED = "com.example.evenalone.a300hero.wedgit.intent.action.SETTINGS_PACKAGE_DATA_CLEARED";
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
@@ -153,18 +156,30 @@ public class HeroGuideToolWidget extends AppWidgetProvider {
                 HeroGuideToolWidget.class);
         for (int i=0;i<ints.length;i++)
         {
+            randomNumber = new Random().nextInt(1000);
+            boolean isService = SystemUtils.isServiceWork(context,"com.example.evenalone.a300hero.service.MyNotifiService");
             // 获取 example_appwidget.xml 对应的RemoteViews
             final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.tools_layout);
             // 把这个Widget绑定到RemoteViewsService
             Intent intent = new Intent(context,BindToolsService.class);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ints);
-
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ints[i]+randomNumber);
+            intent.setData(Uri.fromParts("content", String.valueOf(ints[i]+randomNumber), null));
+            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+            intent.putExtra("random",randomNumber );
             // 设置适配器
             remoteView.setRemoteAdapter(R.id.list_tool_listview, intent);
             // 点击列表触发事件
             Intent clickIntent = new Intent(context, HeroGuideToolWidget.class);
             // 设置Action，方便在onReceive中区别点击事件
             clickIntent.setAction(clickAction);
+            if (isService)
+            {
+                remoteView.setTextViewText(R.id.tv_tool_updatetime,"服务已运行");
+            }
+            else
+            {
+                remoteView.setTextViewText(R.id.tv_tool_updatetime,"服务没有运行");
+            }
             clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
             PendingIntent pendingIntentTemplate = PendingIntent.getBroadcast(

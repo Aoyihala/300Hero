@@ -105,7 +105,7 @@
         <receiver android:name=".wedgit.HeroGuideToolWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-
+                <action android:name="com.example.evenalone.a300hero.wedgit.intent.action.SETTINGS_PACKAGE_DATA_CLEARED"/>
                 <action android:name="com.example.evenalone.a300hero.wedgit.CLICK_ACTION" />
 
             </intent-filter>

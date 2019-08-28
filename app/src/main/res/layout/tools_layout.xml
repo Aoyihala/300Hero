@@ -86,13 +86,19 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/img_tool_refresh"
-            android:layout_width="wrap_content"
-            android:background="@drawable/ic_refresh_grey_500_24dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+        <LinearLayout
             android:layout_centerVertical="true"
-            android:layout_height="wrap_content" />
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layoutAnimation="@anim/widget_fade_in"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_tool_refresh"
+                android:layout_width="wrap_content"
+                android:background="@drawable/ic_refresh_grey_500_24dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

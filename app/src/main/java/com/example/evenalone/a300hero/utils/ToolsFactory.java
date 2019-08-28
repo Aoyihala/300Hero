@@ -31,6 +31,7 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfo;
 import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
+import com.example.evenalone.a300hero.wedgit.HeroGuideToolWidget;
 import com.google.gson.Gson;
 
 
@@ -51,6 +52,7 @@ import java.util.Map;
 
 public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
 
+    private final int appWidgetId;
     private Context context;
     private LocalGaideListInfoDao gaideListInfoDao;
     private List<HeroGuide.ListBean> localGaideListInfos = new ArrayList<>();
@@ -61,11 +63,22 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
     private Handler handler = new Handler(Looper.getMainLooper());
     private LocalGameInfoDao gameInfoDao;
     private Bitmap mBitmap;
+    private DaoSession daoSession;
 
+    private void initdb() {
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context,"user");
+        Database db = helper.getWritableDb();
+        DaoMaster master = new DaoMaster(db);
+        daoSession = master.newSession();
+    }
     public ToolsFactory(Context applicationContext, Intent intent) {
+        appWidgetId = Integer.valueOf(intent.getData().getSchemeSpecificPart())
+                - HeroGuideToolWidget.randomNumber;
         this.context = applicationContext;
-        gaideListInfoDao =MyApplication.getDaoSession().getLocalGaideListInfoDao();
-        gameInfoDao =MyApplication.getDaoSession().getLocalGameInfoDao();
+        initdb();
+        gaideListInfoDao =daoSession.getLocalGaideListInfoDao();
+        gameInfoDao =daoSession.getLocalGameInfoDao();
     }
 
 

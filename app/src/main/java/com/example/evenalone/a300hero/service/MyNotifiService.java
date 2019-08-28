@@ -6,14 +6,22 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +32,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -41,6 +50,7 @@ import com.example.evenalone.a300hero.bean.LocalGaideListInfoDao;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.example.evenalone.a300hero.bean.LocalUserBean;
+import com.example.evenalone.a300hero.bean.LocalUserBeanDao;
 import com.example.evenalone.a300hero.event.JumpValueEvnet;
 import com.example.evenalone.a300hero.event.ListInfoEvent;
 import com.example.evenalone.a300hero.ui.GuaideInfoActivity;
@@ -48,6 +58,7 @@ import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
+import com.example.evenalone.a300hero.wedgit.HeroGuideToolWidget;
 import com.google.gson.Gson;
 
 import net.wujingchao.android.view.SimpleTagImageView;
@@ -55,6 +66,7 @@ import net.wujingchao.android.view.SimpleTagImageView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.greenrobot.greendao.AbstractDao;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -74,11 +86,13 @@ public class MyNotifiService extends Service {
     private Timer timer_record;
     private int not_id=1;
     //15分钟获取一次
-    private long time = 1000*60*15;
+    private long time = 1000*60;
     private int lastime = 60*15;
     private ArrayList<HeroGuide.ListBean> listBeans;
     private LocalGaideListInfoDao localGaideListInfoDao;
     private LocalGameInfoDao gameInfoDao;
+    private LocalUserBeanDao userBeanDao;
+
     public class MyBind extends Binder {
         public void startDownload() {
             if (timer==null)
@@ -145,7 +159,7 @@ public class MyNotifiService extends Service {
                     OkhttpUtils.getInstance().sendRequest(request,HeroGuide.class);
                     //会延时10秒启动第一次
                 }
-            },SpUtils.getLasttime()==0? 10000:SpUtils.getLasttime(),time);
+            },10000,time);
         }
     }
     private void sendCustomNotificationOrWidget(final HeroGuide.ListBean listBean){
@@ -294,7 +308,7 @@ public class MyNotifiService extends Service {
                         gameInfo_local.setMactherId(listBean.getMatchID());
                         gameInfo_local.setMygaide(result_o);
                         gameInfo_local.setResult(result);
-                        gameInfoDao.save(gameInfo_local);
+                        gameInfoDao.insert(gameInfo_local);
                     }
                     else
                     {
@@ -306,13 +320,14 @@ public class MyNotifiService extends Service {
                     }
                     //获取颜色
                     LocalGaideListInfo info = gaideListInfo(listBean.getMatchID());
+                    //通知appwidget
+                    updateToolsView(listBean,drawable);
                     if (info!=null&&info.getMatchId()==listBean.getMatchID())
                     {
                         Log.e("data","目前没有新战绩");
                         //不展示通知栏
                         return;
                     }
-                    //通知appwidget
 
                     //Palette用来更漂亮地展示配色
                     if (SpUtils.isClock())
@@ -351,7 +366,7 @@ public class MyNotifiService extends Service {
                                     }
                                 });
                     }
-                    updateToolsView(listBean,drawable);
+
                     }
 
             }
@@ -375,22 +390,53 @@ public class MyNotifiService extends Service {
 
     private void updateToolsView(HeroGuide.ListBean listBean, Bitmap drawable) {
         // 更新widget的界面
+        //点击事件等全部要重新设置
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(getBaseContext());
         ComponentName name = new ComponentName("com.example.evenalone.a300hero",
                 "com.example.evenalone.a300hero.wedgit.HeroGuideToolWidget");// 获取前面参数包下的后参数的Widget
-        RemoteViews views = new RemoteViews("cn.itcast.mobilesafe",
-                R.layout.process_widget);// 获取Widget的布局
-        views.setTextViewText(R.id.process_count, "XXXX");//给process_count设置文本
-        views.setTextColor(R.id.process_count, Color.RED);//给process_count设置文本颜色
-        views.setTextViewText(R.id.process_memory, "XXXX");
-        views.setTextColor(R.id.process_memory, Color.RED);
-        Intent intent = new Intent(UpdateWidgetService.this, XXXX.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getApplicationContext(), 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.btn_clear, pendingIntent);// 给布局文件中的btn_clear设置点击事件
-        widgetmanager.updateAppWidget(name, views);//更新Widget
+        RemoteViews views = new RemoteViews("com.example.evenalone.a300hero",
+                R.layout.tools_layout);// 获取Widget的布局
+        widgetManager.updateAppWidget(name,null);
+        //先设置头像
+        views.setImageViewBitmap(R.id.img_tool_avator,makeRoundCorner(drawable));
+        //设置名字和其他选项
+        //设置其他内容
+        LocalUserBean localUserBean = finduser(SpUtils.getMainUser());
+        views.setTextViewText(R.id.tv_tool_name,localUserBean.getNickname());
+        views.setTextViewText(R.id.tv_tool_userdes,"团分"+localUserBean.getJumpvalue()+" 胜率"+localUserBean.getViotory());
+        //判断团分
+        int power = Integer.parseInt(localUserBean.getJumpvalue());
+        if (power > 0 && power < 1000) {
+            views.setImageViewResource(R.id.img_tool_duanwei,R.drawable.tong);
+        }
+        if (power >= 1000 && power < 2000) {
+            views.setImageViewResource(R.id.img_tool_duanwei,R.drawable.baiying);
+        }
+        if (power >= 2000 && power < 3000) {
+            views.setImageViewResource(R.id.img_tool_duanwei,R.drawable.gold);
+        }
+        if (power >= 3000) {
+            views.setImageViewResource(R.id.img_tool_duanwei,R.drawable.daemo);
+        }
+        int[] ids = widgetManager.getAppWidgetIds(name);
+        Intent intent = new Intent(getBaseContext(),BindToolsService.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, name);
+        intent.setData(Uri.fromParts("content", String.valueOf(ids[0]+HeroGuideToolWidget.randomNumber), null));
+        views.setRemoteAdapter(R.id.list_tool_listview,intent);
+        views.setInt(R.id.tools_user_bg,"setBackgroundColor",SpUtils.getMainColor());
+        views.setTextViewText(R.id.tv_tool_updatetime,"服务已运行");
+        views.setInt(R.id.tool_foot_bg,"setBackgroundColor",SpUtils.getMainColor());
+        widgetManager.updateAppWidget(name, views);//更新Widget
+
+
+        widgetManager.notifyAppWidgetViewDataChanged(ids,R.id.list_tool_listview);
     }
 
 
+    //获取保存的user
+    private LocalUserBean finduser(String name)
+    {
+        return userBeanDao.queryBuilder().where(LocalUserBeanDao.Properties.Nickname.eq(name)).unique();
     }
 
     /**
@@ -436,6 +482,7 @@ public class MyNotifiService extends Service {
         //创建数据库
         localGaideListInfoDao = MyApplication.getDaoSession().getLocalGaideListInfoDao();
         gameInfoDao = MyApplication.getDaoSession().getLocalGameInfoDao();
+        userBeanDao = MyApplication.getDaoSession().getLocalUserBeanDao();
         if (SystemUtils.isBackground(getBaseContext()))
         {
             //后台创建的服务不会执行
@@ -478,10 +525,7 @@ public class MyNotifiService extends Service {
     {
         //获取
         //判断当前应用是否处于后台
-
-        if (SystemUtils.isBackground(getBaseContext()))
-        {
-            //处于后台才处理事件
+        //处于后台才处理事件
             //如果是在前台的话,内容会回调到页面订阅
             //展示数据
             if (eva.isSuccess())
@@ -509,8 +553,7 @@ public class MyNotifiService extends Service {
                     {
                         for (HeroGuide.ListBean listBean:listBeans)
                         {
-                            if (SpUtils.getMainUser().equals(SpUtils.getMainUser()))
-                            {
+
                                 LocalGaideListInfo info1 = gaideListInfo(listBean.getMatchID());
                                 if (info1==null)
                                 {
@@ -520,7 +563,7 @@ public class MyNotifiService extends Service {
                                     info1.setTime(listBean.getMatchDate());
                                     info1.setResult(new Gson().toJson(listBean));
                                     //保存
-                                    localGaideListInfoDao.save(info1);
+                                    localGaideListInfoDao.insert(info1);
                                 }
                                 else
                                 {
@@ -530,16 +573,14 @@ public class MyNotifiService extends Service {
                                     info1.setTime(listBean.getMatchDate());
                                     info1.setResult(new Gson().toJson(listBean));
                                     localGaideListInfoDao.delete(info1);
-                                    localGaideListInfoDao.save(info1);
+                                    localGaideListInfoDao.insert(info1);
                                 }
-                            }
+
                         }
                     }
                     sendCustomNotificationOrWidget(listBeans.get(0));
                 }
             }
-        }
-
     }
 
     public LocalGaideListInfo gaideListInfo(long id)
@@ -560,5 +601,40 @@ public class MyNotifiService extends Service {
                 NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
     }
+    //获取圆形bitmap
+    public static Bitmap makeRoundCorner(Bitmap bitmap)
+    {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int left = 0, top = 0, right = width, bottom = height;
+        float roundPx = height/2;
+        if (width > height) {
+            left = (width - height)/2;
+            top = 0;
+            right = left + height;
+            bottom = height;
+        } else if (height > width) {
+            left = 0;
+            top = (height - width)/2;
+            right = width;
+            bottom = top + width;
+            roundPx = width/2;
+        }
 
+
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        int color = 0xff424242;
+        Paint paint = new Paint();
+        Rect rect = new Rect(left, top, right, bottom);
+        RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
 }
