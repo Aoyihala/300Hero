@@ -14,8 +14,9 @@ public class ImageCenter
     private ImageCenter(Context context)
     {
         this.context = context;
-        downLoader = new ImageDownLoader(context);
         imageCache = new ImageCache(context);
+        downLoader = new ImageDownLoader(context,imageCache);
+
 
     }
 

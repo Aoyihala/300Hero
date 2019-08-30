@@ -16,8 +16,8 @@ import java.io.File;
 public class ImageDownLoader
 {
     private ImageCache imageCache;
-    public ImageDownLoader(Context context) {
-        imageCache = new ImageCache(context);
+    public ImageDownLoader(Context context, ImageCache imageCache) {
+        this.imageCache = imageCache;
 
     }
 

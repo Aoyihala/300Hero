@@ -446,7 +446,7 @@ public class MyNotifiService extends Service {
      */
     public LocalGameInfo getoneGame(long matchid)
     {
-        LocalGameInfo gameInfo = gameInfoDao.queryBuilder().where(LocalGameInfoDao.Properties.MactherId.eq(matchid)).unique();
+        LocalGameInfo gameInfo = gameInfoDao.queryBuilder().where(LocalGameInfoDao.Properties.MactherId.eq(matchid)).list().get(0);
         return gameInfo;
     }
     /*
@@ -585,7 +585,7 @@ public class MyNotifiService extends Service {
 
     public LocalGaideListInfo gaideListInfo(long id)
     {
-       return localGaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.MatchId.eq(id)).unique();
+       return localGaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.MatchId.eq(id)).list().get(0);
     }
 
     /**

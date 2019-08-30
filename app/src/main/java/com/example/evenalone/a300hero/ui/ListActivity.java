@@ -56,6 +56,7 @@ import com.example.evenalone.a300hero.ui.fragment.HeroGuaideFragment;
 import com.example.evenalone.a300hero.ui.fragment.UserFragment;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.SpUtils;
+import com.example.evenalone.a300hero.utils.SystemUtils;
 import com.example.evenalone.a300hero.utils.UiUtlis;
 import com.example.evenalone.a300hero.wedgit.AppBarStateChangeListener;
 import com.example.evenalone.a300hero.wedgit.MenuPopwindow;
@@ -345,8 +346,14 @@ public class ListActivity extends BaseActivity {
         guaideFragment.requestData(0, true);
         userFragment.setNickname(nickname);
         userFragment.loadUserData();
+    }
 
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SystemUtils.isBackground(this);
     }
 
     private void clearViews() {
