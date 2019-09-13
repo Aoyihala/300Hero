@@ -38,6 +38,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @SuppressLint("NewApi")
 public class MyApplication extends Application implements Application.ActivityLifecycleCallbacks
@@ -46,6 +48,8 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static OkhttpUtils okhttpUtils;
     private static DaoSession daoSession;
     private static ImageCenter imageCenter;
+    private static Timer timer_update;
+    private static long time = 1000*15*60;
     //全局代理词
     public static List<NetWorkProx> proxList = new ArrayList<>();
     //全局的list页面
@@ -53,6 +57,28 @@ public class MyApplication extends Application implements Application.ActivityLi
     public static Map<String,ListActivity> listActivityMap = new LinkedHashMap<>();
     private static List<Activity> activitiesall = new LinkedList<>();
 
+    public static void startUpdateTask() {
+        Log.e("更新服务","启动");
+        //启用timer
+        timer_update = new Timer();
+        timer_update.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                //延时10秒
+                //请求
+
+            }
+        },10000,time);
+
+    }
+
+    public static void stopUpdateTask() {
+        if (timer_update!=null)
+        {
+            timer_update.cancel();
+        }
+        Log.e("更新服务","停止");
+    }
 
 
     @Override

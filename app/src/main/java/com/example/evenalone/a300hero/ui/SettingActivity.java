@@ -36,7 +36,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,6 +82,10 @@ public class SettingActivity extends BaseActivity {
     CheckBox checkClock;
     @BindView(R.id.card_clock)
     CardView cardClock;
+    @BindView(R.id.check_update)
+    CheckBox checkUpdate;
+    @BindView(R.id.card_update)
+    CardView cardUpdate;
     private boolean loading_complete = false;
     private List<NetWorkProx> proxList = new ArrayList<>();
     private ProxyListAdapter listAdapter;
@@ -120,7 +123,7 @@ public class SettingActivity extends BaseActivity {
                     loading_complete = false;
                 } else {
                     Snackbar.make(toolBar, "加载中请稍后", Snackbar.LENGTH_SHORT).show();
-            }
+                }
 
             }
         });
@@ -174,63 +177,69 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 checkClock.setChecked(!checkClock.isChecked());
-                SpUtils.setClock(checkClock.isChecked());
-                if (checkClock.isChecked())
-                {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        //目的是为了保活
-                        JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).startJobScheduler();
-                    }
-                    else
-                    {
-                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
-                    }
-                    Snackbar.make(toolBar,"记得赋予软件自启权限",Snackbar.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).stopJobScheduler();
-                    }
-                    else
-                    {
-                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
-                    }
-                }
-
             }
         });
         checkClock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SpUtils.setClock(checkClock.isChecked());
-                if (isChecked)
-                {
+                if (isChecked) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         //目的是为了保活
                         JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).startJobScheduler();
+                    } else {
+                        Toast.makeText(MyApplication.getContext(), "安卓版本过低,至少在安卓5.1版本以上运行该功能", Toast.LENGTH_SHORT);
                     }
-                    else
-                    {
-                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
-                    }
-                    Snackbar.make(toolBar,"记得赋予软件自启权限",Snackbar.LENGTH_SHORT).show();
-                }
-                else
-                {
+                    Snackbar.make(toolBar, "记得赋予软件自启权限", Snackbar.LENGTH_SHORT).show();
+                } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         JobSchedulerManager.getJobSchedulerInstance(SettingActivity.this).stopJobScheduler();
                         //停止服务
-                        Intent in = new Intent(SettingActivity.this,MyNotifiService.class);
+                        Intent in = new Intent(SettingActivity.this, MyNotifiService.class);
                         SettingActivity.this.stopService(in);
 
-                    }
-                    else
-                    {
-                        Toast.makeText(MyApplication.getContext(),"安卓版本过低,至少在安卓5.1版本以上运行该功能",Toast.LENGTH_SHORT);
+                    } else {
+                        Toast.makeText(MyApplication.getContext(), "安卓版本过低,至少在安卓5.1版本以上运行该功能", Toast.LENGTH_SHORT);
                     }
                 }
 
+            }
+        });
+        checkUpdate.setChecked(SpUtils.isupdate());
+        //检查更新卡片
+        cardUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkUpdate.isChecked())
+                {
+                    checkUpdate.setChecked(false);
+                    //调用application里的方法去检查更新不使用服务
+                    MyApplication.stopUpdateTask();
+
+                }
+                else
+                {
+                    checkUpdate.setChecked(true);
+                    MyApplication.startUpdateTask();
+
+                }
+            }
+        });
+        //检查更新
+        checkUpdate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    SpUtils.saveUpdate(true);
+                    //启用服务
+
+                }
+                else
+                {
+                    SpUtils.saveUpdate(false);
+                    //关闭服务
+                }
             }
         });
     }
@@ -275,6 +284,5 @@ public class SettingActivity extends BaseActivity {
         loading_complete = true;
 
     }
-
 
 }

@@ -171,4 +171,17 @@ public class SpUtils
         return preferences.getLong("speed",0);
 
     }
+
+    public static void saveUpdate(boolean b) {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("update",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("update_state",b);
+        editor.apply();
+    }
+    public static boolean isupdate()
+    {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("update",Context.MODE_PRIVATE);
+        boolean color = preferences.getBoolean("update_state",false);
+        return color;
+    }
 }
