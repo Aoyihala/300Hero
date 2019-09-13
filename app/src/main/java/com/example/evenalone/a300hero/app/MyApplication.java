@@ -30,6 +30,8 @@ import com.igexin.sdk.PushManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.database.Database;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -66,6 +68,30 @@ public class MyApplication extends Application implements Application.ActivityLi
             public void run() {
                 //延时10秒
                 //请求
+                x.http().get(new RequestParams("https://github.com/Aoyihala/300Hero/blob/master/update.txt"), new Callback.CommonCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        if (result!=null)
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
 
             }
         },10000,time);
@@ -94,6 +120,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         okhttpUtils = OkhttpUtils.getInstance();
         imageCenter = ImageCenter.getInstance(context);
         checkservice();
+        startUpdateTask();
 
        // releasedata();
         //启用jobshulder
@@ -129,11 +156,15 @@ public class MyApplication extends Application implements Application.ActivityLi
     }
 
     private void checkservice() {
+        if (SpUtils.isClock())
+        {
             if (!SystemUtils.isServiceWork(MyApplication.getContext(),"com.example.evenalone.a300hero.service.MyNotifiService"))
             {
                 //服务没有运行
                 JobSchedulerManager.getJobSchedulerInstance(context).startJobScheduler();
             }
+        }
+
 
     }
 
