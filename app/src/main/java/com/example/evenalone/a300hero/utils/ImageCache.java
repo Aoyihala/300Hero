@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 import android.util.LruCache;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,10 +46,26 @@ public class ImageCache
             if (bitmap==null)
             {
                 Log.e("英雄头像:"+heroname,"重新下载");
+
                 //在扔之前先下载
                 return null;
             }
+
             return bitmap;
+    }
+    public Bitmap findDisk(String heroname, ImageView imageView,String imgurl)  {
+
+        Bitmap bitmap = BitmapFactory.decodeFile(path+"/"+heroname);
+        if (bitmap==null)
+        {
+            Log.e("英雄头像:"+heroname,"重新下载");
+            imageView.setTag(null);
+            Glide.with(imageView.getContext()).load(imgurl).into(imageView);
+            //在扔之前先下载
+            return null;
+        }
+
+        return bitmap;
     }
 
     public void add(Bitmap bitmap, String heroname) {
@@ -56,5 +75,18 @@ public class ImageCache
             return;
         }
         lruCache_img.put(heroname,bitmap);
+    }
+
+    public Bitmap findDiskbyTools(String heroname) {
+        Bitmap bitmap = BitmapFactory.decodeFile(path+"/"+heroname);
+        if (bitmap==null)
+        {
+            Log.e("英雄头像:"+heroname,"重新下载");
+            //在扔之前先下载
+            return null;
+        }
+
+        return bitmap;
+
     }
 }

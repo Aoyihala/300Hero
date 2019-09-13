@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
@@ -62,6 +63,9 @@ public class ImageDownLoader
             public void onError(Error error) {
                 //这里出现错误一般是RenameFile fail
                 //防止正在操作的重名文件被覆盖
+                //出错
+                imageView.setTag(null);
+                Glide.with(imageView.getContext()).load(imgurl).into(imageView);
                 if ((error.getConnectionException().getLocalizedMessage()+" ").contains("Rename"))
                 {
                     //删除

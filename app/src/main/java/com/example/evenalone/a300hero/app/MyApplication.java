@@ -61,13 +61,14 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     public static void startUpdateTask() {
         Log.e("更新服务","启动");
-        //启用timer
+    /*    //启用timer
         timer_update = new Timer();
         timer_update.schedule(new TimerTask() {
             @Override
             public void run() {
                 //延时10秒
                 //请求
+
                 x.http().get(new RequestParams("https://github.com/Aoyihala/300Hero/blob/master/update.txt"), new Callback.CommonCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
@@ -94,7 +95,7 @@ public class MyApplication extends Application implements Application.ActivityLi
                 });
 
             }
-        },10000,time);
+        },10000,time);*/
 
     }
 

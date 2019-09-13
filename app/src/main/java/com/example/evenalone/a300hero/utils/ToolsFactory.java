@@ -178,8 +178,7 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
             rv.setTextViewText(R.id.tv_tool_flag,"ESCAPE");
             rv.setTextColor(R.id.tv_tool_flag,UiUtlis.getColor(R.color.blue));
         }
-        Bitmap bitmap_cache = null;
-        try {
+            Bitmap bitmap_cache = null;
             bitmap_cache = ImageCenter.getInstance(context).getCache(listBean.getHero().getName());
             if (bitmap_cache!=null)
             {
@@ -189,10 +188,7 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
             {
                 rv.setImageViewResource(R.id.img_tool_hero,R.drawable.fish);
             }
-        } catch (Exception e) {
-            //这里可以去伪同步加载图片
-            rv.setImageViewResource(R.id.img_tool_hero,R.drawable.fish);
-        }
+
         /*if (bitmap_cache!=null)
         {
             flags.put(position,true);

@@ -41,6 +41,10 @@
 ![通知栏1](https://github.com/Aoyihala/img/blob/master/300data/notify2.png?raw=true)  
 ![通知栏2](https://github.com/Aoyihala/img/blob/master/300data/notify1.png?raw=true)  
 ![小工具1](https://github.com/Aoyihala/img/blob/master/300data/tool.png?raw=true)  
+##### 2019.9.14
+> - 1.利用个推推送更新
+> - 2.优化图片加载流程
+> - 3.优化小工具图片加载过程
 #### 关于ip地址代理池
 [西刺](https://www.xicidaili.com)ip代理池，利用[jsoup](https://jsoup.org/download)解析
 ## License

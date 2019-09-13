@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 public class ImageCenter
 {
     private ImageDownLoader downLoader;
@@ -46,7 +48,8 @@ public class ImageCenter
            imageView.setImageBitmap(bitmap);
            return;
         }
-        bitmap = imageCache.findDisk(heroname);
+
+        bitmap = imageCache.findDisk(heroname,imageView,imgurl);
         if (bitmap!=null)
         {
             imageView.setImageBitmap(bitmap);
@@ -64,7 +67,7 @@ public class ImageCenter
     public Bitmap getCache(String heroname) {
         //本地获取
         Bitmap bitmap;
-        bitmap = imageCache.findDisk(heroname);
+        bitmap = imageCache.findDiskbyTools(heroname);
         if (bitmap!=null)
         {
             return bitmap;

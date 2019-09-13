@@ -159,7 +159,7 @@ public class MyNotifiService extends Service {
                     OkhttpUtils.getInstance().sendRequest(request,HeroGuide.class);
                     //会延时10秒启动第一次
                 }
-            },10000,time);
+            },SpUtils.getLasttime()==0?10000:SpUtils.getLasttime(),time);
         }
     }
     private void sendCustomNotificationOrWidget(final HeroGuide.ListBean listBean){
