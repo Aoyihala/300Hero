@@ -233,16 +233,4 @@ public class UserFragment extends BaseFragment {
     }
 
 
-    public void clearData() {
-        if (powerlist!=null&&my_guaide!=null)
-        {
-            powerlist.clear();
-            my_guaide.clear();
-        }
-        userAdapter.setPwoerList(powerlist);
-        userAdapter.setUsedHero(icon_map);
-        userAdapter.setYourCard(my_guaide);
-
-
-    }
 }

@@ -52,7 +52,6 @@ import java.util.Map;
 
 public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private final int appWidgetId;
     private Context context;
     private LocalGaideListInfoDao gaideListInfoDao;
     private List<HeroGuide.ListBean> localGaideListInfos = new ArrayList<>();
@@ -70,11 +69,9 @@ public class ToolsFactory implements RemoteViewsService.RemoteViewsFactory {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context,"user");
         Database db = helper.getWritableDb();
         DaoMaster master = new DaoMaster(db);
-        daoSession = master.newSession();
+        daoSession = MyApplication.getDaoSession();
     }
     public ToolsFactory(Context applicationContext, Intent intent) {
-        appWidgetId = Integer.valueOf(intent.getData().getSchemeSpecificPart())
-                - HeroGuideToolWidget.randomNumber;
         this.context = applicationContext;
         initdb();
         gaideListInfoDao =daoSession.getLocalGaideListInfoDao();

@@ -52,7 +52,7 @@ public class GameUtils {
         List<MakeViewBean> powerlist = new ArrayList<>();
         if (ismore)
         {
-            if (localGaideListInfos.size()>30)
+            if (localGaideListInfos.size()>=20)
             {
                 //
                 localGaideListInfos = localGaideListInfos.subList(0,20);

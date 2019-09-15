@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.evenalone.a300hero.R;
@@ -183,18 +184,26 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                            Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putBoolean("mode",true);
-                            bundle.putString("nickname",winSideBean.getRoleName());
-                     /*   if (SpUtils.getMainUser()==null)
+                            if (!winSideBean.getRoleName().equals(nickname))
+                            {
+                                Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("mode",true);
+                                bundle.putString("nickname",winSideBean.getRoleName());
+                                  /*   if (SpUtils.getMainUser()==null)
                         {
                             SpUtils.setbackUser(SpUtils.getNowUser());
                         }
                         SpUtils.selectUser(winSideBean.getRoleName());*/
-                            intent.putExtras(bundle);
-                            viewHolder.itemView.getContext().startActivity(intent);
+                                intent.putExtras(bundle);
+                                viewHolder.itemView.getContext().startActivity(intent);
+                            }
+                            else
+                            {
+                                Toast.makeText(viewHolder.itemView.getContext(),"请点击查看其他人的战绩",Toast.LENGTH_SHORT).show();
+                            }
+
+
                     }
                 });
             }
@@ -295,7 +304,8 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        if (!loseSideBean.getRoleName().equals(nickname))
+                        {
                             Intent intent = new Intent(viewHolder.itemView.getContext(),ListActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putBoolean("mode",true);
@@ -308,6 +318,12 @@ public class GaideInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             intent.putExtras(bundle);
                             viewHolder.itemView.getContext().startActivity(intent);
+                        }
+                        else
+                        {
+                            Toast.makeText(viewHolder.itemView.getContext(),"请查看其他人的战绩",Toast.LENGTH_SHORT).show();
+                        }
+
 
 
                     }
