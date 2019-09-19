@@ -24,7 +24,14 @@ public abstract class BaseActivity extends LibaryActivity
         ButterKnife.bind(this);
         initdata();
         initview();
+        if (!EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().register(this);
+        }
     }
+
+    //接受事件
+
 
 
 

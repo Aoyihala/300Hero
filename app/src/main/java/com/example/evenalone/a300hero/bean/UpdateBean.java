@@ -14,6 +14,15 @@ public class UpdateBean {
     private String des;
     private String time;
     private String url;
+    private Boolean iscoerce;
+
+    public void setIscoerce(Boolean iscoerce) {
+        this.iscoerce = iscoerce;
+    }
+
+    public Boolean getIscoerce() {
+        return iscoerce;
+    }
 
     public String getVersion() {
         return version;

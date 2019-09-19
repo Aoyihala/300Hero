@@ -22,9 +22,9 @@ android {
             }
         }
         manifestPlaceholders = [
-                GETUI_APP_ID    : "KOhfEVUNFr6IGjL5NTyOm6",
-                GETUI_APP_KEY   : "AjStxveN5T6idO3qxly9V4",
-                GETUI_APP_SECRET: "EMZwQlv4dy9J1wtsaKupWA"
+                GETUI_APP_ID    : "67ZwSylfTf6rXHhE3p7g17",
+                GETUI_APP_KEY   : "BtHB8bUHdmAd4HEq6sobP4",
+                GETUI_APP_SECRET: "1rlFIN4Pdg8HYYONRqfOH9"
         ]
 
     }

@@ -15,6 +15,7 @@ import com.downloader.PRDownloaderConfig;
 import com.example.evenalone.a300hero.bean.DaoMaster;
 import com.example.evenalone.a300hero.bean.DaoSession;
 import com.example.evenalone.a300hero.bean.NetWorkProx;
+import com.example.evenalone.a300hero.bean.UpdateBean;
 import com.example.evenalone.a300hero.service.JobSchedulerManager;
 import com.example.evenalone.a300hero.service.MyPushService;
 import com.example.evenalone.a300hero.service.PushCallBackService;
@@ -25,12 +26,14 @@ import com.example.evenalone.a300hero.utils.ImageCenter;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
+import com.google.gson.Gson;
 import com.igexin.sdk.PushManager;
 
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.database.Database;
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -51,6 +54,7 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static DaoSession daoSession;
     private static ImageCenter imageCenter;
     private static Timer timer_update;
+    //15分钟请求一次
     private static long time = 1000*15*60;
     //全局代理词
     public static List<NetWorkProx> proxList = new ArrayList<>();
@@ -61,7 +65,7 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     public static void startUpdateTask() {
         Log.e("更新服务","启动");
-    /*    //启用timer
+        //启用timer
         timer_update = new Timer();
         timer_update.schedule(new TimerTask() {
             @Override
@@ -69,12 +73,18 @@ public class MyApplication extends Application implements Application.ActivityLi
                 //延时10秒
                 //请求
 
-                x.http().get(new RequestParams("https://github.com/Aoyihala/300Hero/blob/master/update.txt"), new Callback.CommonCallback<String>() {
+                x.http().get(new RequestParams("假定地址"), new Callback.CommonCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
                         if (result!=null)
                         {
-
+                            UpdateBean updateBean = new Gson().fromJson(result,UpdateBean.class);
+                            if (!EventBus.getDefault().isRegistered(context))
+                            {
+                                EventBus.getDefault().register(context);
+                            }
+                            EventBus.getDefault().postSticky(updateBean);
+                            LogUtil.e("检查到版本:"+updateBean.getVersion());
                         }
                     }
 
@@ -95,7 +105,7 @@ public class MyApplication extends Application implements Application.ActivityLi
                 });
 
             }
-        },10000,time);*/
+        },10000,time);
 
     }
 

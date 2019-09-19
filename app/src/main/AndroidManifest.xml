@@ -29,6 +29,7 @@
         <service
             android:name=".service.JobTimer"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".service.UpdateService"/>
 
         <activity android:name=".ui.HomeActivity">
             <intent-filter>
