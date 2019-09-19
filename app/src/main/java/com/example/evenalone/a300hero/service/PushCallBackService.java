@@ -61,6 +61,8 @@ public class PushCallBackService extends GTIntentService
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
         //透传信息
+        String sdata = String.format("utf-8", gtTransmitMessage.getPayload());
+        Log.e("信息",sdata);
 
     }
 
