@@ -23,6 +23,7 @@ import com.example.evenalone.a300hero.ui.HomeActivity;
 import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
 import com.example.evenalone.a300hero.utils.ImageCenter;
+import com.example.evenalone.a300hero.utils.MyCatchException;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
@@ -124,6 +125,9 @@ public class MyApplication extends Application implements Application.ActivityLi
         this.registerActivityLifecycleCallbacks(this);
         context = getApplicationContext();
         x.Ext.init(this);
+        //全局异常监听
+        MyCatchException mException=MyCatchException.getInstance();
+        mException.init(getApplicationContext());
         initdb();
         initdownloader();
         PushManager.getInstance().initialize(context,MyPushService.class);

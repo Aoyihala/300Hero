@@ -334,6 +334,15 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+            lineViewHolder.switchDatasmore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null!=moreClickListener)
+                    {
+                        moreClickListener.onSwitchClick(lineViewHolder.switchDatasmore,i);
+                    }
+                }
+            });
 
 
 

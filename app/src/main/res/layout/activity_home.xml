@@ -21,7 +21,7 @@
         android:layout_gravity="top"
         android:overScrollMode="never"
         android:layout_marginTop="5dp"
-        android:layout_height="250dp">
+        android:layout_height="200dp">
     </android.support.v7.widget.RecyclerView>
     <LinearLayout
         android:orientation="vertical"
@@ -35,7 +35,6 @@
             android:id="@+id/tv_search"
             android:text="@string/welcome"
             android:textSize="20sp"
-            android:layout_marginBottom="?actionBarSize"
             android:textColor="#000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

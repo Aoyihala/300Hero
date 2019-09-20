@@ -8,15 +8,22 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.evenalone.a300hero.app.MyApplication;
+import com.example.evenalone.a300hero.bean.UpdateBean;
+import com.example.evenalone.a300hero.event.UpdateVersionEvent;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
+import com.example.evenalone.a300hero.utils.UiUtlis;
+import com.google.gson.Gson;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -59,10 +66,28 @@ public class PushCallBackService extends GTIntentService
     }
 
     @Override
-    public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
+    public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
         //透传信息
-        String sdata = String.format("utf-8", gtTransmitMessage.getPayload());
-        Log.e("信息",sdata);
+        String appid = msg.getAppid();
+        String taskid = msg.getTaskId();
+        String messageid = msg.getMessageId();
+        String pkg = msg.getPkgName();
+        Log.e(TAG, "receiver payload = null");
+        String cid = msg.getClientId();
+        String content = new String(msg.getPayload());
+        if (!TextUtils.isEmpty(content))
+        {
+            UpdateBean updateBean = new Gson().fromJson(content,UpdateBean.class);
+            String nowversion = UiUtlis.getVersion();
+            if (!updateBean.getVersion().equals(nowversion))
+            {
+                //如果不是相同版本
+                EventBus.getDefault().postSticky(new UpdateVersionEvent(updateBean));
+
+            }
+
+        }
+
 
     }
 

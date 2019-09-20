@@ -85,7 +85,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.game_item, viewGroup, false);
         HeroListViewHolder heroListViewHolder = new HeroListViewHolder(view);
         //静止复用视图,因为涉及到过多的加载和展示,item请求网络
-        //heroListViewHolder.setIsRecyclable(false);
+        heroListViewHolder.setIsRecyclable(false);
         return heroListViewHolder;
     }
 
