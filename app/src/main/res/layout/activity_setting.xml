@@ -131,7 +131,7 @@
                 <TextView
                     android:textColor="@color/gray"
                     android:textSize="12sp"
-                    android:text="每15分钟获取一次最新战"
+                    android:text="每15分钟获取一次最新战绩"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />

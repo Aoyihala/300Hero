@@ -1,7 +1,10 @@
 package com.example.evenalone.a300hero.adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +13,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.evenalone.a300hero.R;
 import com.example.evenalone.a300hero.app.MyApplication;
 import com.example.evenalone.a300hero.bean.GameInfo;
@@ -62,9 +70,11 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void setListBeans(List<HeroGuide.ListBean> listBeans) {
+        this.listBeans.clear();
         this.listBeans = listBeans;
 
     }
+
 
     public HerolistAdapter(String nickname)
     {
@@ -79,50 +89,68 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return   gaideListInfoDao.queryBuilder().where(LocalGaideListInfoDao.Properties.MatchId.eq(matchid)).unique();
     }
 
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.game_item, viewGroup, false);
         HeroListViewHolder heroListViewHolder = new HeroListViewHolder(view);
         //静止复用视图,因为涉及到过多的加载和展示,item请求网络
-        heroListViewHolder.setIsRecyclable(false);
+       heroListViewHolder.setIsRecyclable(true);
         return heroListViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int position) {
         if (viewHolder instanceof HeroListViewHolder) {
-            HeroListViewHolder listViewHolder = (HeroListViewHolder) viewHolder;
+            final HeroListViewHolder listViewHolder = (HeroListViewHolder) viewHolder;
 
             //macthtype 1为战场
             //resulttype 1 为赢
-            final HeroGuide.ListBean listBean = listBeans.get(position);
             listViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null!=guaideClickListener)
                     {
-                        guaideClickListener.click(listBean.getMatchID());
+                        guaideClickListener.click(listBeans.get(position).getMatchID());
                     }
                 }
             });
-            listViewHolder.imgHero.setTag(R.id.img_hero,listBean.getHero().getID());
-            if ((listViewHolder.imgHero.getTag(R.id.img_hero).toString().equals(listBean.getHero().getID()+"")))
-            {
-                /* Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);*/
-                try {
-                    listViewHolder.imgHero.setTag(null);
-                    MyApplication.getImageCenter().setPic(listViewHolder.imgHero,listBean.getHero().getName(),Contacts.IMG+listBean.getHero().getIconFile());
-                } catch (Exception e) {
-                    //接受自定义错误
-                    //这里由于没有及时的载入缓存或者文件正在读取中,使用图片加载框架
-                    //清除tag,有的图片框架是不需要清除的
-                    listViewHolder.imgHero.setTag(null);
-                    Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);
+            try {
+                String uri =Contacts.IMG+listBeans.get(position).getHero().getIconFile();
+               listViewHolder.imgHero.setTag(R.id.imageid,uri);
+                if (listViewHolder.imgHero != null && Contacts.IMG+listBeans.get(position).getHero().getIconFile() != null && listViewHolder.imgHero.getTag(R.id.imageid)!=null&&uri==listViewHolder.imgHero.getTag(R.id.imageid)) {
+                    RequestOptions options = new RequestOptions()
+                            .autoClone()
+                            .dontAnimate();
+                    Glide.with(viewHolder.itemView.getContext())
+                            .load(Contacts.IMG+listBeans.get(position).getHero().getIconFile())
+                            .apply(options)
+                            .into(listViewHolder.imgHero);
                 }
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (listBean.getMatchType()==1)
+            MyApplication.getImageCenter().donwloadOnly(listBeans.get(position).getHero().getIconFile(),listBeans.get(position).getHero().getName());
+
+
+                    /* Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);*/
+                /*    try {
+                        MyApplication.getImageCenter().setPic(listViewHolder.imgHero,listBeans.get(position).getHero().getName(),Contacts.IMG+listBeans.get(position).getHero().getIconFile());
+                    } catch (Exception e) {
+                        //接受自定义错误
+                        //这里由于没有及时的载入缓存或者文件正在读取中,使用图片加载框架
+                        //清除tag,有的图片框架是不需要清除的
+                  *//*      listViewHolder.imgHero.setTag(null);
+                        Glide.with(viewHolder.itemView.getContext()).load(Contacts.IMG+listBean.getHero().getIconFile()).into(listViewHolder.imgHero);*//*
+                    }*/
+
+
+
+
+
+
+            if (listBeans.get(position).getMatchType()==1)
             {
                 listViewHolder.tvJumpGameType.setText("竞技场");
             }
@@ -130,7 +158,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             {
                 listViewHolder.tvJumpGameType.setText("战场");
             }
-            if (listBean.getResult()==1)
+            if (listBeans.get(position).getResult()==1)
             {
 
                 listViewHolder.tvJumpViotoryFlag.setText("WIN");
@@ -142,13 +170,13 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 listViewHolder.tvJumpViotoryFlag.setTextColor(UiUtlis.getColor(R.color.colorAccent));
 
             }
-            listViewHolder.tvJumpTime.setText(listBean.getMatchDate());
-            LocalGameInfo gameInfo = getoneGame(listBean.getMatchID());
+            listViewHolder.tvJumpTime.setText(listBeans.get(position).getMatchDate());
+            LocalGameInfo gameInfo = getoneGame(listBeans.get(position).getMatchID());
             if (gameInfo!=null)
             {
                 listViewHolder.tvJumpGuaide.setText(gameInfo.getMygaide());
-                getJumpvaule(gameInfo.getResult(),position,listBean);
-                operationMvp(gameInfo.getResult(),listBean,listViewHolder);
+                getJumpvaule(gameInfo.getResult(),position,listBeans.get(position));
+                operationMvp(gameInfo.getResult(),listBeans.get(position),listViewHolder);
             /*    if(position<listBeans.size()-1)
                 {
                     //当前item的团分
@@ -193,11 +221,22 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             {
                 listViewHolder.tvJumpGuaide.setText("loading....");
                 //请求单局信息
-                requestMacth(listViewHolder,position,listBean,listBean.getMatchID());
+                requestMacth(listViewHolder,position,listBeans.get(position),listBeans.get(position).getMatchID());
             }
 
         }
     }
+
+    @Override
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+        if (holder != null) {
+            //视图被回收
+
+        }
+        super.onViewRecycled(holder);
+    }
+
+
     //时间久远的可能个人排名信息里没有团分了
     //只有从战局里面查找
     private void getJumpvaule(String result, int position,HeroGuide.ListBean listBean) {
@@ -284,15 +323,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
 
-    /**
-     * 防止视图复用导致的view异常
-     * @param position
-     * @return
-     */
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
+
 
     private void requestMacth(final HeroListViewHolder listViewHolder, final int position, final HeroGuide.ListBean listBean, final long matchID) {
         x.http().get(new RequestParams(Contacts.MATCH_GAME + "?id=" + matchID), new Callback.CommonCallback<String>() {
@@ -426,7 +457,6 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 //指定位置更新
                 //去除更新闪动效果
                 notifyItemChanged(position);
-
             }
 
             @Override
@@ -672,6 +702,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 {
                     viewHolder.imgHero.setTagEnable(false);
                 }
+
 
 
                 return;

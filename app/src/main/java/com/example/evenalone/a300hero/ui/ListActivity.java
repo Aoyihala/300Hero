@@ -676,10 +676,10 @@ public class ListActivity extends BaseActivity {
         tvJumpViotoryHome.setText("胜率:" + localUserBean.getViotory());
         if (localUserBean.getJumpvalue() == null || TextUtils.isEmpty(localUserBean.getJumpvalue()) || localUserBean.getJumpvalue().equals("null")) {
             tvJumpGuaideHome.setText("团分:加载中");
-            imgHomeDuanwei.setVisibility(View.GONE);
             tvHomeDuanwei.setText("未获取段位");
 
         } else {
+            imgHomeDuanwei.setVisibility(View.VISIBLE);
             tvJumpGuaideHome.setText("团分:" + localUserBean.getJumpvalue());
             int pwoer_win_adv = Integer.parseInt(localUserBean.getJumpvalue());
             if (pwoer_win_adv > 0 && pwoer_win_adv < 1000) {

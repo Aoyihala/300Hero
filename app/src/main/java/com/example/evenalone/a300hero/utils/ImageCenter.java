@@ -74,4 +74,8 @@ public class ImageCenter
         }
         return null;
     }
+
+    public void donwloadOnly(String iconfile,String name) {
+        downLoader.downloadonely(iconfile,name);
+    }
 }

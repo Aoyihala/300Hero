@@ -131,7 +131,7 @@ public class MyNotifiService extends Service {
                 @Override
                 public void run() {
                     //一秒一次
-                    if (lastime==0)
+                    if (lastime<=0)
                     {
                         lastime = 60*15;
                     }

@@ -325,6 +325,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });*/
             lineViewHolder.lineChartItem.fitScreen();
             lineViewHolder.switchDatasmore.setChecked(SpUtils.isMoreMode());
+            lineViewHolder.switchDatasmore.setClickable(false);
             lineViewHolder.raCheckMoredata.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -334,16 +335,6 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
-            lineViewHolder.switchDatasmore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null!=moreClickListener)
-                    {
-                        moreClickListener.onSwitchClick(lineViewHolder.switchDatasmore,i);
-                    }
-                }
-            });
-
 
 
 

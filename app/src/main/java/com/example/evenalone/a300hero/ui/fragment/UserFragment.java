@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,9 @@ public class UserFragment extends BaseFragment {
             }
             else if (msg.what==GameUtils.GET_PWOERLIST)
             {
+                powerlist.clear();
                 powerlist = (List<MakeViewBean>) msg.obj;
+                Log.e("模式切换","当前统计图展示个数"+powerlist.size());
                 if (powerlist!=null)
                 {
                     userAdapter.setPwoerList(powerlist);
@@ -136,6 +139,7 @@ public class UserFragment extends BaseFragment {
     @Override
     protected void initview() {
         swipeBase.setColorSchemeColors(SpUtils.getMainColor());
+
         recycerUserinfo.setAdapter(userAdapter);
         recycerUserinfo.setLayoutManager(new LinearLayoutManager(getContext()));
         swipeBase.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

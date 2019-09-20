@@ -64,7 +64,6 @@ public class ImageDownLoader
                 //这里出现错误一般是RenameFile fail
                 //防止正在操作的重名文件被覆盖
                 //出错
-                Glide.with(imageView.getContext()).load(imgurl).into(imageView);
                 if ((error.getConnectionException().getLocalizedMessage()+" ").contains("Rename"))
                 {
                     //删除
@@ -80,16 +79,15 @@ public class ImageDownLoader
 
     }
 
-    public void downloadonely(final String heroname) {
+    public void downloadonely(String iconfile,final String heroname) {
 
-        final String bs = Base64.encodeToString(heroname.getBytes(),Base64.DEFAULT);
-        PRDownloader.download(Contacts.IMG+heroname,imageCache.path,bs)
+        PRDownloader.download(Contacts.IMG+iconfile,imageCache.path,heroname)
                 .build()
                 .start(new OnDownloadListener() {
                     @Override
                     public void onDownloadComplete() {
                         //到这里diskCache已经完成
-                        Bitmap bitmap = BitmapFactory.decodeFile(imageCache.path+"/"+bs);
+                        Bitmap bitmap = BitmapFactory.decodeFile(imageCache.path+"/"+heroname);
                         if (bitmap!=null)
                         {
                             //加入内存

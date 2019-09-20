@@ -75,7 +75,6 @@ public class HeroGuaideFragment extends BaseFragment {
     protected void initview() {
         startRefresh();
         recyclerGuaideList.setLayoutManager(new LinearLayoutManager(compatActivity));
-        recyclerGuaideList.setAdapter(herolistAdapter);
         //点击下一页
         tvNextPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +105,7 @@ public class HeroGuaideFragment extends BaseFragment {
                     }).setActionTextColor(UiUtlis.getColor(R.color.Red)).show();
                 }
 
+
             }
         });
         //点击上一页
@@ -126,6 +126,7 @@ public class HeroGuaideFragment extends BaseFragment {
                 }
                 else
                 {
+
                     Snackbar.make(tvNextPage, "正在加载中", Snackbar.LENGTH_LONG).setAction("取消加载", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -133,22 +134,10 @@ public class HeroGuaideFragment extends BaseFragment {
                         }
                     }).setActionTextColor(UiUtlis.getColor(R.color.Red)).show();
                 }
+
             }
         });
-        /**
-         * 点击列表item
-         */
-        herolistAdapter.setGuaideClickListener(new HerolistAdapter.OnGuaideClickListener() {
-            @Override
-            public void click(long macth) {
-                Bundle bundle = new Bundle();
-                bundle.putLong("id",macth);
-                bundle.putString("nickname",nickname);
-                Intent intent = new Intent(compatActivity,GuaideInfoActivity.class);
-                intent.putExtras(bundle);
-                compatActivity.startActivity(intent);
-            }
-        });
+
     }
 
     public void startRefresh() {
@@ -186,10 +175,9 @@ public class HeroGuaideFragment extends BaseFragment {
             tvBackPage.setVisibility(View.GONE);
             this.page=0;
             startRefresh();
-            listBeans = new ArrayList<>();
-            recyclerGuaideList.removeAllViews();
 
         }
+
         tvState.setText(R.string.loading);
         Request request = new Request.Builder()
                 .url(Contacts.LIST_URL + "?name=" + nickname+ "&index=" + page)
@@ -229,12 +217,14 @@ public class HeroGuaideFragment extends BaseFragment {
                 page=page-10;
                 return;
             }
-            listBeans.clear();
-            recyclerGuaideList.removeAllViews();
+
             listBeans = new ArrayList<>();
             listBeans.addAll(eva.getGuide().getList());
+            herolistAdapter = new HerolistAdapter(nickname);
             herolistAdapter.setListBeans(listBeans);
             herolistAdapter.notifyDataSetChanged();
+            resetOnclickListener();
+            recyclerGuaideList.setAdapter(herolistAdapter);
             stoprefresh();
             loadingcomplete = true;
             tvState.setText("加载完成");
@@ -274,6 +264,23 @@ public class HeroGuaideFragment extends BaseFragment {
             next = false;
             back =false;
         }
+    }
+    //重新设置的点击事件
+    private void resetOnclickListener() {
+        /**
+         * 点击列表item
+         */
+        herolistAdapter.setGuaideClickListener(new HerolistAdapter.OnGuaideClickListener() {
+            @Override
+            public void click(long macth) {
+                Bundle bundle = new Bundle();
+                bundle.putLong("id",macth);
+                bundle.putString("nickname",nickname);
+                Intent intent = new Intent(compatActivity,GuaideInfoActivity.class);
+                intent.putExtras(bundle);
+                compatActivity.startActivity(intent);
+            }
+        });
     }
 
     //只要有取消操作的就可以
@@ -316,9 +323,7 @@ public class HeroGuaideFragment extends BaseFragment {
     }
 
     public void clearData() {
-        listBeans.clear();
-        herolistAdapter.setNickName(nickname);
-        herolistAdapter.setListBeans(listBeans);
+        //重复设置出问题
 
     }
 }

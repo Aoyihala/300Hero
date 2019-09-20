@@ -50,25 +50,30 @@ public class GameUtils {
         //修改为自定义实体
         List<LocalGaideListInfo> localGaideListInfos = searchbyName(usernmae);
         List<MakeViewBean> powerlist = new ArrayList<>();
-        if (ismore)
+        Log.e("战局数量",localGaideListInfos.size()+"局");
+        if (!ismore)
         {
+            Log.e("模式切换","只查看最多缓存50局");
+            if (localGaideListInfos.size()>=50)
+            {
+                localGaideListInfos = localGaideListInfos.subList(0,50);
+            }
+        }
+        else
+        {
+            Log.e("模式切换","只查看最近20局");
             if (localGaideListInfos.size()>=20)
             {
                 //
                 localGaideListInfos = localGaideListInfos.subList(0,20);
             }
-        }
-        else
-        {
-            if (localGaideListInfos.size()>100)
-            {
-                localGaideListInfos = localGaideListInfos.subList(0,100);
-            }
+
+
             //其他情况不做处理
         }
         //排序、
         ListSortRe(localGaideListInfos);
-
+        powerlist.clear();//？？？？
         for (LocalGaideListInfo info:localGaideListInfos) {
             //查询游戏匹配数据
             GameInfo gameInfo = getGameinfo(info.getMatchId(), new Gson());
@@ -173,6 +178,7 @@ public class GameUtils {
                 }
             }
         }
+        Log.e("组装的list大小",powerlist.size()+"");
         Message message = new Message();
         message.what = GET_PWOERLIST;
         message.obj = powerlist;
