@@ -45,6 +45,11 @@
 > - 1.利用个推推送更新
 > - 2.优化图片加载流程
 > - 3.优化小工具图片加载过程
+##### 2019.9.25
+> - 1.利用个推透传推送更新,但是由于没有固定的服务器地址,更新采取推送通知然后在群里下载群文件更新
+> - 2.图片加载优化,更改段位描述
+> - 3.透传功能保留,定时更新服务保留,等待新的服务器地址
+![新界面](https://github.com/Aoyihala/img/blob/master/300data/listshape.png?raw=true)  
 #### 关于ip地址代理池
 [西刺](https://www.xicidaili.com)ip代理池，利用[jsoup](https://jsoup.org/download)解析
 ## License
