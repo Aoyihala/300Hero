@@ -72,7 +72,6 @@ public class PushCallBackService extends GTIntentService
         String taskid = msg.getTaskId();
         String messageid = msg.getMessageId();
         String pkg = msg.getPkgName();
-        Log.e(TAG, "receiver payload = null");
         String cid = msg.getClientId();
         String content = new String(msg.getPayload());
         if (!TextUtils.isEmpty(content))

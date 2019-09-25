@@ -7,10 +7,10 @@ android {
         applicationId "com.example.evenalone.a300hero"
         minSdkVersion 19
         targetSdkVersion 28
-        //versionCode 1
-        versionCode 4
-        //versionName "1.11"
-        versionName "1.12"
+        //versionCode 4
+        versionCode 5
+        //versionName "1.12"
+        versionName "1.13"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86_64","x86","arm64-v8a"
