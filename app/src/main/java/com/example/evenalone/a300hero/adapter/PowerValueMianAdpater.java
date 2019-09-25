@@ -70,15 +70,15 @@ public class PowerValueMianAdpater extends RecyclerView.Adapter<RecyclerView.Vie
                 {
                     headViewHodler.card1.setCardBackgroundColor(UiUtlis.getColor(R.color.blue));
                     headViewHodler.card2.setCardBackgroundColor(UiUtlis.getColor(R.color.Red));
-                    headViewHodler.text1.setText("赢");
-                    headViewHodler.text2.setText("输");
+                    headViewHodler.text1.setText("输");
+                    headViewHodler.text2.setText("赢");
                 }
                 else
                 {
                     headViewHodler.card1.setCardBackgroundColor(UiUtlis.getColor(R.color.Red));
                     headViewHodler.card2.setCardBackgroundColor(UiUtlis.getColor(R.color.blue));
-                    headViewHodler.text1.setText("输");
-                    headViewHodler.text2.setText("赢");
+                    headViewHodler.text1.setText("赢");
+                    headViewHodler.text2.setText("输");
                 }
             }
         }

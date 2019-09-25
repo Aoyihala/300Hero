@@ -1088,6 +1088,24 @@ public class GameUtils {
 
     }
 
+    public int getAugPower(List<GameInfo.MatchBean.LoseSideBean> winSideBeanList, List<GameInfo.MatchBean.WinSideBean> winSideBeanList_1)
+    {
+        int power = 0;
+        for (GameInfo.MatchBean.LoseSideBean loseSideBean:winSideBeanList)
+        {
+            power = power+loseSideBean.getELO();
+        }
+        for (GameInfo.MatchBean.WinSideBean loseSideBean:winSideBeanList_1)
+        {
+            power = power+loseSideBean.getELO();
+        }
+        if (power!=0)
+        {
+            power = power/(winSideBeanList_1.size()+winSideBeanList.size());
+        }
+        return power;
+    }
+
     /**
      * 获取最高击杀的角色
      * @return

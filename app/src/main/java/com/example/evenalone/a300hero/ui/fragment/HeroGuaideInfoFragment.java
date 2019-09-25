@@ -163,21 +163,26 @@ public class HeroGuaideInfoFragment extends BaseFragment {
 
         }
         int pwoer_win_adv = (win_power / winSideBeanList.size());
-        if (pwoer_win_adv > 0 && pwoer_win_adv < 1000) {
-            imgPower.setBackgroundResource(R.drawable.tong);
-            tvPowerDes.setText(R.string.tong);
+        if (pwoer_win_adv > 0 && pwoer_win_adv < 1500) {
+            imgPower.setBackgroundResource(R.drawable.little_fish);
+            tvPowerDes.setText(getString(R.string.liitle_fish));
         }
-        if (pwoer_win_adv >= 1000 && pwoer_win_adv < 2000) {
-            imgPower.setBackgroundResource(R.drawable.baiying);
-            tvPowerDes.setText(R.string.baiying);
+        if (pwoer_win_adv >= 1500 && pwoer_win_adv < 3000) {
+            imgPower.setBackgroundResource(R.drawable.little_fish_bigger);
+            tvPowerDes.setText(getString(R.string.liitle_fish_bigger));
         }
         if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
-            imgPower.setBackgroundResource(R.drawable.gold);
-            tvPowerDes.setText(R.string.gold);
+            imgPower.setBackgroundResource(R.drawable.fishes);
+            tvPowerDes.setText(getString(R.string.big_fissh));
         }
         if (pwoer_win_adv >= 3000) {
-            imgPower.setBackgroundResource(R.drawable.daemo);
-            tvPowerDes.setText(R.string.daemo);
+            imgPower.setBackgroundResource(R.drawable.shark);
+            tvPowerDes.setText(getString(R.string.shark));
+        }
+        if (pwoer_win_adv>=4000)
+        {
+            imgPower.setBackgroundResource(R.drawable.jiucai);
+            tvPowerDes.setText(getString(R.string.jiucai));
         }
         if (winSideBeanList.size() == 0 || loseSideBeanList.size() == 0) {
             imgPower.setVisibility(View.GONE);

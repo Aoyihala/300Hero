@@ -1,6 +1,7 @@
 package com.example.evenalone.a300hero.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -86,6 +87,8 @@ public class SettingActivity extends BaseActivity {
     CheckBox checkUpdate;
     @BindView(R.id.card_update)
     CardView cardUpdate;
+    @BindView(R.id.tv_toMyadress)
+    TextView tv_myadress;
     private boolean loading_complete = false;
     private List<NetWorkProx> proxList = new ArrayList<>();
     private ProxyListAdapter listAdapter;
@@ -94,6 +97,15 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void initview() {
         tvTopTitle.setText("设置");
+        tv_myadress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);    //为Intent设置Action属性
+                intent.setData(Uri.parse("https://github.com/Aoyihala/300Hero")); //为Intent设置DATA属性
+                startActivity(intent);
+            }
+        });
         checkboxProxy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -682,21 +682,26 @@ public class ListActivity extends BaseActivity {
             imgHomeDuanwei.setVisibility(View.VISIBLE);
             tvJumpGuaideHome.setText("团分:" + localUserBean.getJumpvalue());
             int pwoer_win_adv = Integer.parseInt(localUserBean.getJumpvalue());
-            if (pwoer_win_adv > 0 && pwoer_win_adv < 1000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.tong);
-                tvHomeDuanwei.setText("青铜");
+            if (pwoer_win_adv > 0 && pwoer_win_adv < 1500) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.little_fish);
+                tvHomeDuanwei.setText(getString(R.string.liitle_fish));
             }
-            if (pwoer_win_adv >= 1000 && pwoer_win_adv < 2000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.baiying);
-                tvHomeDuanwei.setText("白银");
+            if (pwoer_win_adv >= 1500 && pwoer_win_adv < 3000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.little_fish_bigger);
+                tvHomeDuanwei.setText(getString(R.string.liitle_fish_bigger));
             }
             if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.gold);
-                tvHomeDuanwei.setText("黄金");
+                imgHomeDuanwei.setBackgroundResource(R.drawable.fishes);
+                tvHomeDuanwei.setText(getString(R.string.big_fissh));
             }
             if (pwoer_win_adv >= 3000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.daemo);
-                tvHomeDuanwei.setText("钻石");
+                imgHomeDuanwei.setBackgroundResource(R.drawable.shark);
+                tvHomeDuanwei.setText(getString(R.string.shark));
+            }
+            if (pwoer_win_adv>=4000)
+            {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.jiucai);
+                tvHomeDuanwei.setText(getString(R.string.jiucai));
             }
         }
 
@@ -759,21 +764,26 @@ public class ListActivity extends BaseActivity {
         if (nickname_j.equals(nickname)) {
             setJumpvalue(eva.getValue());
             int pwoer_win_adv = Integer.parseInt(eva.getValue());
-            if (pwoer_win_adv > 0 && pwoer_win_adv < 1000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.tong);
-                tvHomeDuanwei.setText("青铜");
+            if (pwoer_win_adv > 0 && pwoer_win_adv < 1500) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.little_fish);
+                tvHomeDuanwei.setText(getString(R.string.liitle_fish));
             }
-            if (pwoer_win_adv >= 1000 && pwoer_win_adv < 2000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.baiying);
-                tvHomeDuanwei.setText("白银");
+            if (pwoer_win_adv >= 1500 && pwoer_win_adv < 3000) {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.little_fish_bigger);
+                tvHomeDuanwei.setText(getString(R.string.liitle_fish_bigger));
             }
             if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.gold);
-                tvHomeDuanwei.setText("黄金");
+                imgHomeDuanwei.setBackgroundResource(R.drawable.fishes);
+                tvHomeDuanwei.setText(getString(R.string.big_fissh));
             }
             if (pwoer_win_adv >= 3000) {
-                imgHomeDuanwei.setBackgroundResource(R.drawable.daemo);
-                tvHomeDuanwei.setText("钻石");
+                imgHomeDuanwei.setBackgroundResource(R.drawable.shark);
+                tvHomeDuanwei.setText(getString(R.string.shark));
+            }
+            if (pwoer_win_adv>=4000)
+            {
+                imgHomeDuanwei.setBackgroundResource(R.drawable.jiucai);
+                tvHomeDuanwei.setText(getString(R.string.jiucai));
             }
         }
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -146,10 +147,6 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }*/
 
 
-
-
-
-
             if (listBeans.get(position).getMatchType()==1)
             {
                 listViewHolder.tvJumpGameType.setText("竞技场");
@@ -157,6 +154,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
             {
                 listViewHolder.tvJumpGameType.setText("战场");
+                listViewHolder.imgPosition.setBackgroundResource(R.drawable.jiucai);
+                listViewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.litle));
+                listViewHolder.tvPositionDes.setBackgroundResource(R.drawable.jiucai_shape);
+                listViewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.jiucai));
             }
             if (listBeans.get(position).getResult()==1)
             {
@@ -454,9 +455,46 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     listViewHolder.tvJumpGuaide.setText(result_o);
                     cachemap.put(matchID,result_o);
                 }
+                if (listBeans.get(position).getMatchType()==1)
+                {
+                    int pwoer_win_adv =  new GameUtils().getAugPower(gameInfo.getMatch().getLoseSide(),gameInfo.getMatch().getWinSide());
+                    if (pwoer_win_adv > 0 && pwoer_win_adv < 1500) {
+                        listViewHolder.imgPosition.setBackgroundResource(R.drawable.little_fish);
+                        listViewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.tong));
+                        listViewHolder.tvPositionDes.setBackgroundResource(R.drawable.little_fish_shape);
+                        listViewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.gray));
+                    }
+                    if (pwoer_win_adv >= 1500 && pwoer_win_adv < 3000) {
+                        listViewHolder.imgPosition.setBackgroundResource(R.drawable.little_fish_bigger);
+                        listViewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.baiying));
+                        listViewHolder.tvPositionDes.setBackgroundResource(R.drawable.little_fish_bigger_shape);
+                        listViewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.little_fish_bigger));
+                    }
+                    if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
+                        listViewHolder.imgPosition.setBackgroundResource(R.drawable.fishes);
+                        listViewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.gold));
+                        listViewHolder.tvPositionDes.setBackgroundResource(R.drawable.fishes_shap);
+                        listViewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.fishes));
+                    }
+                    if (pwoer_win_adv >= 3000) {
+                        listViewHolder.imgPosition.setBackgroundResource(R.drawable.shark);
+                        listViewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.daemo));
+                        listViewHolder.tvPositionDes.setBackgroundResource(R.drawable.shark_shape);
+                        listViewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.shark));
+                    }
+                    if (pwoer_win_adv>=4000)
+                    {
+                        listViewHolder.imgPosition.setBackgroundResource(R.drawable.jiucai);
+                        listViewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.litle));
+                        listViewHolder.tvPositionDes.setBackgroundResource(R.drawable.jiucai_shape);
+                        listViewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.jiucai));
+                    }
+                }
+
+
                 //指定位置更新
                 //去除更新闪动效果
-                notifyItemChanged(position);
+                //notifyItemChanged(position);
             }
 
             @Override
@@ -753,9 +791,43 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             //保存rank
             cache_rank.put(listBean.getMatchID(),rank_lose);
-
         }
-
+        GameInfo info = new Gson().fromJson(result,GameInfo.class);
+        if (listBean.getMatchType()==1)
+        {
+            int pwoer_win_adv =  new GameUtils().getAugPower(info.getMatch().getLoseSide(),info.getMatch().getWinSide());
+            if (pwoer_win_adv > 0 && pwoer_win_adv < 1500) {
+                viewHolder.imgPosition.setBackgroundResource(R.drawable.little_fish);
+                viewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.tong));
+                viewHolder.tvPositionDes.setBackgroundResource(R.drawable.little_fish_shape);
+                viewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.gray));
+            }
+            if (pwoer_win_adv >= 1500 && pwoer_win_adv < 3000) {
+                viewHolder.imgPosition.setBackgroundResource(R.drawable.little_fish_bigger);
+                viewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.baiying));
+                viewHolder.tvPositionDes.setBackgroundResource(R.drawable.little_fish_bigger_shape);
+                viewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.little_fish_bigger));
+            }
+            if (pwoer_win_adv >= 2000 && pwoer_win_adv < 3000) {
+                viewHolder.imgPosition.setBackgroundResource(R.drawable.fishes);
+                viewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.gold));
+                viewHolder.tvPositionDes.setBackgroundResource(R.drawable.fishes_shap);
+                viewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.fishes));
+            }
+            if (pwoer_win_adv >= 3000) {
+                viewHolder.imgPosition.setBackgroundResource(R.drawable.shark);
+                viewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.daemo));
+                viewHolder.tvPositionDes.setBackgroundResource(R.drawable.shark_shape);
+                viewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.shark));
+            }
+            if (pwoer_win_adv>=4000)
+            {
+                viewHolder.imgPosition.setBackgroundResource(R.drawable.jiucai);
+                viewHolder.tvPositionDes.setText(MyApplication.getContext().getString(R.string.litle));
+                viewHolder.tvPositionDes.setBackgroundResource(R.drawable.jiucai_shape);
+                viewHolder.tvPositionDes.setTextColor(UiUtlis.getColor(R.color.jiucai));
+            }
+        }
 
     }
 
@@ -785,6 +857,12 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView tvWin;
         @BindView(R.id.tv_add)
         TextView tvAdd;
+        @BindView(R.id.tv_guaide_postiondes)
+        TextView tvPositionDes;
+        @BindView(R.id.tv_guaide_powervalue)
+        TextView tvPowerAdd;
+        @BindView(R.id.img_guaide_imgpostion)
+        ImageView imgPosition;
         public HeroListViewHolder(@NonNull View itemView)
         {
             super(itemView);

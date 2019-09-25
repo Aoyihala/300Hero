@@ -52,10 +52,19 @@ public class ImageDownLoader
                     //加入内存
                     imageCache.add(bitmap,heroname);
                     //判断tag
-                    if (imageView.getTag().equals(heroname))
+                    if (imageView.getTag()!=null)
                     {
+                        if (imageView.getTag().equals(heroname))
+                        {
+                            imageView.setImageBitmap(bitmap);
+                        }
+                    }
+                    else
+                    {
+                        imageView.setTag(heroname);
                         imageView.setImageBitmap(bitmap);
                     }
+
                 }
             }
 
