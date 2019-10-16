@@ -61,9 +61,11 @@
             android:process=":pushservice"/>
         <service
             android:name=".service.MyNotifiService"
-            android:permission="android.permission.FOREGROUND_SERVICE" />
+            android:permission="android.permission.FOREGROUND_SERVICE"
+            android:process=":NotifiService"/>
         <service
             android:name=".service.BindToolsService"
+            android:process=":BindToolService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             />
         <!-- 接收系统广播接收器 -->

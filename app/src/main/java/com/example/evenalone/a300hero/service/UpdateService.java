@@ -7,6 +7,8 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 public class UpdateService extends Service {
+    //更新服务
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
