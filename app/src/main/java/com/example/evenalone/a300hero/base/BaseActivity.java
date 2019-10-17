@@ -26,6 +26,7 @@ import java.io.File;
 
 import butterknife.ButterKnife;
 
+
 public abstract class BaseActivity extends LibaryActivity
 {
 
@@ -40,18 +41,21 @@ public abstract class BaseActivity extends LibaryActivity
         {
             EventBus.getDefault().register(this);
         }
+
+
     }
 
     //接受事件
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateVersion(UpdateVersionEvent eva)
     {
+
         final UpdateBean updateBean = eva.getUpdateBean();
         if (updateBean!=null)
         {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("版本更新"+(updateBean.getIscoerce()==true?"(强制更新)":"(可取消)"));
-            alert.setMessage("时间:"+updateBean.getTime()+"\n"+updateBean.getDes());
+            alert.setMessage("版本"+updateBean.getVersion()+"\n"+"时间:"+updateBean.getTime()+"\n"+updateBean.getDes());
             if (updateBean.getIscoerce())
             {
                 alert.setCancelable(false);

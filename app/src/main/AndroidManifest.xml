@@ -31,7 +31,7 @@
         <service
             android:name=".service.JobTimer"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service android:name=".service.UpdateService"/>
+        <service android:name=".service.UpdateService" />
 
         <activity android:name=".ui.HomeActivity">
             <intent-filter>
@@ -61,8 +61,7 @@
             android:process=":pushservice"/>
         <service
             android:name=".service.MyNotifiService"
-            android:permission="android.permission.FOREGROUND_SERVICE"
-            android:process=":NotifiService"/>
+            android:permission="android.permission.FOREGROUND_SERVICE" />
         <service
             android:name=".service.BindToolsService"
             android:process=":BindToolService"

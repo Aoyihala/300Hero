@@ -65,6 +65,7 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean loadingjumpvalue=false;
     private OnGuaideClickListener guaideClickListener;
     private String nickname;
+    private boolean ispowervalue;
 
     public void setGuaideClickListener(OnGuaideClickListener guaideClickListener) {
         this.guaideClickListener = guaideClickListener;
@@ -176,7 +177,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (gameInfo!=null)
             {
                 listViewHolder.tvJumpGuaide.setText(gameInfo.getMygaide());
-                getJumpvaule(gameInfo.getResult(),position,listBeans.get(position));
+                if (ispowervalue)
+                {
+                    getJumpvaule(gameInfo.getResult(),position,listBeans.get(position));
+                }
                 operationMvp(gameInfo.getResult(),listBeans.get(position),listViewHolder);
             /*    if(position<listBeans.size()-1)
                 {
@@ -838,6 +842,10 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setNickName(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setPwoerMode(boolean ispowervalue) {
+        this.ispowervalue = ispowervalue;
     }
 
     class HeroListViewHolder extends RecyclerView.ViewHolder {

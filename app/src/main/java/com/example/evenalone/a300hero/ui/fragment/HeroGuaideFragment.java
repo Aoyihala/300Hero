@@ -63,6 +63,7 @@ public class HeroGuaideFragment extends BaseFragment {
     private List<HeroGuide.ListBean> alllist = new ArrayList<>();
     private LocalGaideListInfoDao localGaideListInfoDao;
     private String nickname;
+    private boolean ispowervalue = true;
     @Override
     protected boolean setEventOpen() {
         return true;
@@ -81,11 +82,13 @@ public class HeroGuaideFragment extends BaseFragment {
             public void onClick(View v) {
                 if (loadingcomplete) {
                     //对最新加载的数据判断
+                    ispowervalue = false;
                     if (listBeans.size()<10)
                     {
                         //对已加载的数据进行判断
                         //表示没有了
                         Snackbar.make(tvBackPage,"没有更多战绩了",Snackbar.LENGTH_SHORT).show();
+
                         return;
                     }
                     tvNextPage.setText("下一页");
@@ -114,6 +117,7 @@ public class HeroGuaideFragment extends BaseFragment {
             public void onClick(View v) {
                 if (loadingcomplete)
                 {
+                    ispowervalue = false;
                     if (page>0)
                     {
                         page=page-10;
@@ -157,6 +161,7 @@ public class HeroGuaideFragment extends BaseFragment {
     protected void initdata() {
         nickname = getArguments().getString("nickname");
         herolistAdapter = new HerolistAdapter(nickname);
+        herolistAdapter.setPwoerMode(ispowervalue);
        localGaideListInfoDao =  MyApplication.getDaoSession().getLocalGaideListInfoDao();
         requestData(page, false);
     }
@@ -221,6 +226,7 @@ public class HeroGuaideFragment extends BaseFragment {
             listBeans = new ArrayList<>();
             listBeans.addAll(eva.getGuide().getList());
             herolistAdapter = new HerolistAdapter(nickname);
+            herolistAdapter.setPwoerMode(ispowervalue);
             herolistAdapter.setListBeans(listBeans);
             herolistAdapter.notifyDataSetChanged();
             resetOnclickListener();

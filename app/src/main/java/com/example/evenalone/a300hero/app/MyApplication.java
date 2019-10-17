@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import com.example.evenalone.a300hero.bean.UpdateBean;
 import com.example.evenalone.a300hero.service.JobSchedulerManager;
 import com.example.evenalone.a300hero.service.MyPushService;
 import com.example.evenalone.a300hero.service.PushCallBackService;
+import com.example.evenalone.a300hero.service.UpdateService;
 import com.example.evenalone.a300hero.ui.HomeActivity;
 import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
@@ -27,6 +29,7 @@ import com.example.evenalone.a300hero.utils.MyCatchException;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
 import com.example.evenalone.a300hero.utils.SystemUtils;
+import com.example.evenalone.a300hero.utils.UiUtlis;
 import com.google.gson.Gson;
 import com.igexin.sdk.PushManager;
 
@@ -47,6 +50,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+
 @SuppressLint("NewApi")
 public class MyApplication extends Application implements Application.ActivityLifecycleCallbacks
 {
@@ -65,56 +70,13 @@ public class MyApplication extends Application implements Application.ActivityLi
     private static List<Activity> activitiesall = new LinkedList<>();
 
     public static void startUpdateTask() {
-        Log.e("更新服务","启动");
-        //启用timer
-        timer_update = new Timer();
-        timer_update.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //延时10秒
-                //请求
-
-                x.http().get(new RequestParams("假定地址"), new Callback.CommonCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (result!=null)
-                        {
-                            UpdateBean updateBean = new Gson().fromJson(result,UpdateBean.class);
-                            if (!EventBus.getDefault().isRegistered(context))
-                            {
-                                EventBus.getDefault().register(context);
-                            }
-                            EventBus.getDefault().postSticky(updateBean);
-                            LogUtil.e("检查到版本:"+updateBean.getVersion());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(CancelledException cex) {
-
-                    }
-
-                    @Override
-                    public void onFinished() {
-
-                    }
-                });
-
-            }
-        },10000,time);
-
+        Log.e("主动更新服务","启动");
+        Intent intent = new Intent(context,UpdateService.class);
+        context.startService(intent);
     }
 
     public static void stopUpdateTask() {
-        if (timer_update!=null)
-        {
-            timer_update.cancel();
-        }
+
         Log.e("更新服务","停止");
     }
 

@@ -7,10 +7,11 @@ android {
         applicationId "com.example.evenalone.a300hero"
         minSdkVersion 19
         targetSdkVersion 28
-        //versionCode 4
-        versionCode 5
-        //versionName "1.12"
-        versionName "1.13"
+        //versionCode 5
+        versionCode 6
+        //versionName "1.13"
+        //主动检测更新版本
+        versionName "1.14"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86_64","x86","arm64-v8a"
@@ -101,5 +102,6 @@ dependencies {
     implementation 'com.mindorks.android:prdownloader:0.6.0'
     //
     implementation 'com.zhy.base:fileprovider:1.0.0'
+
 
 }
