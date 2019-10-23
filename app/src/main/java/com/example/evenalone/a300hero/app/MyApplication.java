@@ -180,6 +180,20 @@ public class MyApplication extends Application implements Application.ActivityLi
     }
 
 
+    public static void removeStack2(HomeActivity homeActivity)
+    {
+        for (Activity activity:activitiesall)
+        {
+            if (null!=activity&&!(activity instanceof HomeActivity))
+            {
+                activity.finish();
+            }
+        }
+    }
+
+
+
+
     public static DaoSession getDaoSession() {
         return daoSession;
     }

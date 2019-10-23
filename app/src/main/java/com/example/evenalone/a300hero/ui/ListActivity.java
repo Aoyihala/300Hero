@@ -139,6 +139,7 @@ public class ListActivity extends BaseActivity {
     private MenuPopwindow menuPopwindow;
     private LinearLayout li_pop_setting;
     private LinearLayout li_pop_add;
+    private LinearLayout li_pop_manange;
     private RecyclerView recyclerView_local;
     private List<String> titles = new ArrayList<>();
     private PopLoaclUserListAdapter roleListAdapter;
@@ -217,9 +218,16 @@ public class ListActivity extends BaseActivity {
         recyclerView_local = menuPopwindow.getContentView().findViewById(R.id.recycler_user_history);
         li_pop_setting = menuPopwindow.getContentView().findViewById(R.id.li_pop_setting);
         li_pop_add = menuPopwindow.getContentView().findViewById(R.id.li_pop_add);
+        li_pop_manange = menuPopwindow.getContentView().findViewById(R.id.li_pop_charatormananger);
         recyclerView_local.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_local.setAdapter(roleListAdapter);
         roleListAdapter.notifyDataSetChanged();
+        li_pop_manange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivty(CharactorActivity.class,false);
+            }
+        });
         imgCharaterManange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.evenalone.a300hero"
-    >
+    package="com.example.evenalone.a300hero">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <!-- 个推3.0电子围栏功能所需权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />'
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    '
     <!-- 请求安装apk -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
@@ -27,7 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <service
             android:name=".service.JobTimer"
             android:permission="android.permission.BIND_JOB_SERVICE" />
@@ -58,15 +57,14 @@
             android:exported="true"
             android:label="PushService"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":pushservice"/>
+            android:process=":pushservice" />
         <service
             android:name=".service.MyNotifiService"
             android:permission="android.permission.FOREGROUND_SERVICE" />
         <service
             android:name=".service.BindToolsService"
-            android:process=":BindToolService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
-            />
+            android:process=":BindToolService" />
         <!-- 接收系统广播接收器 -->
         <!-- 目前的新机器都不能用的,或者更换target api -->
         <receiver android:name=".service.KeepAliveReceiver">
@@ -105,19 +103,23 @@
         <!-- 小工具 -->
         <activity android:name=".ui.ToolActivity">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
         <receiver android:name=".wedgit.HeroGuideToolWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.evenalone.a300hero.wedgit.intent.action.SETTINGS_PACKAGE_DATA_CLEARED"/>
+                <action android:name="com.example.evenalone.a300hero.wedgit.intent.action.SETTINGS_PACKAGE_DATA_CLEARED" />
                 <action android:name="com.example.evenalone.a300hero.wedgit.CLICK_ACTION" />
-
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/tool_config"/>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/tool_config" />
         </receiver>
+
+        <activity android:name=".ui.CharactorActivity"></activity>
     </application>
 
 </manifest>

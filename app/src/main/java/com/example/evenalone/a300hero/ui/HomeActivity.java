@@ -255,7 +255,10 @@ public class HomeActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             bundle.putString("nickname",name);
             bundle.putBoolean("mode",false);
+            //清除之前的activity
+            MyApplication.removeStack2(this);
             startActivtyWithBundle(ListActivity.class, true,bundle);
+
         } else {
             Snackbar.make(imgSearch, "查询角色失败:" + event.getErroMsg(), Snackbar.LENGTH_SHORT).show();
             progressBinding.setVisibility(View.GONE);

@@ -5,6 +5,7 @@
     <string name="charaterman">角色管理</string>
     <string name="messagemange">消息管理</string>
     <string name="setting">设置</string>
+    <string name="manange">角色管理</string>
     <string name="nextpage">下一页</string>
     <string name="backpage">上一页</string>
     <string name="proxy">开启代理</string>
@@ -24,6 +25,7 @@
     <string name="baiying">小鱼干局</string>
     <string name="guaideinfo">对局详情</string>
     <string name="pwoer">团分对比</string>
+    <string name="delete">删除</string>
     <string name="win">战胜方</string>
     <string name="faild">战败方</string>
     <array name="title">

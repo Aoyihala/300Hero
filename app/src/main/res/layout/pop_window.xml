@@ -51,6 +51,31 @@
             android:background="@color/ItemSpaceColor"
             android:layout_width="match_parent"
             android:layout_height="0.8dp"/>
+    <LinearLayout
+        android:padding="5dp"
+        android:id="@+id/li_pop_charatormananger"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:background="@drawable/ic_menu_black_24dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp" />
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:text="@string/manange"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/ItemSpaceColor"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
         <LinearLayout
             android:padding="5dp"
             android:id="@+id/li_pop_setting"
