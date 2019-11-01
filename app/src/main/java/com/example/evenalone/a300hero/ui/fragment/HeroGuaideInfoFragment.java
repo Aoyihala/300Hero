@@ -1,5 +1,6 @@
 package com.example.evenalone.a300hero.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.example.evenalone.a300hero.bean.GameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfo;
 import com.example.evenalone.a300hero.bean.LocalGameInfoDao;
 import com.example.evenalone.a300hero.event.GameInfoEvent;
+import com.example.evenalone.a300hero.ui.TipoffActivity;
 import com.example.evenalone.a300hero.utils.Contacts;
 import com.example.evenalone.a300hero.utils.GameUtils;
 import com.example.evenalone.a300hero.utils.SpUtils;
@@ -26,6 +28,7 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -130,6 +133,28 @@ public class HeroGuaideInfoFragment extends BaseFragment {
         //设置耗时，总金额等等
         winadapter.notifyDataSetChanged();
         loseadapter.notifyDataSetChanged();
+        winadapter.setTipoffClickListener(new GaideInfoAdapter.OnTipoffClickListener() {
+            @Override
+            public void click(int pos, Object object) {
+                //赢
+                GameInfo.MatchBean.WinSideBean winSideBean = (GameInfo.MatchBean.WinSideBean) object;
+                Intent intent = new Intent(getActivity(),TipoffActivity.class);
+                intent.putExtra("win",true);
+                intent.putExtra("data", (Serializable) winSideBean);
+                startActivity(intent);
+            }
+        });
+        loseadapter.setTipoffClickListener(new GaideInfoAdapter.OnTipoffClickListener() {
+            @Override
+            public void click(int pos, Object object) {
+                //输
+                GameInfo.MatchBean.LoseSideBean loseSideBean = (GameInfo.MatchBean.LoseSideBean) object;
+                Intent intent = new Intent(getActivity(),TipoffActivity.class);
+                intent.putExtra("win",false);
+                intent.putExtra("data", (Serializable) loseSideBean);
+                startActivity(intent);
+            }
+        });
         //获取双方队伍属性
         int win_team = gameInfo_real.getMatch().getWinSide().get(0).getTeamResult();
 
@@ -211,7 +236,7 @@ public class HeroGuaideInfoFragment extends BaseFragment {
             for (GameInfo.MatchBean.LoseSideBean loseSideBean:loseSideBeanList)
             {
                lose_allkill =lose_allkill+loseSideBean.getKillCount();
-                lose_allmoney =lose_allkill+loseSideBean.getTotalMoney();
+                lose_allmoney =lose_allmoney+loseSideBean.getTotalMoney();
                 lose_allunit = lose_allkill+loseSideBean.getKillUnitCount();
             }
         }

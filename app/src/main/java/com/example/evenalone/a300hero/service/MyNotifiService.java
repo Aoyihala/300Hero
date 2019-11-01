@@ -493,7 +493,7 @@ public class MyNotifiService extends Service {
         Log.e("data","定时查询服务已创建");
     }
     //针对于安卓8才有的正在通知字样
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("NewApi")
     private void notafi() {
         NotificationChannel channel = null;
         channel = new NotificationChannel("id","正在运行", NotificationManager.IMPORTANCE_LOW);

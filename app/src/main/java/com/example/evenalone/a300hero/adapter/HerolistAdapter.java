@@ -882,4 +882,6 @@ public class HerolistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     {
         void click(long macth);
     }
+
+
 }

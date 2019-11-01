@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- 个推3.0电子围栏功能所需权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -31,7 +31,7 @@
             android:name=".service.JobTimer"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service android:name=".service.UpdateService" />
-
+    <service android:name=".service.MyFrontService" />
         <activity android:name=".ui.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -119,7 +119,8 @@
                 android:resource="@xml/tool_config" />
         </receiver>
 
-        <activity android:name=".ui.CharactorActivity"></activity>
+        <activity android:name=".ui.CharactorActivity" />
+        <activity android:name=".ui.TipoffActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        tools:context=".ui.TipoffActivity">
+        <include layout="@layout/tool_bar"/>
+        <android.support.v7.widget.CardView
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="#fff"
+            app:cardElevation="1dp"
+            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="10dp"
+                        android:textColor="#fff"
+                        android:id="@+id/tv_tipoff_gotoinfo"
+                        android:text="查看战绩"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/img_tipoff_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                    <ImageView
+                        android:background="@color/Translate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:id="@+id/img_tipoff_avator"
+                            android:background="@drawable/fish_avator"
+                            />
+                        <TextView
+                            android:textSize="12sp"
+                            android:textColor="#fff"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/tv_tipoff_name"
+                            android:text="本萌新不高兴了"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <LinearLayout
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="#fff"
+                                android:id="@+id/tv_tipoff_power"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:textColor="#fff"
+                                android:layout_marginRight="5dp"
+                                android:id="@+id/tv_tipoff_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/img_tipoff_position"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_marginLeft="5dp"
+                                android:id="@+id/tv_tipoff_position"
+                                android:textColor="#fff"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:padding="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/black"
+                        android:text="被举报次数"
+                        android:layout_centerVertical="true"
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="@color/Red"
+                            android:text="00"
+                            android:id="@+id/tv_tipoff_number"
+                            android:textSize="20sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="次"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            app:cardCornerRadius="5dp"
+            app:cardElevation="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:cardBackgroundColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:padding="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textSize="15sp"
+                        android:text="选择举报原因"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="@color/gray"
+                        android:textSize="12sp"
+                        android:text="谨慎举报,平心而论,不要情绪化,实事求是"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/spinner_reason"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </org.angmarch.views.NiceSpinner>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            app:cardCornerRadius="5dp"
+            app:cardBackgroundColor="#fff"
+            app:cardElevation="1dp"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="最近10局表现"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:layout_width="match_parent"
+                        android:id="@+id/line_chart_view"
+                        android:visibility="invisible"
+                        android:layout_marginTop="10dp"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_height="220dp">
+                    </com.github.mikephil.charting.charts.LineChart>
+                    <LinearLayout
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ProgressBar
+                            android:id="@+id/progress_tipoff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="采集中"
+                            android:textSize="15sp"
+                            android:id="@+id/tv_tipoff_connectstate"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="100dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="20dp"
+            android:id="@+id/btn_tipoff"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            app:cardBackgroundColor="#00bfff"
+            android:layout_height="40dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:text="@string/tipoff"
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

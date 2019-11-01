@@ -4,15 +4,17 @@ import org.greenrobot.greendao.annotation.Id;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.PropertyKey;
 
+import java.io.Serializable;
 import java.util.List;
 
 /***
  * 内容多的对局信息
  * 双方对局
  */
-public class GameInfo
+@SuppressWarnings(value = "")
+public class GameInfo implements Serializable
 {
-
+    private static final long serialVersionUID=1l;
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -66,7 +68,8 @@ public class GameInfo
         this.Match = Match;
     }
 
-    public static class MatchBean {
+    public static class MatchBean implements Serializable {
+        private static final long serialVersionUID=2l;
         /**
          * MatchType : 1
          * WinSideKill : 95
@@ -161,7 +164,8 @@ public class GameInfo
             this.LoseSide = LoseSide;
         }
 
-        public static class WinSideBean {
+        public static class WinSideBean implements Serializable {
+            private static final long serialVersionUID=3l;
             /**
              * RoleName : GG思密达し
              * RoleID : 1613108882
@@ -426,13 +430,13 @@ public class GameInfo
                 this.Equip = Equip;
             }
 
-            public static class HeroBean {
+            public static class HeroBean implements Serializable {
                 /**
                  * ID : 86
                  * Name : 死神
                  * IconFile : herohead/chara_0086.png
                  */
-
+                private static final long serialVersionUID=4l;
                 private int ID;
                 private String Name;
                 private String IconFile;
@@ -462,13 +466,13 @@ public class GameInfo
                 }
             }
 
-            public static class SkillBean {
+            public static class SkillBean implements Serializable {
                 /**
                  * ID : 8029
                  * Name : 治愈术
                  * IconFile : skill/ico_8029..png
                  */
-
+                private static final long serialVersionUID=5l;
                 private int ID;
                 private String Name;
                 private String IconFile;
@@ -498,13 +502,13 @@ public class GameInfo
                 }
             }
 
-            public static class EquipBean {
+            public static class EquipBean implements Serializable {
                 /**
                  * ID : 21069
                  * Name : 寒冬节杖
                  * IconFile : equip/equip_27.png
                  */
-
+                private static final long serialVersionUID=6l;
                 private int ID;
                 private String Name;
                 private String IconFile;
@@ -535,7 +539,7 @@ public class GameInfo
             }
         }
 
-        public static class LoseSideBean {
+        public static class LoseSideBean implements Serializable {
             /**
              * RoleName : Master丶苏沐沐
              * RoleID : 1089932
@@ -564,7 +568,7 @@ public class GameInfo
              * Skill : [{"ID":8035,"Name":"闪现","IconFile":"skill/ico_8035..png"},{"ID":8059,"Name":"缴械","IconFile":"skill/ico_8059..png"}]
              * Equip : [{"ID":21031,"Name":"蓄力之剑","IconFile":"equip/equip_111.png"},{"ID":21032,"Name":"残废之锤","IconFile":"equip/equip_8.png"},{"ID":21083,"Name":"疾行靴","IconFile":"equip/equip_42.png"},{"ID":21057,"Name":"铁碎牙","IconFile":"equip/acg026.png"},{"ID":21033,"Name":"凶暴双刀","IconFile":"equip/equip_94.png"}]
              */
-
+            private static final long serialVersionUID=7l;
             private String RoleName;
             private long RoleID;
             private int RoleLevel;
@@ -800,13 +804,13 @@ public class GameInfo
                 this.Equip = Equip;
             }
 
-            public static class HeroBeanX {
+            public static class HeroBeanX implements Serializable {
                 /**
                  * ID : 121
                  * Name : 绯村剑心
                  * IconFile : herohead/chara_0121.png
                  */
-
+                private static final long serialVersionUID=8l;
                 private int ID;
                 private String Name;
                 private String IconFile;
@@ -836,13 +840,13 @@ public class GameInfo
                 }
             }
 
-            public static class SkillBeanX {
+            public static class SkillBeanX implements Serializable {
                 /**
                  * ID : 8035
                  * Name : 闪现
                  * IconFile : skill/ico_8035..png
                  */
-
+                private static final long serialVersionUID=9l;
                 private int ID;
                 private String Name;
                 private String IconFile;
@@ -872,13 +876,13 @@ public class GameInfo
                 }
             }
 
-            public static class EquipBeanX {
+            public static class EquipBeanX implements Serializable {
                 /**
                  * ID : 21031
                  * Name : 蓄力之剑
                  * IconFile : equip/equip_111.png
                  */
-
+                private static final long serialVersionUID=10l;
                 private int ID;
                 private String Name;
                 private String IconFile;

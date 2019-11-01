@@ -18,12 +18,14 @@ import com.example.evenalone.a300hero.bean.DaoSession;
 import com.example.evenalone.a300hero.bean.NetWorkProx;
 import com.example.evenalone.a300hero.bean.UpdateBean;
 import com.example.evenalone.a300hero.service.JobSchedulerManager;
+import com.example.evenalone.a300hero.service.MyFrontService;
 import com.example.evenalone.a300hero.service.MyPushService;
 import com.example.evenalone.a300hero.service.PushCallBackService;
 import com.example.evenalone.a300hero.service.UpdateService;
 import com.example.evenalone.a300hero.ui.HomeActivity;
 import com.example.evenalone.a300hero.ui.ListActivity;
 import com.example.evenalone.a300hero.ui.SettingActivity;
+import com.example.evenalone.a300hero.ui.TipoffActivity;
 import com.example.evenalone.a300hero.utils.ImageCenter;
 import com.example.evenalone.a300hero.utils.MyCatchException;
 import com.example.evenalone.a300hero.utils.OkhttpUtils;
@@ -96,6 +98,8 @@ public class MyApplication extends Application implements Application.ActivityLi
         PushManager.getInstance().registerPushIntentService(context,PushCallBackService.class);
         okhttpUtils = OkhttpUtils.getInstance();
         imageCenter = ImageCenter.getInstance(context);
+      /*  Intent intent = new Intent(context,MyFrontService.class);
+        startService(intent);*/
         checkservice();
         startUpdateTask();
 
@@ -252,6 +256,11 @@ public class MyApplication extends Application implements Application.ActivityLi
         {
             register(activity);
         }
+        //举报界面
+        if (activity instanceof TipoffActivity)
+        {
+            register(activity);
+        }
 
     }
 
@@ -280,7 +289,11 @@ public class MyApplication extends Application implements Application.ActivityLi
            /* //移除
             listActivityMap.remove(((ListActivity) activity).getNickname());*/
         }
-
+        //举报界面
+        if (activity instanceof TipoffActivity)
+        {
+            unregister(activity);
+        }
     }
 
     @Override

@@ -236,6 +236,7 @@ public class OkhttpUtils
         Gson gson = new Gson();
         if (e!=null)
         {
+            //后台响应出现了问题
             if (c.getSimpleName().equals(YourRole.class.getSimpleName()))
             {
 

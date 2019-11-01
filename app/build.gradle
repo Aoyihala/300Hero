@@ -40,9 +40,14 @@ android {
             minifyEnabled false
         }
     }
+    configurations {
+        cleanedAnnotations
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
+    }
     configurations.all {
         //强制使用某个版本的依赖，若需强制多个依赖，可以逗号分割，
         resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
+
     }
     allprojects {
         repositories {
@@ -102,6 +107,8 @@ dependencies {
     implementation 'com.mindorks.android:prdownloader:0.6.0'
     //
     implementation 'com.zhy.base:fileprovider:1.0.0'
+    //下拉选择框
+    implementation 'com.github.arcadefire:nice-spinner:1.4.3'
 
 
 }

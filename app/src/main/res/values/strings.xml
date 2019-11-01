@@ -26,6 +26,7 @@
     <string name="guaideinfo">对局详情</string>
     <string name="pwoer">团分对比</string>
     <string name="delete">删除</string>
+    <string name="tipoff">举报</string>
     <string name="win">战胜方</string>
     <string name="faild">战败方</string>
     <array name="title">

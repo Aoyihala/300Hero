@@ -172,51 +172,8 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         }
                     }
                     radarViewholder.tvTalk.setText("“" + MyApplication.getContext().getString(R.string.talk8) + "”");
-                    //杀人鬼
-                    //条件是 比例90%及以上
-                    //这一个只按人头算
-                    if (killindex > 50 && killindex >= 85) {
-                        //按比例100
-                        radarViewholder.tvTalk.setText("“" + MyApplication.getContext().getString(R.string.talk1) + "”");
-                    }
-                    //神の队友
-                    //计算贡献
-                    //将会出现击杀厉害的角色,他的击杀数高,这里要关掉这个阀值,同时还不能于推塔冲突
+                    parseData(radarViewholder,killindex,gongxian,tower,money,tuanindex);
 
-                    if (gongxian > 50 && gongxian > 85) {
-
-                        //排除击杀上位
-                        if (killindex > 50 && killindex < 85) {
-                            //排除推塔上位
-                            if (tower > 50 && tower < 85) {
-                                radarViewholder.tvTalk.setText("“" + MyApplication.getContext().getString(R.string.talk6) + "”");
-                            }
-                        }
-                    }
-
-                    if (money > 50 && money > 85) {
-                        if (killindex < 50 && tower < 10 && gongxian < 10) {
-                            radarViewholder.tvTalk.setText("“" + MyApplication.getContext().getString(R.string.talk2) + "”");
-                        }
-
-                    }
-                    //划水队友
-                    if (money < 20 && killindex < 20 && gongxian < 20 && tower < 20 && gongxian < 20) {
-                        radarViewholder.tvTalk.setText("“" + MyApplication.getContext().getString(R.string.talk3) + "”");
-                    }
-
-                    if (tower > 50 && tower > 85) {
-
-
-                        //排除击杀上位
-                        if (killindex > 50 && killindex < 85) {
-                            //排除推塔上位
-                            if (tuanindex > 50 && tuanindex < 85) {
-                                radarViewholder.tvTalk.setText("“" + MyApplication.getContext().getString(R.string.talk4) + "”");
-                            }
-                        }
-
-                    }
                 } else {
                     radarViewholder.tvTalk.setText("“" + MyApplication.getContext().getString(R.string.talk7) + "”");
                 }
@@ -240,6 +197,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             LineDataSet dataSet = new LineDataSet(entries, ""); // add entries to dataset
             dataSet.setColor(SpUtils.getMainColor());
             dataSet.setCircleColor(SpUtils.getMainColor());
+            dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
             lineData.addDataSet(dataSet);
             lineViewHolder.lineChartItem.setData(lineData);
             //lineViewHolder.lineChartItem.setBackgroundColor(UiUtlis.getColor(R.color.ItemSpaceColor));
@@ -337,6 +295,57 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
 
+
+        }
+    }
+
+    private void parseData(RadarViewholder radarViewholder,int killindex,int gongxian,int tower,int money,int tuanindex) {
+        //杀人鬼
+        //条件是 比例90%及以上
+        //这一个只按人头算
+        if (killindex > 50 && killindex >= 85) {
+            //按比例100
+            radarViewholder.tvTalk.setText(radarViewholder.tvTalk.getText()+"|“" + MyApplication.getContext().getString(R.string.talk1) + "”");
+        }
+        //神の队友
+        //计算贡献
+        //将会出现击杀厉害的角色,他的击杀数高,这里要关掉这个阀值,同时还不能于推塔冲突
+
+        if (gongxian > 50 && gongxian > 85) {
+
+            //排除击杀上位
+            if (killindex > 50 && killindex < 85) {
+                //排除推塔上位
+                if (tower > 50 && tower < 85) {
+                    radarViewholder.tvTalk.setText(radarViewholder.tvTalk.getText()+"|“" + MyApplication.getContext().getString(R.string.talk6) + "”");
+
+                }
+            }
+        }
+
+        if (money > 50 && money > 85) {
+            if (killindex < 50 && tower < 10 && gongxian < 10) {
+                radarViewholder.tvTalk.setText(radarViewholder.tvTalk.getText()+"|“"+ MyApplication.getContext().getString(R.string.talk2) + "”");
+
+            }
+
+        }
+        //划水队友
+        if (money < 20 && killindex < 20 && gongxian < 20 && tower < 20 && gongxian < 20) {
+            radarViewholder.tvTalk.setText(radarViewholder.tvTalk.getText()+"|“" + MyApplication.getContext().getString(R.string.talk3) + "”");
+            return;
+        }
+
+        if (tower > 50 && tower > 85) {
+
+
+            //排除击杀上位
+            if (killindex > 50 && killindex < 85) {
+                //排除推塔上位
+                if (tuanindex > 50 && tuanindex < 85) {
+                    radarViewholder.tvTalk.setText(radarViewholder.tvTalk.getText()+"|“" + MyApplication.getContext().getString(R.string.talk4) + "”");
+                }
+            }
 
         }
     }
