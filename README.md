@@ -56,6 +56,7 @@
 > -1.主动更新功能更新,使用服务常驻自动检测更新
 > -2.角色管理功能更新,长久没有管的一个重要功能
 > -3.举报功能后台初步测试完成
+#### 个推网址:https://www.getui.com/
 #### 关于ip地址代理池
 [西刺](https://www.xicidaili.com)ip代理池，利用[jsoup](https://jsoup.org/download)解析
 ## License
