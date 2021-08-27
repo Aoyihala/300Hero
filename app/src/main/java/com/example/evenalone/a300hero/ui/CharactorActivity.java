@@ -119,7 +119,7 @@ public class CharactorActivity extends BaseActivity {
         charatcorAdapter.setOnLongClickListiener(new CharatcorAdapter.onLongClickListiener() {
             @Override
             public void onClick(CheckBox checkBox, int pos) {
-                vibrator.vibrate(1000);
+                vibrator.vibrate(100);
                 checkBox.setVisibility(View.VISIBLE);
                 checkBox.setChecked(true);
                 localUserBeanMap.put(localUserBeanList.get(pos - 1),true);
@@ -164,7 +164,10 @@ public class CharactorActivity extends BaseActivity {
         }
         charatcorAdapter.setLocalUserBeanList(localUserBeanList);
         charatcorAdapter.notifyDataSetChanged();
+
+
     }
+
 
     @Override
     protected int getLayoutId() {

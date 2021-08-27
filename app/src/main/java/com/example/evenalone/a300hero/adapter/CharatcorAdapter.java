@@ -65,7 +65,7 @@ public class CharatcorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
 
         if (viewHolder instanceof CharatorListViewHolder)
         {
@@ -94,7 +94,7 @@ public class CharatcorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
             //计算团分
-            int pwoer_win_adv = Integer.parseInt(localUserBean.getJumpvalue());
+            int pwoer_win_adv = Integer.parseInt(localUserBean.getJumpvalue()==null?"0":localUserBean.getJumpvalue());
             if (pwoer_win_adv > 0 && pwoer_win_adv < 1500) {
                 listViewHolder.imgCharaterPosition.setBackgroundResource(R.drawable.little_fish);
                 listViewHolder.tvCharaterPosition.setText(MyApplication.getContext().getString(R.string.liitle_fish));
